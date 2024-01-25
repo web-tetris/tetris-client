@@ -1,0 +1,78 @@
+@use '../../shared/styles/constants';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  &,
+  &:active,
+  &:visited {
+    text-decoration: none;
+    color: unset;
+  }
+}
+
+button {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+ol,
+ul {
+  margin: 0;
+  padding-left: unset;
+
+  li {
+    list-style: none;
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+
+@media (hover: hover) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(gray, 0.3);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: gray;
+  }
+
+  ::-webkit-scrollbar-button {
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+  }
+
+  ::-webkit-scrollbar-corner {
+    display: none;
+  }
+}

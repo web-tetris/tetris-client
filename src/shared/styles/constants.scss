@@ -1,0 +1,21 @@
+// Transitions
+$transition-slow-out: 0.4s ease-out;
+$transition-slow-in: 0.4s ease-in;
+$transition-normal-out: 0.2s ease-out;
+$transition-normal-in: 0.2s ease-in;
+$transition-fast-out: 0.1s ease-out;
+$transition-fast-in: 0.1s ease-in;
+
+// Colors
+$color-primary: var(--color-primary);
+$color-secondary: var(--color-secondary);
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// Effects
+$effect-border-radius: 10px;
