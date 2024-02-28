@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import { h } from 'vue'
 import App from '@/App.vue'
-import { RouteName } from '@/shared/constants/route-name'
+import { RouteName } from '@/shared/consts/route-name'
 
 const router = createRouter({
   history: createWebHistory(),

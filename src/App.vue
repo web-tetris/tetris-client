@@ -1,34 +1,34 @@
 <script lang="ts" setup>
-import { useTitle } from '@vueuse/core'
-
-useTitle('Hello, Vue')
+import Game from '@/components/Game.vue'
 </script>
 
 <template>
-  <div class="app-component">
-    <RouterView class="page" />
+  <div class="app">
+    <Game class="game" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-@use 'shared/styles/transitions';
-@use 'shared/styles/constants';
-@use 'shared/styles/mixins';
+@use 'styles/transitions';
+@use 'styles/constants';
+@use 'styles/mixins';
 
-.app-component {
+.app {
   @include mixins.size(fill);
+  display: flex;
 
-  .page {
-    @include mixins.size(fill);
+  .game {
+    margin: 30px auto auto auto;
   }
+
 }
 </style>
 
 <style lang="scss">
-@use 'shared/styles/mixins';
+@use 'styles/mixins';
 
-@import 'core/styles/globals';
-@import 'core/styles/typography';
+@import 'styles/globals';
+@import 'styles/typography';
 
 #app {
   @include mixins.size(fill);
