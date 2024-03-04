@@ -15,13 +15,9 @@ const { modelValue } = useVModels(props, emits)
 
 <template>
   <div class="input">
-    <Button class="btn" @click="modelValue -= 1">
-      -
-    </Button>
+    <Button class="btn" icon="arrow-down" flat @click="modelValue -= 1" />
     <input v-model="modelValue" class="input">
-    <Button class="btn" @click="modelValue += 1">
-      +
-    </Button>
+    <Button class="btn" icon="arrow-up" flat @click="modelValue += 1" />
   </div>
 </template>
 
@@ -31,15 +27,12 @@ const { modelValue } = useVModels(props, emits)
   gap: 5px;
 
   .btn {
-    width: 30px;
-    border: 1px solid gray;
-    border-radius: 8px;
-    text-align: center;
+    border: 0;
   }
 
   .input {
     width: 40px;
-    border: 1px solid gray;
+    border: 1px solid #c9c8c8;
     border-radius: 8px;
     text-align: center;
   }
