@@ -23,12 +23,8 @@ const showed = ref<boolean>(false)
     <Matrix :matrix="matrix" class="matrix" />
     <div class="info">
       <Score class="score" :next="nextFigure" :score="score" />
-      <Button icon="arrow-clockwise" @click="reset">
-        Reset
-      </Button>
-      <Button icon="list" @click="showed = true">
-        Menu
-      </Button>
+      <Button icon="arrow-clockwise" label="Reset" @click="reset" />
+      <Button icon="list" label="Menu" @click="showed = true" />
     </div>
     <Modal v-model:showed="showed" title="Menu">
       <div class="difficult">

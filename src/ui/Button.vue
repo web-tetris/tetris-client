@@ -2,17 +2,14 @@
 const props = defineProps<{
   icon?: string
   flat?: boolean
-}>()
-
-const slots = defineSlots<{
-  default: () => void
+  label?: string
 }>()
 </script>
 
 <template>
   <button class="button" :class="{ flat }">
     <i v-if="props.icon" :class="`bi bi-${props.icon}`" />
-    <slot v-if="slots.default" name="default" />
+    <span v-if="props.label">{{ label }}</span>
   </button>
 </template>
 
