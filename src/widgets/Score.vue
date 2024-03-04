@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Matrix from '@/components/Matrix.vue'
+import Matrix from '@/widgets/Matrix.vue'
 import type { BlockMatrix } from '@/types/block-matrix'
 
 const props = defineProps<{
@@ -18,10 +18,6 @@ const props = defineProps<{
     <div class="next-panel">
       <span class="label">Next figure:</span>
       <Matrix :matrix="props.next" small class="figure" />
-    </div>
-
-    <div class="menu">
-      Menu
     </div>
   </div>
 </template>

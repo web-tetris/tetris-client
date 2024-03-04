@@ -19,7 +19,7 @@ export default defineConfig({
       provider: 'v8',
       all: true,
       include: [
-        'src/**/components/*.vue',
+        'src/**/widgets/*.vue',
         'src/**/views/*.vue',
         'src/**/hooks/*.ts',
         'src/**/services/*.ts',
