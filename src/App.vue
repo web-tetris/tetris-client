@@ -29,6 +29,7 @@ import Game from '@/widgets/Game.vue'
 
 @import 'styles/globals';
 @import 'styles/typography';
+@import 'styles/libraries';
 
 #app {
   @include mixins.size(fill);

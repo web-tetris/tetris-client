@@ -20,9 +20,10 @@ const { showed } = useVModels(props, emits)
       <div class="title">
         {{ title }}
       </div>
-      <Button class="btn" @click="showed = false">
-        x
-      </Button>
+      <Button class="btn" icon="x-lg" @click="showed = false" />
+    </div>
+    <div class="body">
+      <slot name="default" />
     </div>
   </div>
 </template>
@@ -57,10 +58,10 @@ const { showed } = useVModels(props, emits)
   }
 
   .body {
-    background-color: #8D9440;
     flex: 1;
     padding: 20px;
-
+    display: flex;
+    flex-direction: column;
   }
 
 }

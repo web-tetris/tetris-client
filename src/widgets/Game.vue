@@ -23,18 +23,15 @@ const showed = ref<boolean>(false)
     <Matrix :matrix="matrix" class="matrix" />
     <div class="info">
       <Score class="score" :next="nextFigure" :score="score" />
-      <Button @click="reset">
-        Reset
-      </Button>
+      <Button icon="arrow-clockwise" label="Reset" @click="reset" />
+      <Button icon="list" label="Menu" @click="showed = true" />
+    </div>
+    <Modal v-model:showed="showed" title="Menu">
       <div class="difficult">
         <span>Difficult:</span>
         <NumberInput v-model="difficult" />
       </div>
-      <Button @click="showed = true">
-        Menu
-      </Button>
-    </div>
-    <Modal v-model:showed="showed" title="Menu" />
+    </Modal>
   </div>
 </template>
 
@@ -60,11 +57,12 @@ const showed = ref<boolean>(false)
     .score {
       flex: 1
     }
+  }
 
-    .difficult {
-      display: flex;
-      gap: 10px;
-    }
+  .difficult {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 }
 </style>
