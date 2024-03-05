@@ -5,12 +5,11 @@ import Score from '@/widgets/Score.vue'
 import { useGameLife } from '@/hooks/game-life'
 import { useGameField } from '@/hooks/game-field'
 import { useGameController } from '@/hooks/game-controller'
-import NumberInput from '@/ui/NumberInput.vue'
 import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
-import Modal from '@/ui/Modal.vue'
+import Menu from '@/widgets/Menu.vue'
 
-const { difficult, interval } = useSettingsService()
+const { interval, difficult } = useSettingsService()
 const { counter } = useGameLife({ interval })
 const { matrix, nextFigure, score, move, rotate, reset } = useGameField({ counter })
 useGameController({ move, rotate })
@@ -26,12 +25,7 @@ const showed = ref<boolean>(false)
       <Button icon="arrow-clockwise" label="Reset" @click="reset" />
       <Button icon="list" label="Menu" @click="showed = true" />
     </div>
-    <Modal v-model:showed="showed" title="Menu">
-      <div class="difficult">
-        <span>Difficult:</span>
-        <NumberInput v-model="difficult" />
-      </div>
-    </Modal>
+    <Menu v-model:showed="showed" v-model:difficult="difficult" />
   </div>
 </template>
 
@@ -59,10 +53,5 @@ const showed = ref<boolean>(false)
     }
   }
 
-  .difficult {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
 }
 </style>
