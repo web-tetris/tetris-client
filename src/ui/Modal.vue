@@ -15,7 +15,7 @@ const { showed } = useVModels(props, emits)
 </script>
 
 <template>
-  <div v-if="showed" class="menu">
+  <div v-if="showed" class="modal">
     <div class="header">
       <div class="title">
         {{ title }}
@@ -29,7 +29,7 @@ const { showed } = useVModels(props, emits)
 </template>
 
 <style scoped lang="scss">
-.menu {
+.modal {
   position: fixed;
   left: 50%;
   top: 20%;
@@ -37,7 +37,6 @@ const { showed } = useVModels(props, emits)
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgb(146, 184, 227);
   width: 400px;
-  height: 450px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -62,6 +61,7 @@ const { showed } = useVModels(props, emits)
     padding: 20px;
     display: flex;
     flex-direction: column;
+    gap: 10px;
   }
 
 }

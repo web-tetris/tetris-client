@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { whenever } from '@vueuse/core'
 import Matrix from '@/widgets/Matrix.vue'
 import Score from '@/widgets/Score.vue'
 import { useGameLife } from '@/hooks/game-life'
@@ -8,14 +9,31 @@ import { useGameController } from '@/hooks/game-controller'
 import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
+import GameOver from '@/widgets/GameOver.vue'
 
 const { interval, difficult } = useSettingsService()
 const { counter, pause, resume } = useGameLife({ interval })
-const { matrix, nextFigure, score, move, rotate, reset } = useGameField({ counter })
+const { matrix, nextFigure, score, gameOver, move, rotate, reset } = useGameField({ counter, difficult })
 useGameController({ move, rotate })
 
 const menuShowed = ref<boolean>(false)
 watch(menuShowed, showed => showed ? pause() : resume())
+
+const gameOverShowed = ref<boolean>(false)
+whenever(gameOver, () => gameOverShowed.value = true)
+watch(gameOverShowed, (gameOverShowed) => {
+  if (gameOverShowed)
+    pause()
+})
+
+const restarted = ref<boolean>(false)
+watch(restarted, (restarted) => {
+  if (restarted) {
+    reset()
+    gameOverShowed.value = false
+    restarted = false
+  }
+})
 </script>
 
 <template>
@@ -27,6 +45,7 @@ watch(menuShowed, showed => showed ? pause() : resume())
       <Button icon="list" label="Menu" @click="menuShowed = true" />
     </div>
     <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
+    <GameOver v-model:showed="gameOverShowed" v-model:restarted="restarted" />
   </div>
 </template>
 
