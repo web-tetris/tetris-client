@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Matrix from '@/widgets/Matrix.vue'
 import Score from '@/widgets/Score.vue'
 import { useGameLife } from '@/hooks/game-life'
@@ -10,11 +10,12 @@ import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
 
 const { interval, difficult } = useSettingsService()
-const { counter } = useGameLife({ interval })
+const { counter, pause, resume } = useGameLife({ interval })
 const { matrix, nextFigure, score, move, rotate, reset } = useGameField({ counter })
 useGameController({ move, rotate })
 
-const showed = ref<boolean>(false)
+const menuShowed = ref<boolean>(false)
+watch(menuShowed, showed => showed ? pause() : resume())
 </script>
 
 <template>
@@ -23,9 +24,9 @@ const showed = ref<boolean>(false)
     <div class="info">
       <Score class="score" :next="nextFigure" :score="score" />
       <Button icon="arrow-clockwise" label="Reset" @click="reset" />
-      <Button icon="list" label="Menu" @click="showed = true" />
+      <Button icon="list" label="Menu" @click="menuShowed = true" />
     </div>
-    <Menu v-model:showed="showed" v-model:difficult="difficult" />
+    <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
   </div>
 </template>
 
