@@ -2,26 +2,25 @@
 import { useVModels } from '@vueuse/core'
 import Modal from '@/ui/Modal.vue'
 import NumberInput from '@/ui/NumberInput.vue'
-import { useSettingsService } from '@/hooks/settings'
 
 const props = defineProps<{
   showed: boolean
+  difficult: number
 }>()
 
 const emits = defineEmits<{
   'update:showed': [boolean]
+  'update:difficult': [number]
 }>()
 
-const { showed } = useVModels(props, emits)
-
-const { difficult } = useSettingsService()
+const { showed, difficult } = useVModels(props, emits)
 </script>
 
 <template>
   <Modal v-model:showed="showed" title="Menu">
     <div class="difficult">
       <span>Difficult:</span>
-      <NumberInput v-model="difficult" />
+      <NumberInput v-model:modelValue="difficult" />
     </div>
   </Modal>
 </template>

@@ -9,7 +9,7 @@ import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
 
-const { interval } = useSettingsService()
+const { interval, difficult } = useSettingsService()
 const { counter } = useGameLife({ interval })
 const { matrix, nextFigure, score, move, rotate, reset } = useGameField({ counter })
 useGameController({ move, rotate })
@@ -25,7 +25,7 @@ const showed = ref<boolean>(false)
       <Button icon="arrow-clockwise" label="Reset" @click="reset" />
       <Button icon="list" label="Menu" @click="showed = true" />
     </div>
-    <Menu v-model:showed="showed" />
+    <Menu v-model:showed="showed" v-model:difficult="difficult" />
   </div>
 </template>
 
