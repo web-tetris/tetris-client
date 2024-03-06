@@ -16,13 +16,16 @@ import { figures } from '@/consts/figures'
 import { randomArrayValue } from '@/utils/random'
 import { createField } from '@/utils/field'
 import type { BlockMatrix } from '@/types/block-matrix'
+import { useGameLife } from '@/hooks/game-life'
 
 export function useGameField({
   counter,
   difficult,
+  interval,
 }: {
   counter: Ref<number>
   difficult: Ref<number>
+  interval: Ref<number>
 }) {
   const field = shallowRef(createField(FIELD_SIZE))
 
@@ -30,6 +33,8 @@ export function useGameField({
   const currentFigure = shallowRef<BlockMatrix>([[]])
   const nextFigure = shallowRef<BlockMatrix>(fillFigure(randomArrayValue(figures)))
   const score = ref<number>(0)
+  const gameOver = ref<boolean>(false)
+  const { resume, pause } = useGameLife({ interval })
 
   function push() {
     currentFigure.value = nextFigure.value
@@ -75,10 +80,11 @@ export function useGameField({
     field.value = createField(FIELD_SIZE)
     score.value = 0
     difficult.value = 1
+    gameOver.value = false
     push()
+    resume()
   }
 
-  const gameOver = ref<boolean>(false)
   function gameOverCheck() {
     gameOver.value = field.value[0]
       .slice(pos.value.x, pos.value.x + currentFigure.value[0].length)
@@ -89,6 +95,9 @@ export function useGameField({
     const position: Position = { x: pos.value.x, y: pos.value.y + 1 }
     if (canProjectFigure(field.value, currentFigure.value, position)) {
       pos.value = position
+    }
+    else if (gameOver.value) {
+      pause()
     }
     else {
       field.value = projectFigure(field.value, currentFigure.value, pos.value)

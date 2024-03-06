@@ -5,6 +5,7 @@ import Button from '@/ui/Button.vue'
 const props = defineProps<{
   showed: boolean
   title: string
+  closable: boolean
 }>()
 
 const emits = defineEmits<{
@@ -20,7 +21,7 @@ const { showed } = useVModels(props, emits)
       <div class="title">
         {{ title }}
       </div>
-      <Button class="btn" icon="x-lg" @click="showed = false" />
+      <Button v-if="closable" class="btn" icon="x-lg" @click="showed = false" />
     </div>
     <div class="body">
       <slot name="default" />
@@ -32,7 +33,7 @@ const { showed } = useVModels(props, emits)
 .modal {
   position: fixed;
   left: 50%;
-  top: 20%;
+  top: 50%;
   transform: translate(-50%, -20%);
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgb(146, 184, 227);
