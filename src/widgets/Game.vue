@@ -12,7 +12,7 @@ import GameOver from '@/widgets/GameOver.vue'
 
 const { interval, difficult } = useSettingsService()
 const { counter, pause, resume } = useGameLife({ interval })
-const { matrix, nextFigure, score, gameOver, move, rotate, reset } = useGameField({ counter, difficult, interval })
+const { matrix, nextFigure, score, gameOver, move, rotate, reset } = useGameField({ counter, difficult, pause, resume })
 useGameController({ move, rotate })
 
 const menuShowed = ref<boolean>(false)
