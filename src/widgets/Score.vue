@@ -10,7 +10,9 @@ const props = defineProps<{
 
 <template>
   <div class="score">
-    <div>Score</div>
+    <div class="title">
+      Score
+    </div>
     <div class="total">
       <div>Total: {{ score }}</div>
     </div>
@@ -28,6 +30,11 @@ const props = defineProps<{
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  .title {
+    text-align: center;
+    font-size: 20px;
+  }
 
   .next-panel {
     display: flex;

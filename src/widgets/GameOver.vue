@@ -4,6 +4,7 @@ import Button from '@/ui/Button.vue'
 
 const props = defineProps<{
   showed: boolean
+  score: number
 }>()
 
 const emits = defineEmits<{
@@ -13,6 +14,7 @@ const emits = defineEmits<{
 
 <template>
   <Modal :showed="props.showed" :closable="false" title="Game over">
+    <div>Your score is {{ score }} points</div>
     <div>Do you want to play again?</div>
     <Button class="btn" label="Try again" icon="arrow-clockwise" @click="emits('restart')" />
   </Modal>
