@@ -19,8 +19,14 @@ import type { BlockMatrix } from '@/types/block-matrix'
 
 export function useGameField({
   counter,
+  difficult,
+  pause,
+  resume,
 }: {
   counter: Ref<number>
+  difficult: Ref<number>
+  pause: () => void
+  resume: () => void
 }) {
   const field = shallowRef(createField(FIELD_SIZE))
 
@@ -28,6 +34,7 @@ export function useGameField({
   const currentFigure = shallowRef<BlockMatrix>([[]])
   const nextFigure = shallowRef<BlockMatrix>(fillFigure(randomArrayValue(figures)))
   const score = ref<number>(0)
+  const gameOver = ref<boolean>(false)
 
   function push() {
     currentFigure.value = nextFigure.value
@@ -72,15 +79,20 @@ export function useGameField({
   function reset() {
     field.value = createField(FIELD_SIZE)
     score.value = 0
+    difficult.value = 1
+    gameOver.value = false
     push()
+    resume()
   }
 
   function gameOverCheck() {
-    const top = field.value[0]
+    const isGameOver = field.value[0]
       .slice(pos.value.x, pos.value.x + currentFigure.value[0].length)
-      .filter(row => row !== BlockColor.EMPTY)
-    if (top.length > 0)
-      reset()
+      .some(row => row !== BlockColor.EMPTY)
+    if (isGameOver) {
+      gameOver.value = true
+      pause()
+    }
   }
 
   function cycle() {
@@ -105,6 +117,7 @@ export function useGameField({
     currentFigure: shallowReadonly(currentFigure),
     nextFigure: shallowReadonly(nextFigure),
     score: shallowReadonly(score),
+    gameOver: shallowReadonly(gameOver),
 
     move,
     rotate,

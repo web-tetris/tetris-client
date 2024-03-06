@@ -8,10 +8,11 @@ import { useGameController } from '@/hooks/game-controller'
 import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
+import GameOver from '@/widgets/GameOver.vue'
 
 const { interval, difficult } = useSettingsService()
 const { counter, pause, resume } = useGameLife({ interval })
-const { matrix, nextFigure, score, move, rotate, reset } = useGameField({ counter })
+const { matrix, nextFigure, score, gameOver, move, rotate, reset } = useGameField({ counter, difficult, pause, resume })
 useGameController({ move, rotate })
 
 const menuShowed = ref<boolean>(false)
@@ -27,6 +28,7 @@ watch(menuShowed, showed => showed ? pause() : resume())
       <Button icon="list" label="Menu" @click="menuShowed = true" />
     </div>
     <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
+    <GameOver :showed="gameOver" @restart="reset" />
   </div>
 </template>
 
