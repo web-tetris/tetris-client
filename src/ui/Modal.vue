@@ -50,6 +50,7 @@ const { showed } = useVModels(props, emits)
     .title {
       flex: 1;
       text-align: center;
+      font-size: 20px;
     }
 
     .btn {
