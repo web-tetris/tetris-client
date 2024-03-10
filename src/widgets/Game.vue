@@ -8,12 +8,35 @@ import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
 import GameOver from '@/widgets/GameOver.vue'
+import Select from '@/ui/Select.vue'
+import type { SelectOption } from '@/types/select-option'
 
 const { difficult } = useSettingsService()
 const { matrix, nextFigure, score, gameOver, move, rotate, reset, gameLife } = useGameField({ difficult })
 useGameController({ move, rotate })
 
 const menuShowed = ref<boolean>(false)
+
+const options: SelectOption[] = [
+  {
+    label: 'Arrows',
+    value: 1,
+    icon: 'bi bi-arrows-move',
+  },
+  {
+    label: 'Gamepad',
+    value: 2,
+    icon: 'bi bi-controller',
+  },
+  {
+    label: 'WASD',
+    value: 3,
+    icon: 'bi bi-alphabet-uppercase',
+  },
+]
+
+const currentControl = ref<number>()
+
 watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
 </script>
 
@@ -22,6 +45,7 @@ watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
     <Matrix :matrix="matrix" class="matrix" />
     <div class="info">
       <Score class="score" :next="nextFigure" :score="score" />
+      <Select v-model="currentControl" label="Game controls" :options="options" />
       <Button icon="arrow-clockwise" label="Reset" @click="reset" />
       <Button icon="list" label="Menu" @click="menuShowed = true" />
     </div>
@@ -48,6 +72,7 @@ watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 150px;
 
     .score {
       flex: 1
