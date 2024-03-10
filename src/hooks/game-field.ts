@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { computed, ref, shallowReadonly, shallowRef, watch } from 'vue'
-import { tryOnMounted } from '@vueuse/core'
+import { tryOnMounted, useInterval } from '@vueuse/core'
 import { BlockColor } from '@/consts/block-color'
 import { FIELD_SIZE } from '@/consts/settings'
 import type { Position } from '@/types/position'
@@ -18,15 +18,9 @@ import { createField } from '@/utils/field'
 import type { BlockMatrix } from '@/types/block-matrix'
 
 export function useGameField({
-  counter,
   difficult,
-  pause,
-  resume,
 }: {
-  counter: Ref<number>
   difficult: Ref<number>
-  pause: () => void
-  resume: () => void
 }) {
   const field = shallowRef(createField(FIELD_SIZE))
 
@@ -39,7 +33,7 @@ export function useGameField({
   function push() {
     currentFigure.value = nextFigure.value
     nextFigure.value = fillFigure(randomArrayValue(figures))
-    pos.value = { x: Math.floor(FIELD_SIZE.x / 2) - Math.floor(currentFigure.value[0].length / 2), y: -currentFigure.value.length }
+    pos.value = { x: Math.floor(FIELD_SIZE.x / 2) - Math.floor(currentFigure.value[0].length / 2), y: -currentFigure.value.length + 1 }
   }
   tryOnMounted(push)
 
@@ -76,13 +70,24 @@ export function useGameField({
     }
   }
 
+  const delta = 10
+  const initial = 2000
+  const min = 200
+  const offset = 10
+  const speed = 0.3
+  function calculateInterval(): number {
+    return (initial / difficult.value - delta) / ((score.value + offset) ** speed) + min
+  }
+
+  const gameLife = useInterval(calculateInterval, { controls: true })
+
   function reset() {
     field.value = createField(FIELD_SIZE)
     score.value = 0
     difficult.value = 1
     gameOver.value = false
     push()
-    resume()
+    gameLife.resume()
   }
 
   function gameOverCheck() {
@@ -91,7 +96,7 @@ export function useGameField({
       .some(row => row !== BlockColor.EMPTY)
     if (isGameOver) {
       gameOver.value = true
-      pause()
+      gameLife.pause()
     }
   }
 
@@ -108,7 +113,7 @@ export function useGameField({
 
     stack()
   }
-  watch(counter, cycle)
+  watch(gameLife.counter, cycle)
 
   const matrix = computed(() => projectFigure(field.value, currentFigure.value, pos.value))
 
@@ -118,6 +123,7 @@ export function useGameField({
     nextFigure: shallowReadonly(nextFigure),
     score: shallowReadonly(score),
     gameOver: shallowReadonly(gameOver),
+    gameLife: shallowReadonly(gameLife),
 
     move,
     rotate,

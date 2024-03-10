@@ -2,7 +2,6 @@
 import { ref, watch } from 'vue'
 import Matrix from '@/widgets/Matrix.vue'
 import Score from '@/widgets/Score.vue'
-import { useGameLife } from '@/hooks/game-life'
 import { useGameField } from '@/hooks/game-field'
 import { useGameController } from '@/hooks/game-controller'
 import { useSettingsService } from '@/hooks/settings'
@@ -12,13 +11,11 @@ import GameOver from '@/widgets/GameOver.vue'
 import Select from '@/ui/Select.vue'
 import type { SelectOption } from '@/types/select-option'
 
-const { interval, difficult } = useSettingsService()
-const { counter, pause, resume } = useGameLife({ interval })
-const { matrix, nextFigure, score, gameOver, move, rotate, reset } = useGameField({ counter, difficult, pause, resume })
+const { difficult } = useSettingsService()
+const { matrix, nextFigure, score, gameOver, move, rotate, reset, gameLife } = useGameField({ difficult })
 useGameController({ move, rotate })
 
 const menuShowed = ref<boolean>(false)
-watch(menuShowed, showed => showed ? pause() : resume())
 
 const options: SelectOption[] = [
   {
@@ -39,6 +36,8 @@ const options: SelectOption[] = [
 ]
 
 const currentControl = ref<number>()
+
+watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
 </script>
 
 <template>
@@ -51,7 +50,7 @@ const currentControl = ref<number>()
       <Button icon="list" label="Menu" @click="menuShowed = true" />
     </div>
     <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
-    <GameOver :showed="gameOver" @restart="reset" />
+    <GameOver :showed="gameOver" :score="score" @restart="reset" />
   </div>
 </template>
 
