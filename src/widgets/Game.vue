@@ -10,32 +10,34 @@ import Menu from '@/widgets/Menu.vue'
 import GameOver from '@/widgets/GameOver.vue'
 import Select from '@/ui/Select.vue'
 import type { SelectOption } from '@/types/select-option'
+import { ControlType } from '@/consts/control-type'
 
 const { difficult } = useSettingsService()
 const { matrix, nextFigure, score, gameOver, move, rotate, reset, gameLife } = useGameField({ difficult })
-useGameController({ move, rotate })
 
 const menuShowed = ref<boolean>(false)
 
-const options: SelectOption[] = [
+const options: SelectOption<ControlType>[] = [
   {
     label: 'Arrows',
-    value: 1,
+    value: ControlType.ARROWS,
     icon: 'bi bi-arrows-move',
   },
   {
     label: 'Gamepad',
-    value: 2,
+    value: ControlType.GAMEPAD,
     icon: 'bi bi-controller',
   },
   {
     label: 'WASD',
-    value: 3,
+    value: ControlType.WASD,
     icon: 'bi bi-alphabet-uppercase',
   },
 ]
 
-const currentControl = ref<number>()
+const currentControl = ref<ControlType>(ControlType.ARROWS)
+
+useGameController({ type: currentControl, move, rotate })
 
 watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
 </script>
