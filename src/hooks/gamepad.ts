@@ -46,11 +46,11 @@ export function useGamepad() {
   }, 10)
 
   function onKeyDown(key: MaybeRefOrGetter<keyof ButtonMap>, index: MaybeRefOrGetter<number>, cb: () => unknown): void {
-    whenever(() => buttons.value[toValue(index)]?.[toValue(key)], cb)
+    whenever(() => buttons.value[toValue(index)]?.[toValue(key)], cb, { immediate: false })
   }
 
   function onKeyUp(key: MaybeRefOrGetter<keyof ButtonMap>, index: MaybeRefOrGetter<number>, cb: () => unknown): void {
-    whenever(() => !buttons.value[toValue(index)]?.[toValue(key)], cb)
+    whenever(() => !buttons.value[toValue(index)]?.[toValue(key)], cb, { immediate: false })
   }
 
   function onKeyStroke(key: MaybeRefOrGetter<keyof ButtonMap>, index: MaybeRefOrGetter<number>, cb: () => unknown): void {
