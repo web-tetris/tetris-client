@@ -72,6 +72,7 @@ const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-che
     width: 100%;
 
     &.opened {
+      z-index: 1;
       display: flex;
       flex-direction: column;
       gap: 5px;

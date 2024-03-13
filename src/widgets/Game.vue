@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Matrix from '@/widgets/Matrix.vue'
 import Score from '@/widgets/Score.vue'
 import { useGameField } from '@/hooks/game-field'
@@ -11,13 +11,14 @@ import GameOver from '@/widgets/GameOver.vue'
 import Select from '@/ui/Select.vue'
 import type { SelectOption } from '@/types/select-option'
 import { ControlType } from '@/consts/control-type'
+import { useGamepad } from '@/hooks/gamepad'
 
 const { difficult } = useSettingsService()
 const { matrix, nextFigure, score, gameOver, move, rotate, reset, gameLife } = useGameField({ difficult })
 
 const menuShowed = ref<boolean>(false)
 
-const options: SelectOption<ControlType>[] = [
+const conrolsOptions: SelectOption<ControlType>[] = [
   {
     label: 'Arrows',
     value: ControlType.ARROWS,
@@ -34,10 +35,19 @@ const options: SelectOption<ControlType>[] = [
     icon: 'bi bi-alphabet-uppercase',
   },
 ]
-
 const currentControl = ref<ControlType>(ControlType.ARROWS)
 
-useGameController({ type: currentControl, move, rotate })
+const { gamepads } = useGamepad()
+const gamepadOptions = computed<SelectOption[]>(() =>
+  gamepads.value.map((gp, index) => ({
+    label: `Gamepad ${index + 1}`,
+    value: index,
+    icon: 'bi bi-controller',
+  })),
+)
+const currentGamepad = ref<number>(0)
+
+useGameController({ type: currentControl, move, rotate, index: currentGamepad })
 
 watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
 </script>
@@ -47,7 +57,18 @@ watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
     <Matrix :matrix="matrix" class="matrix" />
     <div class="info">
       <Score class="score" :next="nextFigure" :score="score" />
-      <Select v-model="currentControl" label="Game controls" :options="options" />
+      <template v-if="currentControl === ControlType.GAMEPAD">
+        <Select
+          v-if="gamepads.length"
+          v-model="currentGamepad"
+          label="Gamepads"
+          :options="gamepadOptions"
+        />
+        <div v-else class="connection-message">
+          Connect one or more gamepads
+        </div>
+      </template>
+      <Select v-model="currentControl" label="Game controls" :options="conrolsOptions" />
       <Button icon="arrow-clockwise" label="Reset" @click="reset" />
       <Button icon="list" label="Menu" @click="menuShowed = true" />
     </div>
@@ -78,6 +99,11 @@ watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
 
     .score {
       flex: 1
+    }
+
+    .connection-message {
+      color: gray;
+      text-align: center;
     }
   }
 
