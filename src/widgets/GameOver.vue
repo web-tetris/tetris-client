@@ -13,7 +13,7 @@ const emits = defineEmits<{
 </script>
 
 <template>
-  <Modal :showed="props.showed" :closable="false" title="Game over">
+  <Modal :showed="props.showed" :closable="false" title="Game over" relative>
     <div>Your score is {{ score }} points</div>
     <div>Do you want to play again?</div>
     <Button class="btn" label="Try again" icon="arrow-clockwise" @click="emits('restart')" />

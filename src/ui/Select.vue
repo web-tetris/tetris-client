@@ -56,17 +56,17 @@ const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-che
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 30px;
   position: relative;
   height: 32px;
 
   .title {
+    top: -20px;
     position: absolute;
   }
 
   .options {
     position: absolute;
-    top: 30px;
+    top: 0;
     border: 1px solid #c9c8c8;
     border-radius: 5px;
     width: 100%;

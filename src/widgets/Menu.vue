@@ -17,7 +17,7 @@ const { showed, difficult } = useVModels(props, emits)
 </script>
 
 <template>
-  <Modal v-model:showed="showed" :closable="true" title="Menu">
+  <Modal v-model:showed="showed" :closable="true" title="Menu" relative>
     <div class="difficult">
       <span>Difficult:</span>
       <NumberInput v-model:modelValue="difficult" />

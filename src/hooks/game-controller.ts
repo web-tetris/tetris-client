@@ -1,4 +1,3 @@
-import { onKeyStroke } from '@vueuse/core'
 import type { Ref } from 'vue'
 import { computed } from 'vue'
 
@@ -8,6 +7,7 @@ import type { ControlScheme } from '@/types/control-scheme'
 import type { ButtonMap } from '@/hooks/gamepad'
 import { useGamepad } from '@/hooks/gamepad'
 import { schemes } from '@/consts/control-schemes'
+import { useKeyboard } from '@/hooks/keyboard'
 
 export function useGameController({
   type,
@@ -30,16 +30,18 @@ export function useGameController({
   }
 
   const gamepad = useGamepad()
+  const keyboard = useKeyboard()
 
   for (const key of Object.keys(actions) as (keyof ControlScheme)[]) {
-    onKeyStroke(({ code }) => code === scheme.value[key], () => {
-      if (type.value !== ControlType.GAMEPAD)
-        actions[key]()
-    })
+    keyboard.onKeyStroke(
+      () => scheme.value[key],
+      () => (type.value !== ControlType.GAMEPAD) && actions[key](),
+    )
 
-    gamepad.onKeyStroke(() => scheme.value[key] as keyof ButtonMap, index, () => {
-      if (type.value === ControlType.GAMEPAD && actions[key])
-        actions[key]!()
-    })
+    gamepad.onKeyStroke(
+      () => scheme.value[key] as keyof ButtonMap,
+      index,
+      () => (type.value === ControlType.GAMEPAD) && actions[key](),
+    )
   }
 }

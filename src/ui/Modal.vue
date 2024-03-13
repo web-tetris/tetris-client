@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useVModels } from '@vueuse/core'
+import { toRefs } from 'vue'
 import Button from '@/ui/Button.vue'
 
 const props = defineProps<{
   showed: boolean
   title: string
   closable: boolean
+  relative?: boolean
 }>()
 
 const emits = defineEmits<{
@@ -13,10 +15,12 @@ const emits = defineEmits<{
 }>()
 
 const { showed } = useVModels(props, emits)
+
+const { relative } = toRefs(props)
 </script>
 
 <template>
-  <div v-if="showed" class="modal">
+  <div v-if="showed" class="modal" :class="{ relative }">
     <div class="header">
       <div class="title">
         {{ title }}
@@ -66,5 +70,8 @@ const { showed } = useVModels(props, emits)
     gap: 10px;
   }
 
+  &.relative {
+    position: absolute;
+  }
 }
 </style>
