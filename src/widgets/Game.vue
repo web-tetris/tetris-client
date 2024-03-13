@@ -18,7 +18,7 @@ const { matrix, nextFigure, score, gameOver, move, rotate, reset, gameLife } = u
 
 const menuShowed = ref<boolean>(false)
 
-const conrolsOptions: SelectOption<ControlType>[] = [
+const controlsOptions: SelectOption<ControlType>[] = [
   {
     label: 'Arrows',
     value: ControlType.ARROWS,
@@ -68,7 +68,7 @@ watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
           Connect one or more gamepads
         </div>
       </template>
-      <Select v-model="currentControl" label="Game controls" :options="conrolsOptions" />
+      <Select v-model="currentControl" label="Game controls" :options="controlsOptions" />
       <Button icon="arrow-clockwise" label="Reset" @click="reset" />
       <Button icon="list" label="Menu" @click="menuShowed = true" />
     </div>

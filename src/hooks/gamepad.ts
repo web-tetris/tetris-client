@@ -1,6 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { shallowRef, toValue } from 'vue'
 import {
+  createSharedComposable,
   useEventListener,
   useIntervalFn, useTimeoutFn,
   whenever,
@@ -19,23 +20,27 @@ const mapping = {
 
 export type ButtonMap = Record<(typeof mapping)[keyof typeof mapping], boolean>
 
-export function useGamepad() {
+export const useGamepad = createSharedComposable(() => {
   const gamepads = shallowRef<Gamepad[]>([])
 
   function onConnect(event: GamepadEvent) {
     const newGamepad = navigator.getGamepads()[event.gamepad.index]!
     gamepads.value = [...gamepads.value, newGamepad]
   }
+
   useEventListener('gamepadconnected', onConnect)
 
   function onDisconnect() {
     gamepads.value = gamepads.value.filter(gamepad => gamepad.id !== gamepads.value[0].id)
   }
+
   useEventListener('gamepaddisconnected', onDisconnect)
 
   function getButtonMap(snapshot: Gamepad): ButtonMap {
-    // @ts-expect-error: _
-    return snapshot.buttons.reduce((acc, { pressed }, index) => ({ ...acc, [mapping[index]]: pressed }), {})
+    return snapshot.buttons.reduce((acc, { pressed }, index) => ({
+      ...acc,
+      [mapping[index as keyof typeof mapping]]: pressed,
+    }), {}) as ButtonMap
   }
 
   const buttons = shallowRef<ButtonMap[]>([])
@@ -76,4 +81,4 @@ export function useGamepad() {
     onKeyUp,
     onKeyStroke,
   }
-}
+})
