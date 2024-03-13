@@ -14,11 +14,15 @@ export function useGameController({
   move,
   rotate,
   index,
+  toggleMenu,
+  reset,
 }: {
   type: Ref<ControlType>
   move: (direction: MoveDirection) => void
   rotate: () => void
   index: Ref<number>
+  toggleMenu: () => unknown
+  reset: () => unknown
 }) {
   const scheme = computed(() => schemes[type.value])
 
@@ -44,4 +48,9 @@ export function useGameController({
       () => (type.value === ControlType.GAMEPAD) && actions[key](),
     )
   }
+
+  gamepad.onKeyUp('Back', index, reset)
+  gamepad.onKeyUp('Start', index, toggleMenu)
+  keyboard.onKeyUp('KeyR', reset)
+  keyboard.onKeyUp('KeyM', toggleMenu)
 }

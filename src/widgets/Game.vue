@@ -17,6 +17,10 @@ const { difficult } = useSettingsService()
 const { matrix, nextFigure, score, gameOver, move, rotate, reset, gameLife } = useGameField({ difficult })
 
 const menuShowed = ref<boolean>(false)
+function toggleMenu() {
+  menuShowed.value = !menuShowed.value
+}
+watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
 
 const controlsOptions: SelectOption<ControlType>[] = [
   {
@@ -47,9 +51,14 @@ const gamepadOptions = computed<SelectOption[]>(() =>
 )
 const currentGamepad = ref<number>(0)
 
-useGameController({ type: currentControl, move, rotate, index: currentGamepad })
-
-watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
+useGameController({
+  type: currentControl,
+  move,
+  rotate,
+  index: currentGamepad,
+  reset,
+  toggleMenu,
+})
 </script>
 
 <template>
@@ -70,7 +79,7 @@ watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
       </template>
       <Select v-model="currentControl" label="Game controls" :options="controlsOptions" />
       <Button icon="arrow-clockwise" label="Reset" @click="reset" />
-      <Button icon="list" label="Menu" @click="menuShowed = true" />
+      <Button icon="list" label="Menu" @click="toggleMenu" />
     </div>
     <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
     <GameOver :showed="gameOver" :score="score" @restart="reset" />

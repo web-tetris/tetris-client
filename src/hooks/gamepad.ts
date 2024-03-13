@@ -12,6 +12,8 @@ const mapping = {
   1: 'B',
   2: 'X',
   3: 'Y',
+  8: 'Back',
+  9: 'Start',
   12: 'Up',
   14: 'Left',
   13: 'Down',
@@ -51,7 +53,6 @@ export const useGamepad = createSharedComposable(() => {
   }, 10)
 
   function onKeyDown(key: MaybeRefOrGetter<keyof ButtonMap>, index: MaybeRefOrGetter<number>, cb: () => unknown): void {
-    useEventListener('keydown', ({ code }) => code === key && cb())
     whenever(() => buttons.value[toValue(index)]?.[toValue(key)], cb, { immediate: false })
   }
 
