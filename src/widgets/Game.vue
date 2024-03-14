@@ -79,6 +79,7 @@ watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
 
 <style scoped lang="scss">
 .game {
+  position: relative;
   display: flex;
   gap: 20px;
   border: 1px solid gray;
