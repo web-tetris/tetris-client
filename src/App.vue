@@ -1,20 +1,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import Game from '@/widgets/Game.vue'
-import Select from '@/ui/Select.vue'
-import type { SelectOption } from '@/types/select-option'
+import PlayersSelect from '@/widgets/PlayersSelect.vue'
 
-const players = ref<number>(1)
-const options: SelectOption[] = Array.from({ length: 3 }, (_, i) => ({
-  value: i + 1,
-  label: `${i + 1} player${i > 0 ? 's' : ''}`,
-}))
+const players = ref(1)
 </script>
 
 <template>
   <div class="app">
-    <Select v-model="players" class="players" :options="options" label="Number of players" />
-
+    <PlayersSelect v-model:players="players" class="players" />
     <div class="game-list">
       <Game v-for="i in players" :key="i" class="game" />
     </div>
@@ -34,7 +28,6 @@ const options: SelectOption[] = Array.from({ length: 3 }, (_, i) => ({
   gap: 10px;
 
   .players {
-    width: 300px;
     margin: 0 auto;
   }
 
