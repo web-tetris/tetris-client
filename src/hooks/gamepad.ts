@@ -12,6 +12,8 @@ const mapping = {
   1: 'B',
   2: 'X',
   3: 'Y',
+  8: 'Back',
+  9: 'Start',
   12: 'Up',
   14: 'Left',
   13: 'Down',
