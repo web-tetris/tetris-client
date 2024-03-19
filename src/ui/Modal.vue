@@ -25,7 +25,7 @@ const { relative } = toRefs(props)
       <div class="title">
         {{ title }}
       </div>
-      <Button v-if="closable" class="btn" icon="x-lg" @click="showed = false" />
+      <Button v-if="closable" class="btn" icon="x-lg" flat @click="showed = false" />
     </div>
     <div class="body">
       <slot name="default" />

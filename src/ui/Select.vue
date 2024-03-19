@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useVModel } from '@vueuse/core'
 import type { SelectOption } from '@/types/select-option'
+import GradientWrapper from '@/ui/GradientWrapper.vue'
 
 const props = defineProps<{
   label?: string
@@ -28,58 +29,53 @@ const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-che
     </div>
 
     <div class="options" :class="{ opened }" @click="opened = !opened">
-      <div class="current">
-        <div v-if="current" class="option">
-          <i v-if="current.icon" :class="current.icon" />
-          <span>{{ current.label }}</span>
+      <GradientWrapper>
+        <div class="current">
+          <div v-if="current" class="option">
+            <i v-if="current.icon" :class="current.icon" />
+            <span>{{ current.label }}</span>
+          </div>
+          <i class="toggle-icon" :class="toggleIcon" />
         </div>
-        <i class="toggle-icon" :class="toggleIcon" />
-      </div>
 
-      <div v-if="opened" class="other">
-        <div
-          v-for="option in options"
-          :key="option.value"
-          class="option"
-          @click="modelValue = option.value"
-        >
-          <i v-if="option.icon" :class="option.icon" />
-          <span>{{ option.label }}</span>
+        <div v-if="opened" class="other">
+          <div
+            v-for="option in options"
+            :key="option.value"
+            class="option"
+            @click="modelValue = option.value"
+          >
+            <i v-if="option.icon" :class="option.icon" />
+            <span>{{ option.label }}</span>
+          </div>
         </div>
-      </div>
+      </GradientWrapper>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .select {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   position: relative;
   height: 32px;
 
   .title {
-    top: -20px;
+    top: -25px;
     position: absolute;
   }
 
   .options {
     position: absolute;
     top: 0;
-    border: 1px solid #c9c8c8;
-    border-radius: 5px;
+    left: 0;
     width: 100%;
+    transition: 0.8s;
 
     &.opened {
       z-index: 1;
       display: flex;
       flex-direction: column;
       gap: 5px;
-      background-color: white;
-      border: none;
-      border-radius: 5px;
-      box-shadow: 0 0 10px 0 rgb(146, 184, 227);
     }
 
     .option {
@@ -93,10 +89,7 @@ const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-che
       display: flex;
       align-items: center;
       padding: 5px;
-
-      &:hover {
-        cursor: pointer;
-      }
+      cursor: pointer;
     }
 
     .current {
@@ -117,7 +110,7 @@ const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-che
         padding: 5px;
 
         &:hover {
-          background-color: aliceblue;
+          background-color: #f2f7fc;
           border-radius: 5px;
         }
       }

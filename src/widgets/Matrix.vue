@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { BlockMatrix } from '@/types/block-matrix'
+import { BlockColor } from '@/consts/block-color'
 
 const props = defineProps<{
   matrix: BlockMatrix
   small?: boolean
+  transparent?: boolean
 }>()
 
 const xSize = computed(() => props.matrix[0].length)
@@ -15,7 +17,9 @@ const matrixFlat = computed(() => props.matrix.flat())
 <template>
   <div class="grid">
     <div
-      v-for="(block, i) in matrixFlat" :key="i" class="cell" :class="[`color-${block}`, small ? 'small' : '']"
+      v-for="(block, i) in matrixFlat"
+      :key="i" class="cell"
+      :class="[transparent && block === BlockColor.EMPTY ? 'transparent' : `color-${block}`, small ? 'small' : '']"
     />
   </div>
 </template>
@@ -27,43 +31,57 @@ const matrixFlat = computed(() => props.matrix.flat())
     display: grid;
     grid-template-columns: repeat(v-bind(xSize), 1fr);
     grid-template-rows: repeat(v-bind(ySize), 1fr);
-    grid-gap: 1px;
+    grid-gap: 2px;
 
     .cell {
-      border-radius: 2px;
+      --color: white;
       @include mixins.size(30px);
+      border-radius: 2px;
+      background: var(--color);
+      border: 3px solid rgba(black, 0.1);
 
       &.small {
         @include mixins.size(15px);
+        border-width: 1px;
+      }
+
+      &.transparent {
+        background: transparent;
+        border: none;
       }
 
       &.color {
-        &-coral {
-          background: #FF6F61;
-        }
         &-gray {
-          background: rgba(155, 183, 212, 0.3);
+          --color: #F2F1F5FF;
+          border: none;
         }
-        &-turmeric {
-          background: #FE840E;
+
+        &-coral {
+          --color: #fd8484;
         }
+
         &-pink {
-          background: #C62168;
+          --color: #fac17d;
         }
-        &-frenchblue {
-          background: #0072B5;
-        }
-        &-pepper {
-          background: #8D9440;
-        }
-        &-gold {
-          background: #FFD662;
-        }
+
         &-lilac {
-          background: #E8B5CE;
+          --color: #f8fc8c;
         }
+
+        &-frenchblue {
+          --color: #9ffc8c;
+        }
+
+        &-pepper {
+          --color: #71f2ff;
+        }
+
+        &-gold {
+          --color: #9d8dfc;
+        }
+
         &-paradise {
-          background: #95DEE3;
+         --color: #fd96fd;
         }
       }
     }
