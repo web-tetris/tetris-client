@@ -46,7 +46,7 @@ defineSlots<{
     }
 
     &.flat:hover::before {
-      display: inherit;
+        display: block;
     }
 
     .inner {

@@ -2,6 +2,7 @@
 import { useVModels } from '@vueuse/core'
 import { toRefs } from 'vue'
 import Button from '@/ui/Button.vue'
+import { colors } from '@/consts/random-colors'
 
 const props = defineProps<{
   showed: boolean
@@ -40,7 +41,7 @@ const { relative } = toRefs(props)
   top: 50%;
   transform: translate(-50%, -20%);
   border-radius: 10px;
-  box-shadow: 0 0 10px 0 rgb(146, 184, 227);
+  box-shadow: 0 0 10px 0 v-bind('colors[2]');
   width: 400px;
   background-color: white;
   display: flex;
