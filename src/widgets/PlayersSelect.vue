@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useVModels } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 import Select from '@/ui/Select.vue'
 import type { SelectOption } from '@/types/select-option'
 
@@ -11,16 +13,18 @@ const emits = defineEmits<{
   'update:players': [number]
 }>()
 
+const { t } = useI18n()
+
 const { players } = useVModels(props, emits)
 
-const options: SelectOption[] = Array.from({ length: 3 }, (_, i) => ({
+const options = computed <SelectOption []>(() => Array.from({ length: 3 }, (_, i) => ({
   value: i + 1,
-  label: `${i + 1} player${i > 0 ? 's' : ''}`,
-}))
+  label: t('players-select.player', { number: i + 1, end: i > 0 ? t('players-select.plural') : '' }),
+})))
 </script>
 
 <template>
-  <Select v-model="players" class="players" :options="options" label="Number of players" />
+  <Select v-model="players" class="players" :options="options" :label="t('players-select.title')" />
 </template>
 
 <style scoped lang="scss">

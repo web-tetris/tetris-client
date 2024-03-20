@@ -1,0 +1,36 @@
+{
+  "game": {
+    "connection": "Connect one or more gamepads",
+    "game-controls": "Game controls",
+    "menu": "Menu",
+    "reset": "Reset",
+    "arrow": "Arrow",
+    "gamepad": "Gamepad"
+  },
+  "game-over": {
+    "title": "Game over",
+    "score": "Your score is { value } points",
+    "new-game": "Do you want to play again?",
+    "retry": "Try again"
+  },
+  "language-select": {
+    "lang": "Language"
+  },
+  "menu": {
+    "title": "Menu",
+    "difficult": "Difficult"
+  },
+  "players-select": {
+    "title": "Number of players",
+    "player": "{ number } player{ end }",
+    "plural": "s"
+  },
+  "score": {
+    "title": "Score",
+    "total": "Total: {score}",
+    "next": "Next figure:"
+  },
+  "settings": {
+    "title": "Game settings"
+  }
+}

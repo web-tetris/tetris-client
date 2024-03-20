@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import Modal from '@/ui/Modal.vue'
 import Button from '@/ui/Button.vue'
 
@@ -10,13 +11,15 @@ const props = defineProps<{
 const emits = defineEmits<{
   'restart': []
 }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
-  <Modal :showed="props.showed" :closable="false" title="Game over" relative>
-    <div>Your score is {{ score }} points</div>
-    <div>Do you want to play again?</div>
-    <Button class="btn" label="Try again" icon="arrow-clockwise" @click="emits('restart')" />
+  <Modal :showed="props.showed" :closable="false" :title="t('game-over.title')" relative>
+    <div>{{ t("game-over.score", { value: score }) }}</div>
+    <div>{{ t("game-over.new-game") }}</div>
+    <Button class="btn" :label="t('game-over.retry')" icon="arrow-clockwise" @click="emits('restart')" />
   </Modal>
 </template>
 

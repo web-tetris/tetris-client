@@ -3,12 +3,13 @@ const props = defineProps<{
   icon?: string
   flat?: boolean
   label?: string
+  large?: boolean
 }>()
 </script>
 
 <template>
-  <button class="button" :class="{ flat }">
-    <i v-if="props.icon" :class="`bi bi-${props.icon}`" />
+  <button class="button" :class="{ flat, large }">
+    <i v-if="props.icon" :class="`bi bi-${props.icon}`" class="icon" />
     <span v-if="props.label">{{ label }}</span>
   </button>
 </template>
@@ -25,6 +26,16 @@ const props = defineProps<{
   &:hover {
     cursor: pointer;
     background-color: aliceblue;
+  }
+
+  &.large {
+    border-radius: 20px;
+    padding: 10px 20px;
+
+    .icon {
+      font-size: 1.5rem;
+      color: #757575;
+    }
   }
 
   &.flat {

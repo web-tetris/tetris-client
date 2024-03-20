@@ -15,7 +15,8 @@
     "bootstrap-icons": "^1.11.3",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue-i18n": "9"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.36.0",

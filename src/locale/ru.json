@@ -1,0 +1,36 @@
+{
+  "game": {
+    "connection": "Подключите один или несколько геймпадов",
+    "game-controls": "Управление",
+    "menu": "Меню",
+    "reset": "Сбросить",
+    "arrow": "Стрелки",
+    "gamepad": "Геймпад"
+  },
+  "game-over": {
+    "title": "Конец игры",
+    "score": "Вы заработали { value } баллов",
+    "new-game": "Хотите сыграть еще раз?",
+    "retry": "Еще раз"
+  },
+  "language-select": {
+    "lang": "Язык"
+  },
+  "menu": {
+    "title": "Меню",
+    "difficult": "Сложность"
+  },
+  "players-select": {
+    "title": "Количество игроков",
+    "player": "{number} игрок{end}",
+    "plural": "а"
+  },
+  "score": {
+    "title": "Счет",
+    "total": "Всего: {score}",
+    "next": "Следующая фигура:"
+  },
+  "settings": {
+    "title": "Настойки игры"
+  }
+}

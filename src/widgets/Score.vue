@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import Matrix from '@/widgets/Matrix.vue'
 import type { BlockMatrix } from '@/types/block-matrix'
 
@@ -6,19 +7,21 @@ const props = defineProps<{
   next: BlockMatrix
   score: number
 }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="score">
     <div class="title">
-      Score
+      {{ t('score.title') }}
     </div>
     <div class="total">
-      <div>Total: {{ score }}</div>
+      <div>{{ t('score.total', { score }) }}</div>
     </div>
 
     <div class="next-panel">
-      <span class="label">Next figure:</span>
+      <span class="label">{{ t('score.next') }}</span>
       <Matrix :matrix="props.next" small class="figure" />
     </div>
   </div>
