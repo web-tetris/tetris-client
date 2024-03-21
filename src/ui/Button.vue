@@ -29,6 +29,7 @@ const { flat, large } = toRefs(props)
     justify-content: center;
     gap: 10px;
     cursor: pointer;
+    width: 100%;
 
   &.large {
     border-radius: 20px;

@@ -5,7 +5,8 @@
     "menu": "Меню",
     "reset": "Сбросить",
     "arrow": "Стрелки",
-    "gamepad": "Геймпад"
+    "gamepad": "Геймпад",
+    "wasd": "WASD"
   },
   "game-over": {
     "title": "Конец игры",
@@ -26,7 +27,7 @@
   },
   "score": {
     "title": "Счет",
-    "total": "Всего: {score}",
+    "total": "Всего:",
     "next": "Следующая фигура:"
   },
   "settings": {

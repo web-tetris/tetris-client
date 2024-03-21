@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useToggle } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import Matrix from '@/widgets/Matrix.vue'
 import Score from '@/widgets/Score.vue'
 import { useGameField } from '@/hooks/game-field'
@@ -9,12 +10,9 @@ import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
 import GameOver from '@/widgets/GameOver.vue'
-import Select from '@/ui/Select.vue'
-import type { SelectOption } from '@/types/select-option'
 import { ControlType } from '@/consts/control-type'
 import { colors } from '@/consts/random-colors'
 import ControllerSelect from '@/widgets/ControllerSelect.vue'
-import { useGameField } from '@/hooks/game-field'
 
 const { t } = useI18n()
 
@@ -24,34 +22,7 @@ const { matrix, nextFigure, score, gameOver, move, rotate, reset, pause, resume 
 const [menuShowed, toggleMenu] = useToggle(false)
 watch(menuShowed, showed => showed ? pause() : resume())
 
-const controlsOptions = computed<SelectOption<ControlType>[]>(() =>
-  [
-    {
-      label: t('game.arrow'),
-      value: ControlType.ARROWS,
-      icon: 'bi bi-arrows-move',
-    },
-    {
-      label: t('game.gamepad'),
-      value: ControlType.GAMEPAD,
-      icon: 'bi bi-controller',
-    },
-    {
-      label: 'WASD',
-      value: ControlType.WASD,
-      icon: 'bi bi-alphabet-uppercase',
-    },
-  ])
 const currentControl = ref<ControlType>(ControlType.ARROWS)
-
-const { gamepads } = useGamepad()
-const gamepadOptions = computed<SelectOption[]>(() =>
-  gamepads.value.map((gp, index) => ({
-    label: `Gamepad ${index + 1}`,
-    value: index,
-    icon: 'bi bi-controller',
-  })),
-)
 const currentGamepad = ref<number>(0)
 
 useGameController({
@@ -72,25 +43,9 @@ useGameController({
 
       <ControllerSelect v-model:control="currentControl" v-model:gamepad="currentGamepad" />
 
-      <template v-if="currentControl === ControlType.GAMEPAD">
-        <Select
-          v-if="gamepads.length"
-          v-model="currentGamepad"
-          label="Gamepads"
-          :options="gamepadOptions"
-        />
-        <div v-else class="connection-message">
-          {{ t("game.connection") }}
-        </div>
-      </template>
-
-      <Select v-model="currentControl" :label="t('game.game-controls')" :options="controlsOptions" />
-      <Button icon="list" :label="t('game.menu')" @click="toggleMenu" />
-      <Button icon="arrow-clockwise" :label="t('game.reset')" @click="reset" />
-
       <div class="buttons-list">
-        <Button icon="arrow-clockwise" label="Reset" @click="reset" />
-        <Button icon="list" label="Menu" @click="() => toggleMenu()" />
+        <Button icon="arrow-clockwise" :label="t('game.reset')" @click="reset" />
+        <Button icon="list" :label="t('game.menu')" @click="() => toggleMenu()" />
       </div>
     </div>
 
@@ -132,5 +87,4 @@ useGameController({
     }
   }
 }
-
 </style>

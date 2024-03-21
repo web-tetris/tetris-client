@@ -5,7 +5,8 @@
     "menu": "Menu",
     "reset": "Reset",
     "arrow": "Arrow",
-    "gamepad": "Gamepad"
+    "gamepad": "Gamepad",
+    "wasd": "WASD"
   },
   "game-over": {
     "title": "Game over",
@@ -26,7 +27,7 @@
   },
   "score": {
     "title": "Score",
-    "total": "Total: { score }",
+    "total": "Total:",
     "next": "Next figure:"
   },
   "settings": {
