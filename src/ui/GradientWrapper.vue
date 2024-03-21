@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Slot } from 'vue'
+import { toRefs } from 'vue'
 import { colors } from '@/consts/random-colors'
 
 const props = defineProps<{
@@ -10,6 +11,8 @@ const props = defineProps<{
 defineSlots<{
   default: Slot
 }>()
+
+const { flat, hovering } = toRefs(props)
 </script>
 
 <template>

@@ -35,7 +35,7 @@ watch(score, start)
       <div class="next-panel">
         <span class="label">Next figure:</span>
         <div class="figure">
-          <Matrix :matrix="props.next" small transparent />
+          <Matrix :matrix="props.next" small />
         </div>
       </div>
     </div>

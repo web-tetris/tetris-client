@@ -79,7 +79,7 @@ export function useGameField({
     return (initial / difficult.value - delta) / ((score.value + offset) ** speed) + min
   }
 
-  const gameLife = useInterval(calculateInterval, { controls: true })
+  const { pause, resume, counter } = useInterval(calculateInterval, { controls: true })
 
   function reset() {
     field.value = createField(FIELD_SIZE)
@@ -87,7 +87,7 @@ export function useGameField({
     difficult.value = 1
     gameOver.value = false
     push()
-    gameLife.resume()
+    resume()
   }
 
   function gameOverCheck() {
@@ -96,7 +96,7 @@ export function useGameField({
       .some(row => row !== BlockColor.EMPTY)
     if (isGameOver) {
       gameOver.value = true
-      gameLife.pause()
+      pause()
     }
   }
 
@@ -113,7 +113,7 @@ export function useGameField({
 
     stack()
   }
-  watch(gameLife.counter, cycle)
+  watch(counter, cycle)
 
   const matrix = computed(() => projectFigure(field.value, currentFigure.value, pos.value))
 
@@ -123,10 +123,12 @@ export function useGameField({
     nextFigure: shallowReadonly(nextFigure),
     score: shallowReadonly(score),
     gameOver: shallowReadonly(gameOver),
-    gameLife: shallowReadonly(gameLife),
 
     move,
     rotate,
     reset,
+    pause,
+    resume,
+    counter,
   }
 }

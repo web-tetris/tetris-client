@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 import type { BlockMatrix } from '@/types/block-matrix'
-import { BlockColor } from '@/consts/block-color'
 
 const props = defineProps<{
   matrix: BlockMatrix
   small?: boolean
-  transparent?: boolean
 }>()
 
 const xSize = computed(() => props.matrix[0].length)
 const ySize = computed(() => props.matrix.length)
 const matrixFlat = computed(() => props.matrix.flat())
+
+const { small } = toRefs(props)
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const matrixFlat = computed(() => props.matrix.flat())
     <div
       v-for="(block, i) in matrixFlat"
       :key="i" class="cell"
-      :class="[transparent && block === BlockColor.EMPTY ? 'transparent' : `color-${block}`, small ? 'small' : '']"
+      :class="[small ? 'small' : '', `color-${block}`]"
     />
   </div>
 </template>
@@ -43,11 +43,11 @@ const matrixFlat = computed(() => props.matrix.flat())
       &.small {
         @include mixins.size(15px);
         border-width: 1px;
-      }
 
-      &.transparent {
-        background: transparent;
-        border: none;
+        &.color-gray {
+          background: none;
+          border: none;
+        }
       }
 
       &.color {
