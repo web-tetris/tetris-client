@@ -1,34 +1,28 @@
 <script setup lang="ts">
+import GradientWrapper from '@/ui/GradientWrapper.vue'
+
 const props = defineProps<{
   icon?: string
-  flat?: boolean
   label?: string
+  flat?: boolean
 }>()
 </script>
 
 <template>
-  <button class="button" :class="{ flat }">
-    <i v-if="props.icon" :class="`bi bi-${props.icon}`" />
-    <span v-if="props.label">{{ label }}</span>
-  </button>
+  <GradientWrapper :flat="props.flat" hovering>
+    <div class="button">
+      <i v-if="props.icon" :class="`bi bi-${props.icon}`" />
+      <span v-if="props.label">{{ label }}</span>
+    </div>
+  </GradientWrapper>
 </template>
 
 <style scoped lang="scss">
 .button {
-  border: 1px solid #c9c8c8;
-  border-radius: 8px;
-  padding: 3px 10px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-
-  &:hover {
+    padding: 3px 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     cursor: pointer;
-    background-color: aliceblue;
-  }
-
-  &.flat {
-    border: none;
-  }
 }
 </style>

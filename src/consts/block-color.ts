@@ -1,11 +1,11 @@
 export enum BlockColor {
+  EMPTY = 'gray',
   CORAL = 'coral',
-  TURMERIC = 'turmeric',
   PINK = 'pink',
+  LILAC = 'lilac',
   FRENCHBLUE = 'frenchblue',
   PEPPER = 'pepper',
   GOLD = 'gold',
-  LILAC = 'lilac',
   PARADISE = 'paradise',
-  EMPTY = 'gray',
+
 }

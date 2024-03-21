@@ -1,11 +1,20 @@
 <script setup lang="ts">
+import { toRefs, watch } from 'vue'
+import { useTimeout } from '@vueuse/core'
 import Matrix from '@/widgets/Matrix.vue'
 import type { BlockMatrix } from '@/types/block-matrix'
+import GradientWrapper from '@/ui/GradientWrapper.vue'
+import { colors } from '@/consts/random-colors'
 
 const props = defineProps<{
   next: BlockMatrix
   score: number
 }>()
+
+const { score } = toRefs(props)
+
+const { isPending, start } = useTimeout(500, { immediate: false, controls: true })
+watch(score, start)
 </script>
 
 <template>
@@ -13,13 +22,22 @@ const props = defineProps<{
     <div class="title">
       Score
     </div>
-    <div class="total">
-      <div>Total: {{ score }}</div>
-    </div>
 
-    <div class="next-panel">
-      <span class="label">Next figure:</span>
-      <Matrix :matrix="props.next" small class="figure" />
+    <div class="total">
+      <div>Total:</div>
+
+      <GradientWrapper :class="{ animate: isPending }">
+        <div class="value">
+          {{ score }}
+        </div>
+      </GradientWrapper>
+
+      <div class="next-panel">
+        <span class="label">Next figure:</span>
+        <div class="figure">
+          <Matrix :matrix="props.next" small />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -32,8 +50,28 @@ const props = defineProps<{
   gap: 10px;
 
   .title {
-    text-align: center;
+    align-self: center;
     font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .total {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .animate {
+      animation: gelatine 0.5s;
+    }
+
+    .value {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+    }
   }
 
   .next-panel {
@@ -43,6 +81,13 @@ const props = defineProps<{
 
     .figure {
       margin: 0 auto;
+      width: 100%;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid v-bind('colors[0]');
+      border-radius: 8px;
     }
   }
 
