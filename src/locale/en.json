@@ -22,12 +22,11 @@
   },
   "players-select": {
     "title": "Number of players",
-    "player": "{ number } player{ end }",
-    "plural": "s"
+    "player": "1 player | { count } players"
   },
   "score": {
     "title": "Score",
-    "total": "Total: {score}",
+    "total": "Total: { score }",
     "next": "Next figure:"
   },
   "settings": {

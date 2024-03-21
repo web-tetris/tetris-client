@@ -22,8 +22,7 @@
   },
   "players-select": {
     "title": "Количество игроков",
-    "player": "{number} игрок{end}",
-    "plural": "а"
+    "player": "1 игрок | { count } игрока"
   },
   "score": {
     "title": "Счет",

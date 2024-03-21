@@ -19,7 +19,7 @@ const { players } = useVModels(props, emits)
 
 const options = computed <SelectOption []>(() => Array.from({ length: 3 }, (_, i) => ({
   value: i + 1,
-  label: t('players-select.player', { number: i + 1, end: i > 0 ? t('players-select.plural') : '' }),
+  label: t('players-select.player', { count: i + 1 }),
 })))
 </script>
 

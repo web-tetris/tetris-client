@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { toRefs } from 'vue'
+
 const props = defineProps<{
   icon?: string
   flat?: boolean
   label?: string
   large?: boolean
 }>()
+
+const { flat, large } = toRefs(props)
 </script>
 
 <template>
