@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { toRefs } from 'vue'
 
+import GradientWrapper from '@/ui/GradientWrapper.vue'
+
 const props = defineProps<{
   icon?: string
   flat?: boolean
@@ -12,25 +14,21 @@ const { flat, large } = toRefs(props)
 </script>
 
 <template>
-  <button class="button" :class="{ flat, large }">
-    <i v-if="props.icon" :class="`bi bi-${props.icon}`" class="icon" />
-    <span v-if="props.label">{{ label }}</span>
-  </button>
+  <GradientWrapper :flat="props.flat" hovering>
+    <button class="button" :class="{ flat, large }">
+      <i v-if="props.icon" :class="`bi bi-${props.icon}`" class="icon" />
+      <span v-if="props.label">{{ label }}</span>
+    </button>
+  </GradientWrapper>
 </template>
 
 <style scoped lang="scss">
 .button {
-  border: 1px solid #c9c8c8;
-  border-radius: 8px;
-  padding: 3px 10px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-
-  &:hover {
+    padding: 3px 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
     cursor: pointer;
-    background-color: aliceblue;
-  }
 
   &.large {
     border-radius: 20px;

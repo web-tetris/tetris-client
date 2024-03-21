@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref, watch } from 'vue'
+import { useToggle } from '@vueuse/core'
 import Matrix from '@/widgets/Matrix.vue'
 import Score from '@/widgets/Score.vue'
 import { useGameField } from '@/hooks/game-field'
 import { useGameController } from '@/hooks/game-controller'
 import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
+import Menu from '@/widgets/Menu.vue'
 import GameOver from '@/widgets/GameOver.vue'
 import Select from '@/ui/Select.vue'
 import type { SelectOption } from '@/types/select-option'
 import { ControlType } from '@/consts/control-type'
-import { useGamepad } from '@/hooks/gamepad'
-import Menu from '@/widgets/Menu.vue'
+import { colors } from '@/consts/random-colors'
+import ControllerSelect from '@/widgets/ControllerSelect.vue'
+import { useGameField } from '@/hooks/game-field'
 
 const { t } = useI18n()
 
 const { difficult } = useSettingsService()
-const { matrix, nextFigure, score, gameOver, move, rotate, reset, gameLife } = useGameField({ difficult })
+const { matrix, nextFigure, score, gameOver, move, rotate, reset, pause, resume } = useGameField({ difficult })
 
-const menuShowed = ref<boolean>(false)
-function toggleMenu() {
-  menuShowed.value = !menuShowed.value
-}
-watch(menuShowed, showed => showed ? gameLife.pause() : gameLife.resume())
+const [menuShowed, toggleMenu] = useToggle(false)
+watch(menuShowed, showed => showed ? pause() : resume())
+
 const controlsOptions = computed<SelectOption<ControlType>[]>(() =>
   [
     {
@@ -70,6 +70,8 @@ useGameController({
     <div class="info">
       <Score class="score" :next="nextFigure" :score="score" />
 
+      <ControllerSelect v-model:control="currentControl" v-model:gamepad="currentGamepad" />
+
       <template v-if="currentControl === ControlType.GAMEPAD">
         <Select
           v-if="gamepads.length"
@@ -85,7 +87,13 @@ useGameController({
       <Select v-model="currentControl" :label="t('game.game-controls')" :options="controlsOptions" />
       <Button icon="list" :label="t('game.menu')" @click="toggleMenu" />
       <Button icon="arrow-clockwise" :label="t('game.reset')" @click="reset" />
+
+      <div class="buttons-list">
+        <Button icon="arrow-clockwise" label="Reset" @click="reset" />
+        <Button icon="list" label="Menu" @click="() => toggleMenu()" />
+      </div>
     </div>
+
     <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
     <GameOver :showed="gameOver" :score="score" @restart="reset" />
   </div>
@@ -93,20 +101,21 @@ useGameController({
 
 <style scoped lang="scss">
 .game {
+  padding: 10px;
   position: relative;
   display: flex;
   gap: 20px;
-  border: 1px solid gray;
+  background: white;
   border-radius: 10px;
-  padding: 10px;
+  border: 2px solid v-bind('colors[0]');
 
   .matrix {
     padding: 10px;
-    border: 1px solid gray;
+    border: 2px solid v-bind('colors[0]');
     border-radius: 10px;
   }
 
-  .info{
+  .info {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -116,10 +125,12 @@ useGameController({
       flex: 1
     }
 
-    .connection-message {
-      color: gray;
-      text-align: center;
+    .buttons-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
   }
 }
+
 </style>
