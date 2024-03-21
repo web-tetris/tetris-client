@@ -77,17 +77,6 @@ useGameController({
       flex: 1
     }
 
-    //.controllers {
-    //  display: flex;
-    //  flex-direction: column;
-    //  gap: 40px;
-    //
-    //  .connection-message {
-    //    color: gray;
-    //    text-align: center;
-    //  }
-    //}
-
     .buttons-list {
       display: flex;
       flex-direction: column;

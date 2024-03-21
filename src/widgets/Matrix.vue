@@ -19,7 +19,7 @@ const { small } = toRefs(props)
     <div
       v-for="(block, i) in matrixFlat"
       :key="i" class="cell"
-      :class="[small ? 'small' : '', `color-${block}`]"
+      :class="[`color-${block}`, { small }]"
     />
   </div>
 </template>
