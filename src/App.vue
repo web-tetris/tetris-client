@@ -6,19 +6,28 @@ import PlayersSelect from '@/widgets/PlayersSelect.vue'
 import Button from '@/ui/Button.vue'
 import Settings from '@/widgets/Settings.vue'
 import { colors } from '@/consts/random-colors'
+import { useHighscores } from '@/hooks/highscores'
+import Highscore from '@/widgets/Highscore.vue'
 
 const players = ref(1)
 
 const [settingsShowed, toggleSettings] = useToggle(false)
+
+const { highscores, add } = useHighscores()
 </script>
 
 <template>
   <div class="app">
-    <PlayersSelect v-model:players="players" class="players" />
-    <div class="game-list">
-      <Game v-for="i in players" :key="i" class="game" />
+    <Highscore class="highscore" :highscores="highscores" />
+
+    <div class="body">
+      <PlayersSelect v-model:players="players" class="players" />
+      <div class="game-list">
+        <Game v-for="i in players" :key="i" class="game" @add-score="add" />
+      </div>
     </div>
-    <Button large class="menu-button" icon="sliders" @click="() => toggleSettings()" />
+
+    <Button large class="settings-button" icon="sliders" @click="() => toggleSettings()" />
   </div>
   <Settings v-model:showed="settingsShowed" />
 </template>
@@ -30,9 +39,8 @@ const [settingsShowed, toggleSettings] = useToggle(false)
 
 .app {
   @include mixins.size(fill);
-  padding-top: 30px;
+  padding: 30px 20px;
   display: flex;
-  flex-direction: column;
   gap: 10px;
   position: relative;
   opacity: 1;
@@ -48,17 +56,28 @@ const [settingsShowed, toggleSettings] = useToggle(false)
     background: linear-gradient(135deg, v-bind('colors[0]'), white 20% 80%, v-bind('colors[1]'));
   }
 
-  .players {
-    margin: 0 auto;
+  .highscore {
+    width: 150px;
+    margin: auto;
   }
 
-  .game-list {
+  .body {
+    flex: 1;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+
+    .players {
+      margin: 20px auto 40px auto;
+    }
+
+    .game-list {
+      display: flex;
+      justify-content: space-around;
+    }
   }
 
-  .menu-button {
-    margin: 0 20px 20px auto;
+  .settings-button {
+    margin-top: auto;
   }
 }
 </style>
