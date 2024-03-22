@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { toRefs, watch } from 'vue'
 import { useTimeout } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import Matrix from '@/widgets/Matrix.vue'
 import type { BlockMatrix } from '@/types/block-matrix'
 import GradientWrapper from '@/ui/GradientWrapper.vue'
@@ -11,6 +12,8 @@ const props = defineProps<{
   score: number
 }>()
 
+const { t } = useI18n()
+
 const { score } = toRefs(props)
 
 const { isPending, start } = useTimeout(500, { immediate: false, controls: true })
@@ -20,20 +23,20 @@ watch(score, start)
 <template>
   <div class="score">
     <div class="title">
-      Score
+      {{ t('score.title') }}
     </div>
 
     <div class="total">
-      <div>Total:</div>
+      <div>{{ t('score.total') }}</div>
 
       <GradientWrapper :class="{ animate: isPending }">
         <div class="value">
-          {{ score }}
+          <div>{{ score }}</div>
         </div>
       </GradientWrapper>
 
       <div class="next-panel">
-        <span class="label">Next figure:</span>
+        <span class="label">{{ t('score.next') }}</span>
         <div class="figure">
           <Matrix :matrix="props.next" small />
         </div>

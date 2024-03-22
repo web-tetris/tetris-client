@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useVModels } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import { ControlType } from '@/consts/control-type'
 import { useGamepad } from '@/hooks/gamepad'
 import type { SelectOption } from '@/types/select-option'
@@ -18,23 +19,25 @@ const emits = defineEmits<{
 
 const { control, gamepad } = useVModels(props, emits)
 
-const controlsOptions: SelectOption<ControlType>[] = [
+const { t } = useI18n()
+
+const controlsOptions = computed <SelectOption <ControlType>[]>(() => [
   {
-    label: 'Arrows',
+    label: t('game.arrow'),
     value: ControlType.ARROWS,
     icon: 'bi bi-arrows-move',
   },
   {
-    label: 'Gamepad',
+    label: t('game.gamepad'),
     value: ControlType.GAMEPAD,
     icon: 'bi bi-controller',
   },
   {
-    label: 'WASD',
+    label: t('game.wasd'),
     value: ControlType.WASD,
     icon: 'bi bi-alphabet-uppercase',
   },
-]
+])
 
 const { gamepads } = useGamepad()
 const gamepadOptions = computed<SelectOption[]>(() =>
@@ -56,7 +59,7 @@ const gamepadOptions = computed<SelectOption[]>(() =>
         :options="gamepadOptions"
       />
       <div v-else class="connection-message">
-        Connect one or more gamepads
+        {{ t('game.connection') }}
       </div>
     </template>
 

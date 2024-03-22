@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useVModels } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import Modal from '@/ui/Modal.vue'
 import NumberInput from '@/ui/NumberInput.vue'
 
@@ -13,13 +14,15 @@ const emits = defineEmits<{
   'update:difficult': [number]
 }>()
 
+const { t } = useI18n()
+
 const { showed, difficult } = useVModels(props, emits)
 </script>
 
 <template>
-  <Modal v-model:showed="showed" :closable="true" title="Menu" relative>
+  <Modal v-model:showed="showed" :closable="true" :title="t('menu.title')" relative>
     <div class="difficult">
-      <span>Difficult:</span>
+      <span>{{ t('menu.difficult') }}</span>
       <NumberInput v-model:modelValue="difficult" />
     </div>
   </Modal>

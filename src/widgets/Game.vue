@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useToggle } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import Matrix from '@/widgets/Matrix.vue'
 import Score from '@/widgets/Score.vue'
+import { useGameField } from '@/hooks/game-field'
 import { useGameController } from '@/hooks/game-controller'
 import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
@@ -11,7 +13,8 @@ import GameOver from '@/widgets/GameOver.vue'
 import { ControlType } from '@/consts/control-type'
 import { colors } from '@/consts/random-colors'
 import ControllerSelect from '@/widgets/ControllerSelect.vue'
-import { useGameField } from '@/hooks/game-field'
+
+const { t } = useI18n()
 
 const { difficult } = useSettingsService()
 const { matrix, nextFigure, score, gameOver, move, rotate, reset, pause, resume } = useGameField({ difficult })
@@ -41,8 +44,8 @@ useGameController({
       <ControllerSelect v-model:control="currentControl" v-model:gamepad="currentGamepad" />
 
       <div class="buttons-list">
-        <Button icon="arrow-clockwise" label="Reset" @click="reset" />
-        <Button icon="list" label="Menu" @click="() => toggleMenu()" />
+        <Button icon="arrow-clockwise" :label="t('game.reset')" @click="reset" />
+        <Button icon="list" :label="t('game.menu')" @click="() => toggleMenu()" />
       </div>
     </div>
 
@@ -82,7 +85,6 @@ useGameController({
       flex-direction: column;
       gap: 10px;
     }
-
   }
 }
 </style>
