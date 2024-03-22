@@ -11,7 +11,7 @@ const languageOptions: SelectOption<string>[] = [
 ]
 const currentLanguage = ref<string>('en')
 
-const { t, locale } = useI18n({ useScope: 'global' })
+const { t, locale } = useI18n()
 syncRef(currentLanguage, locale)
 </script>
 

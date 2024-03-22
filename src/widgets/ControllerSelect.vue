@@ -17,9 +17,9 @@ const emits = defineEmits<{
   'update:gamepad': [number]
 }>()
 
-const { t } = useI18n()
-
 const { control, gamepad } = useVModels(props, emits)
+
+const { t } = useI18n()
 
 const controlsOptions = computed <SelectOption <ControlType>[]>(() => [
   {
