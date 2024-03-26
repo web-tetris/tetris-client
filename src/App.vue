@@ -46,6 +46,7 @@ const { highscores, add } = useHighscores()
   opacity: 1;
 
   &::before {
+    z-index: -1;
     content: '';
     position: absolute;
     top: 0;

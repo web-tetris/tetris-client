@@ -7,6 +7,8 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+
+const prize = ['@/assets/1st-prize.png', '@/assets/2nd-place.png', '@/assets/3rd-place.png']
 </script>
 
 <template>
@@ -16,8 +18,24 @@ const { t } = useI18n()
     </div>
 
     <div class="scores">
-      <div v-for="(score, index) in highscores" :key="index">
-        {{ score }}
+      <div
+        v-for="(score, index) in highscores"
+        :key="index"
+        class="score"
+      >
+        <div v-if="index < 3" class="value">
+          <img v-if="index === 0" alt="1" class="img" src="@/assets/1st-prize.png">
+          <img v-if="index === 1" alt="2" class="img" src="@/assets/2nd-place.png">
+          <img v-if="index === 2" alt="3" class="img" src="@/assets/3rd-place.png">
+        </div>
+
+        <div v-else class="value index">
+          {{ index + 1 }}
+        </div>
+
+        <div class="value">
+          {{ score }}
+        </div>
       </div>
     </div>
   </div>
@@ -41,6 +59,28 @@ const { t } = useI18n()
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+
+    .score {
+      display: flex;
+
+      .value {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .img {
+          width: 100%;
+        }
+
+        &.index {
+          font-size: 13px;
+          color: #87878c;
+        }
+      }
+    }
   }
 }
 </style>
