@@ -7,8 +7,6 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-
-const prize = ['@/assets/1st-prize.png', '@/assets/2nd-place.png', '@/assets/3rd-place.png']
 </script>
 
 <template>
@@ -19,7 +17,7 @@ const prize = ['@/assets/1st-prize.png', '@/assets/2nd-place.png', '@/assets/3rd
 
     <div class="scores">
       <div
-        v-for="(score, index) in highscores"
+        v-for="(score, index) in props.highscores"
         :key="index"
         class="score"
       >

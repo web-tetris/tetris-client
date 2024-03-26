@@ -11,7 +11,6 @@ export function useHighscores() {
       }
     }
     highscores.value.push(score)
-    console.log(highscores.value.map(i => i))
   }
 
   return {
