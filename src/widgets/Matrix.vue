@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
 import type { BlockMatrix } from '@/types/block-matrix'
+import { BlockColor } from '@/consts/block-color'
 
 const props = defineProps<{
   matrix: BlockMatrix
@@ -12,15 +13,28 @@ const ySize = computed(() => props.matrix.length)
 const matrixFlat = computed(() => props.matrix.flat())
 
 const { small } = toRefs(props)
+
+function getImageUrl(block: string) {
+  return new URL(`../assets/blocks/${block}.png?url`, import.meta.url).href
+}
 </script>
 
 <template>
   <div class="grid">
+    <!--        <div -->
+    <!--          v-for="(block, i) in matrixFlat" -->
+    <!--          :key="i" class="cell" -->
+    <!--          :class="[`color-${block}`, { small }]" -->
+    <!--        /> -->
+
     <div
       v-for="(block, i) in matrixFlat"
       :key="i" class="cell"
       :class="[`color-${block}`, { small }]"
-    />
+    >
+      <div v-if="block === BlockColor.EMPTY" :class="[`color-${block}`, { small }]" />
+      <img v-else class="cell" :class="{ small }" :src="getImageUrl(block)">
+    </div>
   </div>
 </template>
 
@@ -37,8 +51,7 @@ const { small } = toRefs(props)
       --color: white;
       @include mixins.size(30px);
       border-radius: 2px;
-      background: var(--color);
-      border: 3px solid rgba(black, 0.1);
+      background: #F2F1F5FF;
 
       &.small {
         @include mixins.size(15px);
@@ -53,6 +66,7 @@ const { small } = toRefs(props)
       &.color {
         &-gray {
           --color: #F2F1F5FF;
+          background-color: #F2F1F5FF;
           border: none;
         }
 
