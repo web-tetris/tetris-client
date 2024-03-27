@@ -4,13 +4,24 @@ import { colors } from '@/consts/random-colors'
 
 const props = defineProps<{
   highscores: number[]
+  currentScore: number
 }>()
 
 const { t } = useI18n()
+
+function getImageUrl(index: number) {
+  return new URL(`../assets/cup/${index}.png?url`, import.meta.url).href
+}
+
+const place = {
+  0: 'first',
+  1: 'second',
+  2: 'third',
+}
 </script>
 
 <template>
-  <div class="highscore">
+  <div class="high-score">
     <div class="title">
       {{ t('highscore.title') }}
     </div>
@@ -19,19 +30,18 @@ const { t } = useI18n()
       <div
         v-for="(score, index) in props.highscores"
         :key="index"
-        class="score"
+        class="result"
+        :class="[
+          { 'new-score': index === props.currentScore },
+          place[index] || 'other',
+        ]"
       >
-        <div v-if="index < 3" class="value">
-          <img v-if="index === 0" alt="1" class="img" src="@/assets/1st-prize.png">
-          <img v-if="index === 1" alt="2" class="img" src="@/assets/2nd-place.png">
-          <img v-if="index === 2" alt="3" class="img" src="@/assets/3rd-place.png">
+        <div class="place">
+          <img v-if="index < 3" alt="prize" class="image" :src="getImageUrl(index)">
+          <span v-else class="index">{{ index + 1 }}</span>
         </div>
 
-        <div v-else class="value index">
-          {{ index + 1 }}
-        </div>
-
-        <div class="value">
+        <div class="score">
           {{ score }}
         </div>
       </div>
@@ -40,14 +50,14 @@ const { t } = useI18n()
 </template>
 
 <style scoped lang="scss">
-.highscore {
+.high-score {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
   border: 1px solid v-bind('colors[2]');
   border-radius: 8px;
-  padding: 10px;
+  padding-top: 10px;
 
   .title {
     font-size: 20px;
@@ -56,27 +66,78 @@ const { t } = useI18n()
   .scores {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    width: 100%;
 
-    .score {
+    .result {
       display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 5px 0;
+      border-bottom: 1px dotted v-bind('colors[2]');
 
-      .value {
+      &:last-child {
+        border-bottom: none;
+        border-radius: 0 0 8px 8px;
+      }
+
+      &.new-score {
+        --color: white;
+        background: linear-gradient(90deg, white 20%, var(--color));
+        background-size: 200% 200%;
+        animation: gradient 2s ease-in;
+
+        @keyframes gradient {
+          0% {
+            background-position: 100% 50%;
+          }
+          50% {
+            background-position: 50% 50%;
+          }
+          100% {
+            background-position: 0 50%;
+          }
+        }
+
+        &.first {
+          --color: #FFB600;
+        }
+
+        &.second {
+          --color: #BFBFBF;
+        }
+
+        &.third {
+          --color: #ffba83;
+        }
+
+        &.other {
+          --color: v-bind('colors[2]');
+        }
+
+        //.place .index {
+        //  font-weight: bold;
+        //  color: v-bind('colors[1]');
+        //}
+      }
+
+      .place {
         width: 40px;
         height: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
 
-        .img {
+        .image {
           width: 100%;
         }
 
-        &.index {
-          font-size: 13px;
-          color: #87878c;
+        .index {
+          color: #9b9b9b;
         }
+      }
+
+      .score {
+        font-weight: bold;
       }
     }
   }

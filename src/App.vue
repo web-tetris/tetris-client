@@ -13,12 +13,12 @@ const players = ref(1)
 
 const [settingsShowed, toggleSettings] = useToggle(false)
 
-const { highscores, add } = useHighscores()
+const { highscores, currentScore, add } = useHighscores()
 </script>
 
 <template>
   <div class="app">
-    <Highscore class="highscore" :highscores="highscores" />
+    <Highscore class="highscore" :highscores="highscores" :current-score="currentScore" />
 
     <div class="body">
       <PlayersSelect v-model:players="players" class="players" />
