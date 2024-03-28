@@ -19,8 +19,10 @@ import type { BlockMatrix } from '@/types/block-matrix'
 
 export function useGameField({
   difficult,
+  add,
 }: {
   difficult: Ref<number>
+  add: (score: number) => void
 }) {
   const field = shallowRef(createField(FIELD_SIZE))
 
@@ -96,6 +98,7 @@ export function useGameField({
       .some(row => row !== BlockColor.EMPTY)
     if (isGameOver) {
       gameOver.value = true
+      add(score.value)
       pause()
     }
   }

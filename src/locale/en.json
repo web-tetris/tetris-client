@@ -32,5 +32,8 @@
   },
   "settings": {
     "title": "Game settings"
+  },
+  "highscore": {
+    "title": "Highscores:"
   }
 }
