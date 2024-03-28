@@ -13,6 +13,8 @@ import GameOver from '@/widgets/GameOver.vue'
 import { ControlType } from '@/consts/control-type'
 import { colors } from '@/consts/random-colors'
 import ControllerSelect from '@/widgets/ControllerSelect.vue'
+import StyleSelect from '@/widgets/StyleSelect.vue'
+import { BlockStyle } from '@/consts/block-style'
 
 const emits = defineEmits<{
   'addScore': [number]
@@ -40,15 +42,18 @@ useGameController({
   reset,
   toggleMenu,
 })
+
+const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 </script>
 
 <template>
   <div class="game">
-    <Matrix :matrix="matrix" class="matrix" />
+    <Matrix :matrix="matrix" class="matrix" :style="currentStyle" />
     <div class="info">
-      <Score class="score" :next="nextFigure" :score="score" />
+      <Score class="score" :next="nextFigure" :style="currentStyle" :score="score" />
 
       <ControllerSelect v-model:control="currentControl" v-model:gamepad="currentGamepad" />
+      <StyleSelect v-model:style="currentStyle" />
 
       <div class="buttons-list">
         <Button icon="arrow-clockwise" :label="t('game.reset')" @click="reset" />
@@ -62,6 +67,8 @@ useGameController({
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .game {
   padding: 10px;
   position: relative;
@@ -80,7 +87,7 @@ useGameController({
   .info {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 35px;
     width: 150px;
 
     .score {

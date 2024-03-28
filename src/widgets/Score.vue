@@ -6,15 +6,17 @@ import Matrix from '@/widgets/Matrix.vue'
 import type { BlockMatrix } from '@/types/block-matrix'
 import GradientWrapper from '@/ui/GradientWrapper.vue'
 import { colors } from '@/consts/random-colors'
+import type { BlockColor } from '@/consts/block-color'
 
 const props = defineProps<{
   next: BlockMatrix
   score: number
+  style: BlockColor
 }>()
 
 const { t } = useI18n()
 
-const { score } = toRefs(props)
+const { score, style } = toRefs(props)
 
 const { isPending, start } = useTimeout(500, { immediate: false, controls: true })
 watch(score, start)
@@ -38,7 +40,7 @@ watch(score, start)
       <div class="next-panel">
         <span class="label">{{ t('score.next') }}</span>
         <div class="figure">
-          <Matrix :matrix="props.next" small />
+          <Matrix :matrix="props.next" :style="style" small />
         </div>
       </div>
     </div>

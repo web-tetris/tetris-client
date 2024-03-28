@@ -65,7 +65,7 @@ const gamepadOptions = computed<SelectOption[]>(() =>
 
     <Select
       v-model="control"
-      label="Game controls"
+      :label="t('game.game-controls')"
       :options="controlsOptions"
     />
   </div>

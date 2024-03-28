@@ -35,5 +35,13 @@
   },
   "highscore": {
     "title": "Рейтинг:"
+  },
+  "style-select": {
+    "title": "Стиль",
+    "casino": "Казино",
+    "games": "Настолки",
+    "food": "Еда",
+    "minecraft": "Майнкрафт",
+    "standard": "Основная"
   }
 }

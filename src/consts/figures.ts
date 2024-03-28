@@ -3,38 +3,38 @@ import type { BlockMatrix } from '@/types/block-matrix'
 
 export const figures: BlockMatrix[] = [
   [
-    [BlockColor.GOLD, BlockColor.GOLD],
-    [BlockColor.GOLD, BlockColor.GOLD],
+    [BlockColor.BLOCK_1, BlockColor.BLOCK_1],
+    [BlockColor.BLOCK_1, BlockColor.BLOCK_1],
   ],
   [
     [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY],
-    [BlockColor.LILAC, BlockColor.LILAC, BlockColor.LILAC, BlockColor.LILAC],
+    [BlockColor.BLOCK_2, BlockColor.BLOCK_2, BlockColor.BLOCK_2, BlockColor.BLOCK_2],
     [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY],
     [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY],
   ],
   [
     [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY],
-    [BlockColor.EMPTY, BlockColor.PARADISE, BlockColor.PARADISE],
-    [BlockColor.PARADISE, BlockColor.PARADISE, BlockColor.EMPTY],
+    [BlockColor.EMPTY, BlockColor.BLOCK_3, BlockColor.BLOCK_3],
+    [BlockColor.BLOCK_3, BlockColor.BLOCK_3, BlockColor.EMPTY],
   ],
   [
     [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY],
-    [BlockColor.PEPPER, BlockColor.PEPPER, BlockColor.EMPTY],
-    [BlockColor.EMPTY, BlockColor.PEPPER, BlockColor.PEPPER],
+    [BlockColor.BLOCK_4, BlockColor.BLOCK_4, BlockColor.EMPTY],
+    [BlockColor.EMPTY, BlockColor.BLOCK_4, BlockColor.BLOCK_4],
   ],
   [
     [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY],
-    [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.FRENCHBLUE],
-    [BlockColor.FRENCHBLUE, BlockColor.FRENCHBLUE, BlockColor.FRENCHBLUE],
+    [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.BLOCK_5],
+    [BlockColor.BLOCK_5, BlockColor.BLOCK_5, BlockColor.BLOCK_5],
   ],
   [
     [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY],
-    [BlockColor.PINK, BlockColor.EMPTY, BlockColor.EMPTY],
-    [BlockColor.PINK, BlockColor.PINK, BlockColor.PINK],
+    [BlockColor.BLOCK_6, BlockColor.EMPTY, BlockColor.EMPTY],
+    [BlockColor.BLOCK_6, BlockColor.BLOCK_6, BlockColor.BLOCK_6],
   ],
   [
     [BlockColor.EMPTY, BlockColor.EMPTY, BlockColor.EMPTY],
-    [BlockColor.EMPTY, BlockColor.CORAL, BlockColor.EMPTY],
-    [BlockColor.CORAL, BlockColor.CORAL, BlockColor.CORAL],
+    [BlockColor.EMPTY, BlockColor.BLOCK_7, BlockColor.EMPTY],
+    [BlockColor.BLOCK_7, BlockColor.BLOCK_7, BlockColor.BLOCK_7],
   ],
 ]
