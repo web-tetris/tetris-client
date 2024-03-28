@@ -14,10 +14,17 @@ import { ControlType } from '@/consts/control-type'
 import { colors } from '@/consts/random-colors'
 import ControllerSelect from '@/widgets/ControllerSelect.vue'
 
+const emits = defineEmits<{
+  'addScore': [number]
+}>()
+
 const { t } = useI18n()
 
 const { difficult } = useSettingsService()
-const { matrix, nextFigure, score, gameOver, move, rotate, reset, pause, resume } = useGameField({ difficult })
+function add(score: number) {
+  emits('addScore', score)
+}
+const { matrix, nextFigure, score, gameOver, move, rotate, reset, pause, resume } = useGameField({ difficult, add })
 
 const [menuShowed, toggleMenu] = useToggle(false)
 watch(menuShowed, showed => showed ? pause() : resume())
