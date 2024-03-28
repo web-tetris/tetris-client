@@ -6,34 +6,37 @@ import { BlockColor } from '@/consts/block-color'
 const props = defineProps<{
   matrix: BlockMatrix
   small?: boolean
+  style: BlockColor
 }>()
 
 const xSize = computed(() => props.matrix[0].length)
 const ySize = computed(() => props.matrix.length)
 const matrixFlat = computed(() => props.matrix.flat())
 
-const { small } = toRefs(props)
+const { small, style } = toRefs(props)
 
-function getImageUrl(block: string) {
-  return new URL(`../assets/blocks/${block}.png?url`, import.meta.url).href
+function getImageUrl(block: string, style: BlockColor) {
+  return new URL(`../assets/blocks/${style}/${block}.png?url`, import.meta.url).href
 }
 </script>
 
 <template>
-  <div class="grid">
-    <!--        <div -->
-    <!--          v-for="(block, i) in matrixFlat" -->
-    <!--          :key="i" class="cell" -->
-    <!--          :class="[`color-${block}`, { small }]" -->
-    <!--        /> -->
-
+  <div v-if="style === 'main'" class="grid">
     <div
       v-for="(block, i) in matrixFlat"
       :key="i" class="cell"
       :class="[`color-${block}`, { small }]"
+    />
+  </div>
+
+  <div v-else class="grid">
+    <div
+      v-for="(block, i) in matrixFlat"
+      :key="i" class="cell color-empty"
+      :class="[{ small }]"
     >
-      <div v-if="block === BlockColor.EMPTY" :class="[`color-${block}`, { small }]" />
-      <img v-else class="cell" :class="{ small }" :src="getImageUrl(block)">
+      <div v-if="block === BlockColor.EMPTY" />
+      <img v-else alt="cell" class="cell image" :class="{ small }" :src="getImageUrl(block, style)">
     </div>
   </div>
 </template>
@@ -51,50 +54,55 @@ function getImageUrl(block: string) {
       --color: white;
       @include mixins.size(30px);
       border-radius: 2px;
-      background: #F2F1F5FF;
+      background: var(--color);
+      border: 3px solid rgba(black, 0.1);
 
       &.small {
         @include mixins.size(15px);
         border-width: 1px;
 
-        &.color-gray {
+        &.color-empty {
           background: none;
           border: none;
         }
       }
 
+      .image {
+        border: none;
+        background-color: #F2F1F5FF;
+      }
+
       &.color {
-        &-gray {
+        &-empty {
           --color: #F2F1F5FF;
-          background-color: #F2F1F5FF;
           border: none;
         }
 
-        &-coral {
+        &-block-1 {
           --color: #fd8484;
         }
 
-        &-pink {
+        &-block-2 {
           --color: #fac17d;
         }
 
-        &-lilac {
+        &-block-3 {
           --color: #f8fc8c;
         }
 
-        &-frenchblue {
+        &-block-4 {
           --color: #9ffc8c;
         }
 
-        &-pepper {
+        &-block-5 {
           --color: #71f2ff;
         }
 
-        &-gold {
+        &-block-6 {
           --color: #9d8dfc;
         }
 
-        &-paradise {
+        &-block-7 {
          --color: #fd96fd;
         }
       }

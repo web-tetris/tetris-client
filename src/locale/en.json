@@ -35,5 +35,13 @@
   },
   "highscore": {
     "title": "Highscores:"
+  },
+  "style-select": {
+    "title": "Style",
+    "casino": "Casino",
+    "games": "Table games",
+    "food": "Food",
+    "minecraft": "Minecraft",
+    "main": "Main"
   }
 }

@@ -20,6 +20,10 @@ const opened = ref<boolean>(false)
 
 const current = computed(() => props.options.find(option => option.value === modelValue.value))
 const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-chevron-down')
+
+function getImageUrl(path: string) {
+  return new URL(`../assets/blocks/${path}/block-1.png?url`, import.meta.url).href
+}
 </script>
 
 <template>
@@ -33,6 +37,7 @@ const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-che
         <div class="current">
           <div v-if="current" class="option">
             <i v-if="current.icon" :class="current.icon" />
+            <img v-if="current.image" class="icon-image" alt="icon" :src="getImageUrl(current.image)">
             <span>{{ current.label }}</span>
           </div>
           <i class="toggle-icon" :class="toggleIcon" />
@@ -46,6 +51,7 @@ const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-che
             @click="modelValue = option.value"
           >
             <i v-if="option.icon" :class="option.icon" />
+            <img v-if="option.image" class="icon-image" alt="icon" :src="getImageUrl(option.image)">
             <span>{{ option.label }}</span>
           </div>
         </div>
@@ -82,6 +88,12 @@ const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-che
       width: 100%;
       display: flex;
       gap: 10px;
+      align-items: center;
+
+      .icon-image {
+        width: 20px;
+        height: 20px;
+      }
     }
 
     .current, .other {
