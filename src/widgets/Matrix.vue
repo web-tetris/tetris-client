@@ -27,8 +27,7 @@ function getImageUrl(block: string, style: BlockStyle) {
       v-for="(block, i) in matrixFlat"
       :key="i"
     >
-      <div v-if="block === BlockColor.EMPTY " class="cell" :class="[`color-${block}`, { small }]" />
-      <div v-else-if="style === BlockStyle.MAIN" class="cell" :class="[`color-${block}`, { small }]" />
+      <div v-if="block === BlockColor.EMPTY || style === BlockStyle.MAIN" class="cell" :class="[`color-${block}`, { small }]" />
       <img v-else alt="cell" class="cell image" :class="{ small }" :src="getImageUrl(block, style)">
     </template>
   </div>
