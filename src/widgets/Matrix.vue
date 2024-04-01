@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
 import type { BlockMatrix } from '@/types/block-matrix'
+import { BlockStyle } from '@/consts/block-style'
 import { BlockColor } from '@/consts/block-color'
 
 const props = defineProps<{
   matrix: BlockMatrix
   small?: boolean
-  style: BlockColor
+  style: BlockStyle
 }>()
 
 const xSize = computed(() => props.matrix[0].length)
@@ -15,29 +16,21 @@ const matrixFlat = computed(() => props.matrix.flat())
 
 const { small, style } = toRefs(props)
 
-function getImageUrl(block: string, style: BlockColor) {
+function getImageUrl(block: string, style: BlockStyle) {
   return new URL(`../assets/blocks/${style}/${block}.png?url`, import.meta.url).href
 }
 </script>
 
 <template>
-  <div v-if="style === 'main'" class="grid">
-    <div
+  <div class="grid">
+    <template
       v-for="(block, i) in matrixFlat"
-      :key="i" class="cell"
-      :class="[`color-${block}`, { small }]"
-    />
-  </div>
-
-  <div v-else class="grid">
-    <div
-      v-for="(block, i) in matrixFlat"
-      :key="i" class="cell color-empty"
-      :class="[{ small }]"
+      :key="i"
     >
-      <div v-if="block === BlockColor.EMPTY" />
+      <div v-if="block === BlockColor.EMPTY " class="cell" :class="[`color-${block}`, { small }]" />
+      <div v-else-if="style === BlockStyle.MAIN" class="cell" :class="[`color-${block}`, { small }]" />
       <img v-else alt="cell" class="cell image" :class="{ small }" :src="getImageUrl(block, style)">
-    </div>
+    </template>
   </div>
 </template>
 
@@ -67,12 +60,8 @@ function getImageUrl(block: string, style: BlockColor) {
         }
       }
 
-      .image {
-        border: none;
-        background-color: #F2F1F5FF;
-      }
-
       &.color {
+
         &-empty {
           --color: #F2F1F5FF;
           border: none;
@@ -103,8 +92,13 @@ function getImageUrl(block: string, style: BlockColor) {
         }
 
         &-block-7 {
-         --color: #fd96fd;
+          --color: #fd96fd;
         }
+      }
+
+      &.image {
+        border: none;
+        background-color: #F2F1F5FF;
       }
     }
 }
