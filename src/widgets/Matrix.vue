@@ -98,6 +98,10 @@ function getImageUrl(block: string, style: BlockStyle) {
       &.image {
         border: none;
         background-color: #F2F1F5FF;
+
+        &.small {
+          background-color: white;
+        }
       }
     }
 }
