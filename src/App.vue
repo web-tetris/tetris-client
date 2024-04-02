@@ -5,11 +5,13 @@ import Game from '@/widgets/Game.vue'
 import PlayersSelect from '@/widgets/PlayersSelect.vue'
 import Button from '@/ui/Button.vue'
 import Settings from '@/widgets/Settings.vue'
-import { colors } from '@/consts/random-colors'
 import { useHighscores } from '@/hooks/highscores'
 import Highscore from '@/widgets/Highscore.vue'
+import { MultiplayerMode } from '@/consts/multiplayer-mode'
+import { colors } from '@/consts/random-colors'
 
 const players = ref(1)
+const multiplayerMode = ref<MultiplayerMode>(MultiplayerMode.VERSUS)
 
 const [settingsShowed, toggleSettings] = useToggle(false)
 
@@ -21,9 +23,16 @@ const { highscores, currentScore, add } = useHighscores()
     <Highscore class="highscore" :highscores="highscores" :current-score="currentScore" />
 
     <div class="body">
-      <PlayersSelect v-model:players="players" class="players" />
+      <PlayersSelect v-model:players="players" v-model:multiplayer-mode="multiplayerMode" class="players" />
+
       <div class="game-list">
-        <Game v-for="i in players" :key="i" class="game" @add-score="add" />
+        <template v-if="multiplayerMode === MultiplayerMode.VERSUS">
+          <Game v-for="i in players" :key="i" class="game" :multiplayer-mode="multiplayerMode" :players="players" @add-score="add" />
+        </template>
+
+        <template v-else>
+          <Game class="game" :players="players" :multiplayer-mode="multiplayerMode" @add-score="add" />
+        </template>
       </div>
     </div>
 

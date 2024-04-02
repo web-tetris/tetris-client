@@ -23,7 +23,10 @@
   },
   "players-select": {
     "title": "Number of players",
-    "player": "1 player | { count } players"
+    "player": "1 player | { count } players",
+    "field-title": "Multiplayer mode",
+    "versus": "Versus",
+    "co-op": "Co-op"
   },
   "score": {
     "title": "Score",
