@@ -1,26 +1,35 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
 import type { BlockMatrix } from '@/types/block-matrix'
+import { BlockStyle } from '@/consts/block-style'
+import { BlockColor } from '@/consts/block-color'
 
 const props = defineProps<{
   matrix: BlockMatrix
   small?: boolean
+  style: BlockStyle
 }>()
 
 const xSize = computed(() => props.matrix[0].length)
 const ySize = computed(() => props.matrix.length)
 const matrixFlat = computed(() => props.matrix.flat())
 
-const { small } = toRefs(props)
+const { small, style } = toRefs(props)
+
+function getImageUrl(block: string, style: BlockStyle) {
+  return new URL(`../assets/blocks/${style}/${block}.png?url`, import.meta.url).href
+}
 </script>
 
 <template>
   <div class="grid">
-    <div
+    <template
       v-for="(block, i) in matrixFlat"
-      :key="i" class="cell"
-      :class="[`color-${block}`, { small }]"
-    />
+      :key="i"
+    >
+      <div v-if="block === BlockColor.EMPTY || style === BlockStyle.MAIN" class="cell" :class="[`color-${block}`, { small }]" />
+      <img v-else alt="cell" class="cell image" :class="{ small }" :src="getImageUrl(block, style)">
+    </template>
   </div>
 </template>
 
@@ -44,44 +53,54 @@ const { small } = toRefs(props)
         @include mixins.size(15px);
         border-width: 1px;
 
-        &.color-gray {
+        &.color-empty {
           background: none;
           border: none;
         }
       }
 
       &.color {
-        &-gray {
+
+        &-empty {
           --color: #F2F1F5FF;
           border: none;
         }
 
-        &-coral {
+        &-block-1 {
           --color: #fd8484;
         }
 
-        &-pink {
+        &-block-2 {
           --color: #fac17d;
         }
 
-        &-lilac {
+        &-block-3 {
           --color: #f8fc8c;
         }
 
-        &-frenchblue {
+        &-block-4 {
           --color: #9ffc8c;
         }
 
-        &-pepper {
+        &-block-5 {
           --color: #71f2ff;
         }
 
-        &-gold {
+        &-block-6 {
           --color: #9d8dfc;
         }
 
-        &-paradise {
-         --color: #fd96fd;
+        &-block-7 {
+          --color: #fd96fd;
+        }
+      }
+
+      &.image {
+        border: none;
+        background-color: #F2F1F5FF;
+
+        &.small {
+          background-color: white;
         }
       }
     }
