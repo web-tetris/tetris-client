@@ -1,3 +1,3 @@
 import type { Size } from '@/types/size'
 
-export const FIELD_SIZE: Size = { x: 9, y: 16 }
+export const FIELD_SIZE: Size = { x: 10, y: 20 }

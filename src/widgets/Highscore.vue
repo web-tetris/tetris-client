@@ -4,7 +4,7 @@ import { colors } from '@/consts/random-colors'
 
 const props = defineProps<{
   highscores: number[]
-  currentScore: number
+  currentScore?: number
 }>()
 
 const { t } = useI18n()
