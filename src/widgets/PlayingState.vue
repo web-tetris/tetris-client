@@ -59,26 +59,23 @@ useGameController({
   display: flex;
   flex-direction: column;
   gap: 40px;
+  margin-bottom: auto;
+  width: 100%;
 
   .next-figure {
     flex: 1;
+  }
+
+  .select {
+    margin-top: 20px;
+    width: 150px;
   }
 
   &.co-op {
     gap: 10px;
 
     .title {
-      align-self: center;
       font-size: 20px;
-    }
-
-    .next-figure {
-      flex: none;
-    }
-
-    .controllers {
-      margin-top: 20px;
-      width: 150px;
     }
   }
 }

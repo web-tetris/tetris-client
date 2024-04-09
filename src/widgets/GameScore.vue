@@ -50,6 +50,8 @@ watch(score, start)
       display: flex;
       flex-direction: column;
       gap: 10px;
+      width: 100%;
+      margin: 0 auto;
 
       .animate {
         animation: gelatine 0.5s;

@@ -44,55 +44,46 @@ const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 
 <template>
   <div class="game">
-    <div class="versus">
-      <Matrix :matrix="matrix" class="matrix" :style="currentStyle" />
+    <Matrix :matrix="matrix" class="matrix" :style="currentStyle" />
 
-      <div class="info">
-        <GameScore :score="score" class="score" />
+    <div class="info">
+      <GameScore :score="score" class="score" :class="{ small: multiplayerMode === MultiplayerMode.CO_OP }" />
 
+      <div class="co-op">
         <PlayingState
-          v-if="multiplayerMode === MultiplayerMode.VERSUS"
+          v-for="(player, i) in figureAmount"
+          :key="player"
           :style="currentStyle"
-          :next-figure="nextFigures[0].value"
+          :next-figure="nextFigures[i].value"
           :multiplayer-mode="multiplayerMode"
-          @move="move(0, $event)"
-          @rotate="rotate(0)"
+          :player="i"
+          @move="move(i, $event)"
+          @rotate="rotate(i)"
           @reset="reset"
           @menu="toggleMenu"
         />
-
-        <StyleSelect v-model:style="currentStyle" class="style" />
-
-        <div class="buttons-list">
-          <Button
-            icon="arrow-clockwise" :label="t('game.reset')"
-            @click="reset"
-          />
-          <Button
-            icon="list" :label="t('game.menu')"
-            @click="() => toggleMenu()"
-          />
-        </div>
       </div>
 
-      <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
-      <GameOver :showed="gameOver" :score="score" @restart="reset" />
+      <StyleSelect
+        v-model:style="currentStyle"
+        class="style"
+        :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }"
+      />
+
+      <div class="buttons-list" :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }">
+        <Button
+          icon="arrow-clockwise" :label="t('game.reset')"
+          @click="reset"
+        />
+        <Button
+          icon="list" :label="t('game.menu')"
+          @click="() => toggleMenu()"
+        />
+      </div>
     </div>
 
-    <div v-if="multiplayerMode === MultiplayerMode.CO_OP" class="co-op">
-      <PlayingState
-        v-for="(player, i) in players"
-        :key="player"
-        :style="currentStyle"
-        :next-figure="nextFigures[i].value"
-        :multiplayer-mode="multiplayerMode"
-        :player="i"
-        @move="move(i, $event)"
-        @rotate="rotate(i)"
-        @reset="reset"
-        @menu="toggleMenu"
-      />
-    </div>
+    <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
+    <GameOver :showed="gameOver" :score="score" @restart="reset" />
   </div>
 </template>
 
@@ -101,45 +92,54 @@ const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 
 .game {
   display: flex;
-  gap: 40px;
+  gap: 20px;
+  padding: 10px;
+  position: relative;
+  background: white;
+  border-radius: 10px;
+  border: 2px solid v-bind('colors[0]');
 
-  .versus {
+  .matrix {
     padding: 10px;
-    position: relative;
-    display: flex;
-    gap: 20px;
-    background: white;
-    border-radius: 10px;
     border: 2px solid v-bind('colors[0]');
+    border-radius: 10px;
+  }
 
-    .matrix {
-      padding: 10px;
-      border: 2px solid v-bind('colors[0]');
-      border-radius: 10px;
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    min-width: 150px;
+
+    .score.small {
+      width: 200px;
+      margin: 0 auto;
     }
 
-    .info {
+    .style {
+      margin-top: auto;
+
+      &.co-op {
+        width: 200px;
+        margin-left: auto;
+      }
+    }
+
+    .buttons-list {
       display: flex;
       flex-direction: column;
-      gap: 25px;
-      width: 150px;
+      gap: 10px;
 
-      .style {
-        margin-top: auto;
-      }
-
-      .buttons-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+      &.co-op {
+        width: 200px;
+        margin-left: auto;
       }
     }
   }
 
   .co-op {
     display: flex;
-    gap: 40px;
-    margin: auto 0;
+    gap: 20px;
   }
 }
 </style>
