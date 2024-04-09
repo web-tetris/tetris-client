@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useToggle } from '@vueuse/core'
+import { useToggle, whenever } from '@vueuse/core'
 import Game from '@/widgets/Game.vue'
 import PlayersSelect from '@/widgets/PlayersSelect.vue'
 import Button from '@/ui/Button.vue'
@@ -12,6 +12,7 @@ import { colors } from '@/consts/random-colors'
 
 const players = ref(1)
 const multiplayerMode = ref<MultiplayerMode>(MultiplayerMode.VERSUS)
+whenever(() => players.value === 1, () => multiplayerMode.value = MultiplayerMode.VERSUS)
 
 const [settingsShowed, toggleSettings] = useToggle(false)
 
