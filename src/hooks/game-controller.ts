@@ -18,11 +18,11 @@ export function useGameController({
   reset,
 }: {
   type: Ref<ControlType>
-  move: (direction: MoveDirection) => void
   rotate: () => void
-  index: Ref<number>
+  move: (direction: MoveDirection) => void
   toggleMenu: () => unknown
   reset: () => unknown
+  index: Ref<number>
 }) {
   const scheme = computed(() => schemes[type.value])
 

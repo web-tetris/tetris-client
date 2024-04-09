@@ -20,7 +20,9 @@ const styleOptions = computed <SelectOption<string>[]>(() => Object.values(Block
 
 <template>
   <Select
-    v-model="style" :options="styleOptions" :label="t('style-select.title')"
+    v-model="style"
+    :options="styleOptions"
+    :label="t('style-select.title')"
   />
 </template>
 

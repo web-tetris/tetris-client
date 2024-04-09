@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import { ref, toRefs, watch } from 'vue'
+import { computed, ref, toRefs, watch } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import Matrix from '@/widgets/Matrix.vue'
 import { useGameField } from '@/hooks/game-field'
-import { useGameController } from '@/hooks/game-controller'
 import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
 import GameOver from '@/widgets/GameOver.vue'
-import { ControlType } from '@/consts/control-type'
 import StyleSelect from '@/widgets/StyleSelect.vue'
 import { BlockStyle } from '@/consts/block-style'
 import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
-import { colors } from '@/consts/random-colors'
 import GameScore from '@/widgets/GameScore.vue'
+import { colors } from '@/consts/random-colors'
 
 const props = defineProps<{
   multiplayerMode: MultiplayerMode
@@ -34,22 +32,12 @@ const { difficult } = useSettingsService()
 function add(score: number) {
   emits('addScore', score)
 }
-const { matrix, nextFigure, score, gameOver, move, rotate, reset, pause, resume } = useGameField({ difficult, add })
+
+const figureAmount = computed(() => multiplayerMode.value === MultiplayerMode.CO_OP ? players.value : 1)
+const { matrix, nextFigures, score, gameOver, move, rotate, reset, pause, resume } = useGameField({ difficult, figureAmount, add })
 
 const [menuShowed, toggleMenu] = useToggle(false)
 watch(menuShowed, showed => showed ? pause() : resume())
-
-const currentControl = ref<ControlType>(ControlType.ARROWS)
-const currentGamepad = ref<number>(0)
-
-useGameController({
-  type: currentControl,
-  move,
-  rotate,
-  index: currentGamepad,
-  reset,
-  toggleMenu,
-})
 
 const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 </script>
@@ -64,11 +52,13 @@ const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 
         <PlayingState
           v-if="multiplayerMode === MultiplayerMode.VERSUS"
-          v-model:gamepad="currentGamepad"
-          v-model:control="currentControl"
-          :current-style="currentStyle"
-          :next-figure="nextFigure"
+          :style="currentStyle"
+          :next-figure="nextFigures[0].value"
           :multiplayer-mode="multiplayerMode"
+          @move="move(0, $event)"
+          @rotate="rotate(0)"
+          @reset="reset"
+          @menu="toggleMenu"
         />
 
         <StyleSelect v-model:style="currentStyle" class="style" />
@@ -91,13 +81,16 @@ const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 
     <div v-if="multiplayerMode === MultiplayerMode.CO_OP" class="co-op">
       <PlayingState
-        v-for="i in players"
-        :key="i"
-        v-model:gamepad="currentGamepad"
-        v-model:control="currentControl"
-        :current-style="currentStyle"
-        :next-figure="nextFigure"
+        v-for="(player, i) in players"
+        :key="player"
+        :style="currentStyle"
+        :next-figure="nextFigures[i].value"
         :multiplayer-mode="multiplayerMode"
+        :player="i"
+        @move="move(i, $event)"
+        @rotate="rotate(i)"
+        @reset="reset"
+        @menu="toggleMenu"
       />
     </div>
   </div>
@@ -108,8 +101,7 @@ const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 
 .game {
   display: flex;
-  flex-direction: column;
-  gap: 50px;
+  gap: 40px;
 
   .versus {
     padding: 10px;
@@ -145,6 +137,9 @@ const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
   }
 
   .co-op {
+    display: flex;
+    gap: 40px;
+    margin: auto 0;
   }
 }
 </style>

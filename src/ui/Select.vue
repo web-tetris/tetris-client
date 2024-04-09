@@ -4,11 +4,14 @@ import { useVModel } from '@vueuse/core'
 import type { SelectOption } from '@/types/select-option'
 import GradientWrapper from '@/ui/GradientWrapper.vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   label?: string
   options: SelectOption<V>[]
   modelValue: V
-}>()
+  direction?: 'bottom' | 'top'
+}>(), {
+  direction: 'bottom',
+})
 
 const emits = defineEmits<{
   'update:modelValue': [V]
@@ -32,7 +35,7 @@ function getImageUrl(path: string) {
       {{ label }}
     </div>
 
-    <div class="options" :class="{ opened }" @click="opened = !opened">
+    <div class="options" :class="{ opened, top: props.direction === 'top' }" @click="opened = !opened">
       <GradientWrapper>
         <div class="current">
           <div v-if="current" class="option">
@@ -66,22 +69,26 @@ function getImageUrl(path: string) {
   height: 32px;
 
   .title {
-    top: -25px;
     position: absolute;
+    top: -25px;
   }
 
   .options {
     position: absolute;
-    top: 0;
-    left: 0;
+    //top: 0;
+    //left: 0;
     width: 100%;
     transition: 0.8s;
 
     &.opened {
       z-index: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+    //  display: flex;
+    //  flex-direction: column;
+    //  gap: 5px;
+
+      &.top {
+        bottom: 0;
+      }
     }
 
     .option {
@@ -113,7 +120,6 @@ function getImageUrl(path: string) {
     }
 
     .other {
-      top: 30px;
       display: flex;
       flex-direction: column;
       gap: 5px;
