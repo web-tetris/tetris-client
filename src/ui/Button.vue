@@ -2,6 +2,7 @@
 import { toRefs } from 'vue'
 
 import GradientWrapper from '@/ui/GradientWrapper.vue'
+import { useSoundEffects } from '@/hooks/sound-effects'
 
 const props = defineProps<{
   icon?: string
@@ -11,11 +12,12 @@ const props = defineProps<{
 }>()
 
 const { flat, large } = toRefs(props)
+const { buttonSound } = useSoundEffects()
 </script>
 
 <template>
   <GradientWrapper :flat="props.flat" hovering>
-    <button class="button" :class="{ flat, large }">
+    <button class="button" :class="{ flat, large }" @click="buttonSound">
       <i v-if="props.icon" :class="`bi bi-${props.icon}`" class="icon" />
       <span v-if="props.label">{{ label }}</span>
     </button>

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
-import { computed, onMounted, ref, shallowReadonly, shallowRef, watch } from 'vue'
+import { computed, ref, shallowReadonly, shallowRef, watch } from 'vue'
 
-import { useInterval } from '@vueuse/core'
+import { tryOnMounted, useInterval } from '@vueuse/core'
 import { BlockColor } from '@/consts/block-color'
 import { FIELD_SIZE } from '@/consts/settings'
 import { projectFigure } from '@/utils/figure'
@@ -9,6 +9,7 @@ import { createField } from '@/utils/field'
 import type { FigureService } from '@/hooks/figure'
 import { useFigure } from '@/hooks/figure'
 import { MoveDirection } from '@/consts/move-direction'
+import { useSoundEffects } from '@/hooks/sound-effects'
 
 export function useGameField({
   difficult,
@@ -19,6 +20,8 @@ export function useGameField({
   figureAmount: Ref<number>
   add: (score: number) => void
 }) {
+  const soundEffects = useSoundEffects()
+
   const field = shallowRef(createField(FIELD_SIZE))
   function generateField() {
     field.value = createField({ x: FIELD_SIZE.x * (1 + (figureAmount.value - 1) / 2), y: FIELD_SIZE.y })
@@ -39,12 +42,9 @@ export function useGameField({
   function move(index: number, direction: MoveDirection) {
     figures.value[index].move(direction)
   }
-  function push() {
-    figures.value.forEach((figure, index) => {
-      figure.push((1 / (figureAmount.value + 1)) * (index + 1))
-    })
+  function push(index: number) {
+    figures.value[index].push((1 / (figureAmount.value + 1)) * (index + 1))
   }
-  onMounted(push)
 
   const score = ref<number>(0)
   const gameOver = ref<boolean>(false)
@@ -53,6 +53,7 @@ export function useGameField({
     const filtered = field.value.filter(row => row.includes(BlockColor.EMPTY))
     const delta = field.value.length - filtered.length
     if (delta > 0) {
+      soundEffects.lineStackSound()
       score.value += delta ** 2
       field.value = [
         ...createField({ x: field.value[0].length, y: delta }),
@@ -77,13 +78,15 @@ export function useGameField({
     score.value = 0
     difficult.value = 1
     gameOver.value = false
-    push()
+    figures.value.forEach((figure, index) => push(index))
     resume()
   }
+  tryOnMounted(reset)
 
   function gameOverCheck() {
     const isGameOver = !field.value[0].includes(BlockColor.EMPTY)
     if (isGameOver) {
+      soundEffects.gameOverSound()
       gameOver.value = true
       add(score.value)
       pause()
@@ -92,11 +95,13 @@ export function useGameField({
 
   function cycle() {
     const available = figures.value.map(figure => figure.move(MoveDirection.DOWN))
+    if (available.includes(false))
+      soundEffects.figureDropSound()
 
     figures.value.forEach((figure, i) => {
       if (!available[i]) {
         field.value = projectFigure(field.value, figure.currentFigure.value, figure.position.value)
-        figure.push((1 / (figureAmount.value + 1)) * (i + 1))
+        push(i)
       }
     })
 

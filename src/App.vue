@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useToggle, whenever } from '@vueuse/core'
+import { useEventListener, useToggle, whenever } from '@vueuse/core'
 import Game from '@/widgets/Game.vue'
 import PlayersSelect from '@/widgets/PlayersSelect.vue'
 import Button from '@/ui/Button.vue'
@@ -9,6 +9,7 @@ import { useHighscores } from '@/hooks/highscores'
 import Highscore from '@/widgets/Highscore.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
 import { colors } from '@/consts/random-colors'
+import { useSoundEffects } from '@/hooks/sound-effects'
 
 const players = ref(1)
 const multiplayerMode = ref<MultiplayerMode>(MultiplayerMode.VERSUS)
@@ -17,6 +18,12 @@ whenever(() => players.value === 1, () => multiplayerMode.value = MultiplayerMod
 const [settingsShowed, toggleSettings] = useToggle(false)
 
 const { highscores, currentScore, add } = useHighscores()
+
+const { themeSound } = useSoundEffects()
+const stop = useEventListener(['keydown', 'mousedown'], () => {
+  themeSound()
+  stop()
+})
 </script>
 
 <template>
