@@ -22,7 +22,7 @@ const modelValue = useVModel(props, 'modelValue', emits)
 
 const optionShowed = ref<boolean>(false)
 const { buttonSound } = useSoundEffects()
-function open() {
+function toggle() {
   optionShowed.value = !optionShowed.value
   buttonSound()
 }
@@ -41,7 +41,7 @@ function getImageUrl(path: string) {
       {{ label }}
     </div>
 
-    <div class="options" :class="{ optionShowed, top: props.direction === 'top' }" @click="open">
+    <div class="options" :class="{ optionShowed, top: props.direction === 'top' }" @click="toggle">
       <GradientWrapper>
         <div class="current">
           <div v-if="current" class="option">

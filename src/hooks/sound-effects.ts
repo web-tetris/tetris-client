@@ -1,5 +1,5 @@
 import { useSound } from '@vueuse/sound'
-import { computed, ref, shallowReadonly } from 'vue'
+import { computed, ref } from 'vue'
 import { createGlobalState, useDocumentVisibility, whenever } from '@vueuse/core'
 import TetrisTheme from '@/assets/sounds/tetris-theme.mp3'
 import FigureDrop from '@/assets/sounds/figure-drop.mp3'
@@ -32,7 +32,7 @@ export const useSoundEffects = createGlobalState(() => {
   const buttonSound = createSound(0.8, InterfaceButton)
 
   return {
-    volume: shallowReadonly(volume),
+    volume,
 
     themeSound,
     figureDropSound,
