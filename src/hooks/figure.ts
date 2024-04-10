@@ -29,7 +29,10 @@ export function useFigure(field: Ref<BlockMatrix>): FigureService {
   function push(xRelative: number) {
     currentFigure.value = nextFigure.value
     nextFigure.value = fillFigure(randomArrayValue(figures))
-    position.value = { x: Math.round(field.value[0].length * xRelative - currentFigure.value[0].length / 2), y: -currentFigure.value.length + 1 }
+    position.value = {
+      x: Math.round(field.value[0].length * xRelative - currentFigure.value[0].length / 2),
+      y: -currentFigure.value.length,
+    }
   }
 
   const moveMap: Record<MoveDirection, Position> = {

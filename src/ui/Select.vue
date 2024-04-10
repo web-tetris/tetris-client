@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useVModel } from '@vueuse/core'
 import type { SelectOption } from '@/types/select-option'
 import GradientWrapper from '@/ui/GradientWrapper.vue'
+import { useSoundEffects } from '@/hooks/sound-effects'
 
 const props = withDefaults(defineProps<{
   label?: string
@@ -19,10 +20,15 @@ const emits = defineEmits<{
 
 const modelValue = useVModel(props, 'modelValue', emits)
 
-const opened = ref<boolean>(false)
+const optionShowed = ref<boolean>(false)
+const { buttonSound } = useSoundEffects()
+function open() {
+  optionShowed.value = !optionShowed.value
+  buttonSound()
+}
 
 const current = computed(() => props.options.find(option => option.value === modelValue.value))
-const toggleIcon = computed(() => opened.value ? 'bi bi-chevron-up' : 'bi bi-chevron-down')
+const toggleIcon = computed(() => optionShowed.value ? 'bi bi-chevron-up' : 'bi bi-chevron-down')
 
 function getImageUrl(path: string) {
   return new URL(`../assets/blocks/${path}/block-1.png?url`, import.meta.url).href
@@ -35,7 +41,7 @@ function getImageUrl(path: string) {
       {{ label }}
     </div>
 
-    <div class="options" :class="{ opened, top: props.direction === 'top' }" @click="opened = !opened">
+    <div class="options" :class="{ optionShowed, top: props.direction === 'top' }" @click="open">
       <GradientWrapper>
         <div class="current">
           <div v-if="current" class="option">
@@ -46,7 +52,7 @@ function getImageUrl(path: string) {
           <i class="toggle-icon" :class="toggleIcon" />
         </div>
 
-        <div v-if="opened" class="other">
+        <div v-if="optionShowed" class="other">
           <div
             v-for="option in options"
             :key="option.value"
@@ -75,16 +81,11 @@ function getImageUrl(path: string) {
 
   .options {
     position: absolute;
-    //top: 0;
-    //left: 0;
     width: 100%;
     transition: 0.8s;
 
-    &.opened {
+    &.optionShowed {
       z-index: 1;
-    //  display: flex;
-    //  flex-direction: column;
-    //  gap: 5px;
 
       &.top {
         bottom: 0;
