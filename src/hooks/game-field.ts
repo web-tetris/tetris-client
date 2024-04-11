@@ -6,10 +6,9 @@ import { BlockColor } from '@/consts/block-color'
 import { FIELD_SIZE } from '@/consts/settings'
 import { projectFigure } from '@/utils/figure'
 import { createField } from '@/utils/field'
-import type { FigureService } from '@/hooks/figure'
-import { useFigure } from '@/hooks/figure'
 import { MoveDirection } from '@/consts/move-direction'
 import { useSoundEffects } from '@/hooks/sound-effects'
+import { useFiguresArray } from '@/hooks/figures-array'
 
 export function useGameField({
   difficult,
@@ -28,23 +27,14 @@ export function useGameField({
   }
   watch(figureAmount, generateField, { immediate: true })
 
-  const figures = shallowRef<FigureService[]>([])
-  function generateFigures() {
-    figures.value = Array.from({ length: figureAmount.value }, () => useFigure(field))
-  }
-  watch(figureAmount, generateFigures, { immediate: true })
-
-  const currentFigures = computed(() => figures.value.map(figure => figure.currentFigure))
-  const nextFigures = computed (() => figures.value.map(figure => figure.nextFigure))
-  function rotate(index: number) {
-    figures.value[index].rotate()
-  }
-  function move(index: number, direction: MoveDirection) {
-    figures.value[index].move(direction)
-  }
-  function push(index: number) {
-    figures.value[index].push((1 / (figureAmount.value + 1)) * (index + 1))
-  }
+  const {
+    figures,
+    currentFigures,
+    nextFigures,
+    push,
+    move,
+    rotate,
+  } = useFiguresArray({ field, figureAmount })
 
   const score = ref<number>(0)
   const gameOver = ref<boolean>(false)

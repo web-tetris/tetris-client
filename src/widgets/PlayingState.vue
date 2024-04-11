@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ControllerSelect from '@/widgets/ControllerSelect.vue'
 import type { BlockMatrix } from '@/types/block-matrix'
 import type { BlockStyle } from '@/consts/block-style'
@@ -36,12 +37,14 @@ useGameController({
   reset: () => emits('reset'),
   toggleMenu: () => emits('menu'),
 })
+
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="playing-state" :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }">
     <div v-if="multiplayerMode === MultiplayerMode.CO_OP" class="title">
-      {{ `Player ${player + 1}` }}
+      {{ `${t('playing-state.player')} ${player + 1}` }}
     </div>
 
     <NextFigure class="next-figure" :style="props.style" :next="props.nextFigure" />

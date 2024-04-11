@@ -28,6 +28,9 @@
     "versus": "Versus",
     "co-op": "Co-op"
   },
+  "playing-state": {
+    "player": "Player"
+  },
   "score": {
     "title": "Score",
     "total": "Total:",
