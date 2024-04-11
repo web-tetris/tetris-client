@@ -18,7 +18,7 @@ export function useGame({
   figureAmount: Ref<number>
   add: (score: number) => void
 }) {
-  const { field, generateField, addFigure, stack } = useGameField({ figureAmount })
+  const { field, generateField, addFigure, stackLines } = useGameField({ figureAmount })
 
   const {
     figures,
@@ -43,16 +43,6 @@ export function useGame({
   const { pause, resume, counter } = useInterval(calculateInterval, { controls: true })
 
   const gameOver = ref<boolean>(false)
-  function reset() {
-    generateField()
-    score.value = 0
-    difficult.value = 1
-    gameOver.value = false
-    figures.value.forEach((figure, index) => push(index))
-    resume()
-  }
-  tryOnMounted(reset)
-
   function gameOverCheck() {
     const isGameOver = !field.value[0].includes(BlockColor.EMPTY)
     if (isGameOver) {
@@ -62,6 +52,16 @@ export function useGame({
       pause()
     }
   }
+
+  function reset() {
+    generateField()
+    score.value = 0
+    difficult.value = 1
+    gameOver.value = false
+    figures.value.forEach((figure, index) => push(index))
+    resume()
+  }
+  tryOnMounted(reset)
 
   function cycle() {
     const available = figures.value.map(figure => figure.move(MoveDirection.DOWN))
@@ -75,7 +75,7 @@ export function useGame({
       }
     })
 
-    score.value += stack() ** 2
+    score.value += stackLines() ** 2
     gameOverCheck()
   }
   watch(counter, cycle)

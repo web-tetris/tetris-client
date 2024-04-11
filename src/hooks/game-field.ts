@@ -23,7 +23,7 @@ export function useGameField({
   }
 
   const soundEffects = useSoundEffects()
-  function stack() {
+  function stackLines(): number {
     const filtered = field.value.filter(row => row.includes(BlockColor.EMPTY))
     const delta = field.value.length - filtered.length
     if (delta > 0) {
@@ -41,6 +41,6 @@ export function useGameField({
 
     generateField,
     addFigure,
-    stack,
+    stackLines,
   }
 }
