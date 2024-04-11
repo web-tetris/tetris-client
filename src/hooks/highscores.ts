@@ -1,6 +1,7 @@
 import { ref, shallowReadonly } from 'vue'
+import { createGlobalState } from '@vueuse/core'
 
-export function useHighscores() {
+export const useHighscores = createGlobalState(() => {
   const highscores = ref<number []>([11, 9, 8, 7, 6])
   const currentScore = ref<number>()
 
@@ -22,4 +23,4 @@ export function useHighscores() {
 
     add,
   }
-}
+})

@@ -12,16 +12,7 @@ import { randomArrayValue } from '@/utils/random'
 import { figures } from '@/consts/figures'
 import { MoveDirection } from '@/consts/move-direction'
 
-export interface FigureService {
-  position: Ref<Position>
-  currentFigure: Ref<BlockMatrix>
-  nextFigure: Ref<BlockMatrix>
-  push: (xRelative: number) => void
-  move: (direction: MoveDirection) => boolean
-  rotate: () => void
-}
-
-export function useFigure(field: Ref<BlockMatrix>): FigureService {
+export function useFigure(field: Ref<BlockMatrix>) {
   const position = ref<Position>({ x: 0, y: 0 })
   const currentFigure = shallowRef<BlockMatrix>([[]])
   const nextFigure = shallowRef<BlockMatrix>(fillFigure(randomArrayValue(figures)))

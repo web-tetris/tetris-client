@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { colors } from '@/consts/random-colors'
+import { useHighscores } from '@/hooks/highscores'
 
-const props = defineProps<{
-  highscores: number[]
-  currentScore?: number
-}>()
-
+const { highscores, currentScore } = useHighscores()
 const { t } = useI18n()
 
 function getImageUrl(index: number) {
@@ -28,11 +25,11 @@ const place = {
 
     <div class="scores">
       <div
-        v-for="(score, index) in props.highscores"
+        v-for="(score, index) in highscores"
         :key="index"
         class="result"
         :class="[
-          { 'new-score': index === props.currentScore },
+          { 'new-score': index === currentScore },
           place[index] || 'other',
         ]"
       >
@@ -113,11 +110,6 @@ const place = {
         &.other {
           --color: v-bind('colors[2]');
         }
-
-        //.place .index {
-        //  font-weight: bold;
-        //  color: v-bind('colors[1]');
-        //}
       }
 
       .place {

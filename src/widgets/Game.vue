@@ -3,7 +3,7 @@ import { computed, ref, toRefs, watch } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import Matrix from '@/widgets/Matrix.vue'
-import { useGameField } from '@/hooks/game-field'
+import { useGame } from '@/hooks/game'
 import { useSettingsService } from '@/hooks/settings'
 import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
@@ -14,27 +14,23 @@ import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
 import GameScore from '@/widgets/GameScore.vue'
 import { colors } from '@/consts/random-colors'
+import { useHighscores } from '@/hooks/highscores'
 
 const props = defineProps<{
   multiplayerMode: MultiplayerMode
   players: number
 }>()
 
-const emits = defineEmits<{
-  'addScore': [number]
-}>()
-
 const { multiplayerMode, players } = toRefs(props)
+
+const { add } = useHighscores()
 
 const { t } = useI18n()
 
 const { difficult } = useSettingsService()
-function add(score: number) {
-  emits('addScore', score)
-}
 
 const figureAmount = computed(() => multiplayerMode.value === MultiplayerMode.CO_OP ? players.value : 1)
-const { matrix, nextFigures, score, gameOver, move, rotate, reset, pause, resume } = useGameField({ difficult, figureAmount, add })
+const { matrix, nextFigures, score, gameOver, move, rotate, reset, pause, resume } = useGame({ difficult, figureAmount, add })
 
 const [menuShowed, toggleMenu] = useToggle(false)
 watch(menuShowed, showed => showed ? pause() : resume())
