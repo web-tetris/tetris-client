@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Slot } from 'vue'
 import { toRefs } from 'vue'
-import { colors } from '@/consts/random-colors'
 
 const props = defineProps<{
   flat?: boolean
@@ -36,8 +35,8 @@ const { flat, hovering } = toRefs(props)
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, v-bind('colors[0]'), v-bind('colors[1]') 51%, v-bind('colors[2]')) var(--x, 0)/ 200%;
-        transition: 0.8s;
+        background: linear-gradient(90deg, var(--primary-0), var(--primary-1) 51%, var(--primary-2)) var(--x, 0)/ 200%;
+        transition: 1.8s;
     }
 
     &.hovering:hover::before {

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { colors } from '@/consts/random-colors'
 import { useHighscores } from '@/hooks/highscores'
 
 const { highscores, currentScore } = useHighscores()
@@ -52,7 +51,7 @@ const place = {
   flex-direction: column;
   align-items: center;
   gap: 30px;
-  border: 1px solid v-bind('colors[2]');
+  border: 1px solid var(--primary-2);
   border-radius: 8px;
   padding-top: 10px;
 
@@ -70,7 +69,7 @@ const place = {
       align-items: center;
       justify-content: space-around;
       padding: 5px 0;
-      border-bottom: 1px dotted v-bind('colors[2]');
+      border-bottom: 1px dotted var(--primary-2);
 
       &:last-child {
         border-bottom: none;
@@ -108,7 +107,7 @@ const place = {
         }
 
         &.other {
-          --color: v-bind('colors[2]');
+          --color: var(--primary-2);
         }
       }
 
