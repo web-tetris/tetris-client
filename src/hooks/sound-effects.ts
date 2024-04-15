@@ -30,7 +30,10 @@ export const useSoundEffects = createGlobalState(() => {
       whenever(() => visibility.value === 'visible', () => audio.play())
     }
 
-    return () => visibility.value === 'visible' && audio.play()
+    return () => {
+      if (visibility.value === 'visible')
+        void audio.play()
+    }
   }
 
   const themeSound = createSound(0.3, 'theme', true)
