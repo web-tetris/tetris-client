@@ -1,12 +1,15 @@
 {
   "game": {
-    "connection": "Connect one or more gamepads",
-    "game-controls": "Game controls",
     "menu": "Menu",
-    "reset": "Reset",
+    "reset": "Reset"
+  },
+  "controller-select": {
     "arrow": "Arrow",
     "gamepad": "Gamepad",
-    "wasd": "WASD"
+    "wasd": "WASD",
+    "player": "Player",
+    "connection": "Connect one or more gamepads",
+    "game-controls": "Game controls"
   },
   "game-over": {
     "title": "Game over",

@@ -1,83 +1,68 @@
 <script setup lang="ts">
-import { computed, toRefs, watch } from 'vue'
-import { useToggle } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import Matrix from '@/widgets/Matrix.vue'
-import { useGame } from '@/hooks/game'
-import { useSettingsService } from '@/hooks/settings'
-import Button from '@/ui/Button.vue'
-import Menu from '@/widgets/Menu.vue'
-import GameOver from '@/widgets/GameOver.vue'
-import StyleSelect from '@/widgets/StyleSelect.vue'
 import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
 import GameScore from '@/widgets/GameScore.vue'
-import { useHighscores } from '@/hooks/highscores'
+import type { BlockMatrix } from '@/types/block-matrix'
+import Button from '@/ui/Button.vue'
+import GameOver from '@/widgets/GameOver.vue'
 
 const props = defineProps<{
+  matrix: BlockMatrix
+  nextFigures: BlockMatrix[]
   multiplayerMode: MultiplayerMode
   players: number
+  figureAmount: number
+  score: number
+  gameOver: boolean
+}>()
+
+const emits = defineEmits<{
+  reset: []
 }>()
 
 const currentStyle = defineModel('currentStyle', { required: true })
-
-const { multiplayerMode, players } = toRefs(props)
-
-const { add } = useHighscores()
-
 const { t } = useI18n()
-
-const { difficult } = useSettingsService()
-
-const figureAmount = computed(() => multiplayerMode.value === MultiplayerMode.CO_OP ? players.value : 1)
-const { matrix, nextFigures, score, gameOver, move, rotate, reset, pause, resume } = useGame({ difficult, figureAmount, add })
-
-const [menuShowed, toggleMenu] = useToggle(false)
-watch(menuShowed, showed => showed ? pause() : resume())
 </script>
 
 <template>
   <div class="game">
-    <Matrix :matrix="matrix" class="matrix" :style="currentStyle" />
+    <Matrix
+      :matrix="props.matrix"
+      class="matrix"
+      :style="currentStyle"
+    />
 
     <div class="info">
-      <GameScore :score="score" class="score" :class="{ small: multiplayerMode === MultiplayerMode.CO_OP }" />
+      <GameScore
+        :score="props.score"
+        class="score"
+        :class="{ small: props.multiplayerMode === MultiplayerMode.CO_OP }"
+      />
 
       <div class="co-op">
         <PlayingState
-          v-for="(player, i) in figureAmount"
+          v-for="(player, i) in props.figureAmount"
           :key="player"
           :style="currentStyle"
-          :next-figure="nextFigures[i].value"
-          :multiplayer-mode="multiplayerMode"
+          :next-figure="props.nextFigures"
+          :multiplayer-mode="props.multiplayerMode"
           :player="i"
-          @move="move(i, $event)"
-          @rotate="rotate(i)"
-          @reset="reset"
-          @menu="toggleMenu"
         />
       </div>
 
-      <StyleSelect
-        v-model:style="currentStyle"
-        class="style"
-        :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }"
+      <Button
+        icon="arrow-clockwise" :label="t('game.reset')"
+        @click="() => emits('reset')"
       />
-
-      <div class="buttons-list" :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }">
-        <Button
-          icon="arrow-clockwise" :label="t('game.reset')"
-          @click="reset"
-        />
-        <Button
-          icon="list" :label="t('game.menu')"
-          @click="() => toggleMenu()"
-        />
-      </div>
     </div>
 
-    <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
-    <GameOver :showed="gameOver" :score="score" @restart="reset" />
+    <GameOver
+      :showed="props.gameOver"
+      :score="props.score"
+      @restart="() => emits('reset')"
+    />
   </div>
 </template>
 
@@ -108,26 +93,6 @@ watch(menuShowed, showed => showed ? pause() : resume())
     .score.small {
       width: 200px;
       margin: 0 auto;
-    }
-
-    .style {
-      margin-top: auto;
-
-      &.co-op {
-        width: 200px;
-        margin-left: auto;
-      }
-    }
-
-    .buttons-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-
-      &.co-op {
-        width: 200px;
-        margin-left: auto;
-      }
     }
   }
 

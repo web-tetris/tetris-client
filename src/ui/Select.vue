@@ -7,6 +7,7 @@ import { useSoundEffects } from '@/hooks/sound-effects'
 
 const props = withDefaults(defineProps<{
   label?: string
+  secondLabel?: string
   options: SelectOption<V>[]
   modelValue: V
   direction?: 'bottom' | 'top'
@@ -37,8 +38,13 @@ function getImageUrl(path: string) {
 
 <template>
   <div class="select">
-    <div v-if="props.label" class="title">
-      {{ label }}
+    <div class="title">
+      <div v-if="props.label">
+        {{ label }}
+      </div>
+      <div v-if="props.secondLabel">
+        {{ secondLabel }}
+      </div>
     </div>
 
     <div class="options" :class="{ optionShowed, top: props.direction === 'top' }" @click="toggle">
@@ -75,8 +81,12 @@ function getImageUrl(path: string) {
   height: 32px;
 
   .title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
     position: absolute;
     top: -25px;
+    padding-right: 10px;
   }
 
   .options {

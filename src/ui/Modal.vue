@@ -41,7 +41,7 @@ const { relative } = toRefs(props)
   transform: translate(-50%, -20%);
   border-radius: 10px;
   box-shadow: 0 0 10px 0 var(--primary-2);
-  width: 400px;
+  width: 50%;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -50,6 +50,7 @@ const { relative } = toRefs(props)
     display: flex;
     align-items: center;
     padding: 10px;
+    width: 100%;
 
     .title {
       flex: 1;
@@ -67,7 +68,9 @@ const { relative } = toRefs(props)
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 30px;
+    align-items: center;
+    width: 100%;
   }
 
   &.relative {

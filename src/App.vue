@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { syncRefs, useEventListener, useToggle, whenever } from '@vueuse/core'
 import Game from '@/widgets/Game.vue'
-import PlayersSelect from '@/widgets/PlayersSelect.vue'
 import Button from '@/ui/Button.vue'
 import Settings from '@/widgets/Settings.vue'
 import { useHighscores } from '@/hooks/highscores'
@@ -11,6 +10,8 @@ import { MultiplayerMode } from '@/consts/multiplayer-mode'
 import { useSoundEffects } from '@/hooks/sound-effects'
 import { useColors } from '@/hooks/colors'
 import { BlockStyle } from '@/consts/block-style'
+import { useGame } from '@/hooks/game'
+import { useSettingsService } from '@/hooks/settings'
 
 const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 
@@ -28,9 +29,14 @@ const players = ref(1)
 const multiplayerMode = ref<MultiplayerMode>(MultiplayerMode.VERSUS)
 whenever(() => players.value === 1, () => multiplayerMode.value = MultiplayerMode.VERSUS)
 
-const [settingsShowed, toggleSettings] = useToggle(false)
-
 const { highscores, currentScore, add } = useHighscores()
+
+const { difficult } = useSettingsService()
+const figureAmount = computed(() => multiplayerMode.value === MultiplayerMode.CO_OP ? players.value : 1)
+const { matrix, nextFigures, score, gameOver, reset, pause, resume } = useGame({ difficult, figureAmount, add })
+
+const [settingsShowed, toggleSettings] = useToggle(false)
+watch(settingsShowed, showed => showed ? pause() : resume())
 </script>
 
 <template>
@@ -38,22 +44,53 @@ const { highscores, currentScore, add } = useHighscores()
     <Highscore class="highscore" :highscores="highscores" :current-score="currentScore" />
 
     <div class="body">
-      <PlayersSelect v-model:players="players" v-model:multiplayer-mode="multiplayerMode" class="players" />
-
       <div class="game-list">
         <template v-if="multiplayerMode === MultiplayerMode.VERSUS">
-          <Game v-for="i in players" :key="i" v-model:current-style="currentStyle" class="game" :multiplayer-mode="multiplayerMode" :players="players" @add-score="add" />
+          <Game
+            v-for="i in players"
+            :key="i"
+            v-model:current-style="currentStyle"
+            :matrix="matrix"
+            :next-figures="nextFigures"
+            :multiplayer-mode="multiplayerMode"
+            :players="players"
+            :figure-amount="figureAmount"
+            :score="score"
+            :game-over="gameOver"
+            class="game"
+            @add-score="add"
+            @reset="reset"
+          />
         </template>
 
         <template v-else>
-          <Game v-model:current-style="currentStyle" class="game" :players="players" :multiplayer-mode="multiplayerMode" @add-score="add" />
+          <Game
+            v-model:current-style="currentStyle"
+            :matrix="matrix"
+            :next-figures="nextFigures"
+            :multiplayer-mode="multiplayerMode"
+            :players="players"
+            :figure-amount="figureAmount"
+            :score="score"
+            :game-over="gameOver"
+            class="game"
+            @add-score="add"
+            @reset="reset"
+          />
         </template>
       </div>
     </div>
 
     <Button large class="settings-button" icon="sliders" @click="() => toggleSettings()" />
   </div>
-  <Settings v-model:showed="settingsShowed" />
+
+  <Settings
+    v-model:current-style="currentStyle"
+    v-model:showed="settingsShowed"
+    v-model:players="players"
+    v-model:multiplayer-mode="multiplayerMode"
+    v-model:difficult="difficult"
+  />
 </template>
 
 <style lang="scss" scoped>
@@ -90,10 +127,6 @@ const { highscores, currentScore, add } = useHighscores()
     flex: 1;
     display: flex;
     flex-direction: column;
-
-    .players {
-      margin: 20px auto 40px auto;
-    }
 
     .game-list {
       display: flex;

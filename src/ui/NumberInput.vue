@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useVModels } from '@vueuse/core'
 import Button from '@/ui/Button.vue'
+import GradientWrapper from '@/ui/GradientWrapper.vue'
 
 const props = defineProps<{
   modelValue: number
@@ -14,11 +15,21 @@ const { modelValue } = useVModels(props, emits)
 </script>
 
 <template>
-  <div class="input">
-    <Button class="btn" icon="arrow-down" flat @click="modelValue = +modelValue - 1" />
-    <input v-model="modelValue" class="input" @focus="$event.target.select()">
-    <Button class="btn" icon="arrow-up" flat @click="modelValue = +modelValue + 1" />
-  </div>
+  <GradientWrapper>
+    <div class="input">
+      <Button
+        :no-stroke="true"
+        class="btn" icon="arrow-down" flat
+        @click="modelValue = +modelValue - 1"
+      />
+      <input v-model="modelValue" class="input" @focus="$event.target.select()">
+      <Button
+        :no-stroke="true"
+        class="btn" icon="arrow-up" flat
+        @click="modelValue = +modelValue + 1"
+      />
+    </div>
+  </GradientWrapper>
 </template>
 
 <style scoped lang="scss">
@@ -32,7 +43,7 @@ const { modelValue } = useVModels(props, emits)
 
   .input {
     width: 40px;
-    border: 1px solid #c9c8c8;
+    border: none;
     border-radius: 8px;
     text-align: center;
 

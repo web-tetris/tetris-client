@@ -1,12 +1,15 @@
 {
   "game": {
-    "connection": "Подключите один или несколько геймпадов",
-    "game-controls": "Управление",
     "menu": "Меню",
-    "reset": "Сбросить",
+    "reset": "Сбросить"
+  },
+  "controller-select": {
     "arrow": "Стрелки",
     "gamepad": "Геймпад",
-    "wasd": "WASD"
+    "wasd": "WASD",
+    "connection": "Подключите один или несколько геймпадов",
+    "game-controls": "Управление",
+    "player": "Игрок"
   },
   "game-over": {
     "title": "Конец игры",

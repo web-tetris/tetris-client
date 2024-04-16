@@ -9,14 +9,15 @@ const props = defineProps<{
   flat?: boolean
   label?: string
   large?: boolean
+  noStroke?: boolean
 }>()
 
-const { flat, large } = toRefs(props)
+const { flat, large, noStroke } = toRefs(props)
 const { buttonSound } = useSoundEffects()
 </script>
 
 <template>
-  <GradientWrapper :flat="props.flat" hovering>
+  <GradientWrapper :flat="props.flat" hovering :no-stroke="noStroke">
     <button class="button" :class="{ flat, large }" @click="buttonSound">
       <i v-if="props.icon" :class="`bi bi-${props.icon}`" class="icon" />
       <span v-if="props.label">{{ label }}</span>
