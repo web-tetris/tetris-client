@@ -10,7 +10,7 @@ const { t } = useI18n()
 <template>
   <div class="difficult">
     <span>{{ t('menu.difficult') }}</span>
-    <NumberInput v-model:modelValue="difficult" />
+    <NumberInput v-model:modelValue="difficult" class="value" />
   </div>
 </template>
 
@@ -18,6 +18,11 @@ const { t } = useI18n()
   .difficult {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 20px;
+
+    .value {
+      flex: 1;
+    }
   }
 </style>

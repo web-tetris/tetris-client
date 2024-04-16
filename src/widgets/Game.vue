@@ -10,7 +10,7 @@ import GameOver from '@/widgets/GameOver.vue'
 
 const props = defineProps<{
   matrix: BlockMatrix
-  nextFigures: BlockMatrix[]
+  nextFigures: BlockMatrix
   multiplayerMode: MultiplayerMode
   players: number
   figureAmount: number

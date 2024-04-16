@@ -22,7 +22,7 @@ const { modelValue } = useVModels(props, emits)
         class="btn" icon="arrow-down" flat
         @click="modelValue = +modelValue - 1"
       />
-      <input v-model="modelValue" class="input" @focus="$event.target.select()">
+      <input v-model="modelValue" class="value-input" @focus="$event.target.select()">
       <Button
         :no-stroke="true"
         class="btn" icon="arrow-up" flat
@@ -35,17 +35,18 @@ const { modelValue } = useVModels(props, emits)
 <style scoped lang="scss">
 .input {
   display: flex;
-  gap: 5px;
+  justify-content: space-around;
+  align-items: center;
 
   .btn {
     border: 0;
   }
 
-  .input {
-    width: 40px;
+  .value-input {
     border: none;
     border-radius: 8px;
     text-align: center;
+    width: 30px;
 
     &:focus {
       outline: none;

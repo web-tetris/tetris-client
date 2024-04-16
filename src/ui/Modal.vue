@@ -45,12 +45,12 @@ const { relative } = toRefs(props)
   background-color: white;
   display: flex;
   flex-direction: column;
+  gap: 30px;
 
   .header {
     display: flex;
     align-items: center;
     padding: 10px;
-    width: 100%;
 
     .title {
       flex: 1;
@@ -68,9 +68,8 @@ const { relative } = toRefs(props)
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
     align-items: center;
-    width: 100%;
+    gap: 30px;
   }
 
   &.relative {

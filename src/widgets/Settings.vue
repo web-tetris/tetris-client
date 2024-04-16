@@ -23,32 +23,38 @@ const currentGamepad = ref<number>(0)
 </script>
 
 <template>
-  <Modal v-model:showed="showed" :closable="true" :title="t('settings.title')" relative class="modal">
-    <LanguageSelect class="language" />
+  <Modal v-model:showed="showed" :closable="true" :title="t('settings.title')" relative class="settings-modal">
+    <template #default>
+      <LanguageSelect class="language" />
 
-    <StyleSelect
-      v-model:style="currentStyle"
-      class="style"
-      :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }"
-    />
+      <StyleSelect
+        v-model:style="currentStyle"
+        class="style"
+        :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }"
+      />
 
-    <Difficulty v-model:difficult="difficult" class="difficult" />
+      <Difficulty v-model:difficult="difficult" class="difficult" />
 
-    <PlayersSelect v-model:players="players" v-model:multiplayer-mode="multiplayerMode" class="players" />
+      <PlayersSelect
+        v-model:players="players"
+        v-model:multiplayer-mode="multiplayerMode"
+        class="players"
+      />
 
-    <ControllerSelect
-      v-for="player in players"
-      :key="player"
-      v-model:control="currentControl"
-      v-model:gamepad="currentGamepad"
-      :player="player"
-      class="controller"
-    />
+      <ControllerSelect
+        v-for="player in players"
+        :key="player"
+        v-model:control="currentControl"
+        v-model:gamepad="currentGamepad"
+        :player="player"
+        class="controller"
+      />
+    </template>
   </Modal>
 </template>
 
 <style scoped lang="scss">
-.modal {
+.settings-modal {
 
   .language {
     width: 300px;
@@ -70,6 +76,5 @@ const currentGamepad = ref<number>(0)
   .controller {
     margin-bottom: 10px;
   }
-
 }
 </style>
