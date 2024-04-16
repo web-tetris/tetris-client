@@ -45,9 +45,9 @@
   "style-select": {
     "title": "Стиль",
     "casino": "Казино",
-    "games": "Настолки",
     "food": "Еда",
-    "minecraft": "Майнкрафт",
-    "main": "Основная"
+    "main": "Основная",
+    "pokemon": "Покемон",
+    "camping": "Пикник"
   }
 }

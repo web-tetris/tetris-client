@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toRefs, watch } from 'vue'
+import { computed, toRefs, watch } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import Matrix from '@/widgets/Matrix.vue'
@@ -9,17 +9,17 @@ import Button from '@/ui/Button.vue'
 import Menu from '@/widgets/Menu.vue'
 import GameOver from '@/widgets/GameOver.vue'
 import StyleSelect from '@/widgets/StyleSelect.vue'
-import { BlockStyle } from '@/consts/block-style'
 import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
 import GameScore from '@/widgets/GameScore.vue'
-import { colors } from '@/consts/random-colors'
 import { useHighscores } from '@/hooks/highscores'
 
 const props = defineProps<{
   multiplayerMode: MultiplayerMode
   players: number
 }>()
+
+const currentStyle = defineModel('currentStyle', { required: true })
 
 const { multiplayerMode, players } = toRefs(props)
 
@@ -34,8 +34,6 @@ const { matrix, nextFigures, score, gameOver, move, rotate, reset, pause, resume
 
 const [menuShowed, toggleMenu] = useToggle(false)
 watch(menuShowed, showed => showed ? pause() : resume())
-
-const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
 </script>
 
 <template>
@@ -93,11 +91,11 @@ const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
   position: relative;
   background: white;
   border-radius: 10px;
-  border: 2px solid v-bind('colors[0]');
+  border: 2px solid var(--primary-0);
 
   .matrix {
     padding: 10px;
-    border: 2px solid v-bind('colors[0]');
+    border: 2px solid var(--primary-0);
     border-radius: 10px;
   }
 

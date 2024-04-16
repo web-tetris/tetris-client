@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useEventListener, useToggle, whenever } from '@vueuse/core'
+import { syncRefs, useEventListener, useToggle, whenever } from '@vueuse/core'
 import Game from '@/widgets/Game.vue'
 import PlayersSelect from '@/widgets/PlayersSelect.vue'
 import Button from '@/ui/Button.vue'
@@ -8,8 +8,21 @@ import Settings from '@/widgets/Settings.vue'
 import { useHighscores } from '@/hooks/highscores'
 import Highscore from '@/widgets/Highscore.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
-import { colors } from '@/consts/random-colors'
 import { useSoundEffects } from '@/hooks/sound-effects'
+import { useColors } from '@/hooks/colors'
+import { BlockStyle } from '@/consts/block-style'
+
+const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
+
+const soundEffects = useSoundEffects()
+const stop = useEventListener(['keydown', 'mousedown'], () => {
+  soundEffects.themeSound()
+  stop()
+})
+syncRefs(currentStyle, soundEffects.style)
+
+const colors = useColors()
+syncRefs(currentStyle, colors.style)
 
 const players = ref(1)
 const multiplayerMode = ref<MultiplayerMode>(MultiplayerMode.VERSUS)
@@ -18,12 +31,6 @@ whenever(() => players.value === 1, () => multiplayerMode.value = MultiplayerMod
 const [settingsShowed, toggleSettings] = useToggle(false)
 
 const { highscores, currentScore, add } = useHighscores()
-
-const { themeSound } = useSoundEffects()
-const stop = useEventListener(['keydown', 'mousedown'], () => {
-  themeSound()
-  stop()
-})
 </script>
 
 <template>
@@ -35,11 +42,11 @@ const stop = useEventListener(['keydown', 'mousedown'], () => {
 
       <div class="game-list">
         <template v-if="multiplayerMode === MultiplayerMode.VERSUS">
-          <Game v-for="i in players" :key="i" class="game" :multiplayer-mode="multiplayerMode" :players="players" @add-score="add" />
+          <Game v-for="i in players" :key="i" v-model:current-style="currentStyle" class="game" :multiplayer-mode="multiplayerMode" :players="players" @add-score="add" />
         </template>
 
         <template v-else>
-          <Game class="game" :players="players" :multiplayer-mode="multiplayerMode" @add-score="add" />
+          <Game v-model:current-style="currentStyle" class="game" :players="players" :multiplayer-mode="multiplayerMode" @add-score="add" />
         </template>
       </div>
     </div>
@@ -71,7 +78,7 @@ const stop = useEventListener(['keydown', 'mousedown'], () => {
     width: 100%;
     height: 100%;
     opacity: 0.2;
-    background: linear-gradient(135deg, v-bind('colors[0]'), white 20% 80%, v-bind('colors[1]'));
+    background: linear-gradient(135deg, var(--primary-0), white 20% 80%, var(--primary-1));
   }
 
   .highscore {

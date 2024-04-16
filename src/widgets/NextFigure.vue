@@ -3,7 +3,6 @@ import { useI18n } from 'vue-i18n'
 import type { BlockMatrix } from '@/types/block-matrix'
 import Matrix from '@/widgets/Matrix.vue'
 import type { BlockStyle } from '@/consts/block-style'
-import { colors } from '@/consts/random-colors'
 
 const props = defineProps<{
   next: BlockMatrix
@@ -35,7 +34,7 @@ const { t } = useI18n()
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid v-bind('colors[0]');
+    border: 2px solid var(--primary-0);
     border-radius: 8px;
   }
 }
