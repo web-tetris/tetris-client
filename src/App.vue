@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { ref } from 'vue'
 import { syncRefs, useEventListener, useToggle, whenever } from '@vueuse/core'
 import Game from '@/widgets/Game.vue'
 import Button from '@/ui/Button.vue'
@@ -10,7 +10,6 @@ import { MultiplayerMode } from '@/consts/multiplayer-mode'
 import { useSoundEffects } from '@/hooks/sound-effects'
 import { useColors } from '@/hooks/colors'
 import { BlockStyle } from '@/consts/block-style'
-import { useGame } from '@/hooks/game'
 import { useSettingsService } from '@/hooks/settings'
 
 const currentStyle = ref<BlockStyle>(BlockStyle.MAIN)
@@ -32,11 +31,8 @@ whenever(() => players.value === 1, () => multiplayerMode.value = MultiplayerMod
 const { highscores, currentScore, add } = useHighscores()
 
 const { difficult } = useSettingsService()
-const figureAmount = computed(() => multiplayerMode.value === MultiplayerMode.CO_OP ? players.value : 1)
-const { matrix, nextFigures, score, gameOver, reset, pause, resume } = useGame({ difficult, figureAmount, add })
 
 const [settingsShowed, toggleSettings] = useToggle(false)
-watch(settingsShowed, showed => showed ? pause() : resume())
 </script>
 
 <template>
@@ -50,32 +46,24 @@ watch(settingsShowed, showed => showed ? pause() : resume())
             v-for="i in players"
             :key="i"
             v-model:current-style="currentStyle"
-            :matrix="matrix"
-            :next-figures="nextFigures"
             :multiplayer-mode="multiplayerMode"
             :players="players"
-            :figure-amount="figureAmount"
-            :score="score"
-            :game-over="gameOver"
+            :difficult="difficult"
+            :paused="settingsShowed"
             class="game"
-            @add-score="add"
-            @reset="reset"
+            @add="add"
           />
         </template>
 
         <template v-else>
           <Game
             v-model:current-style="currentStyle"
-            :matrix="matrix"
-            :next-figures="nextFigures"
             :multiplayer-mode="multiplayerMode"
             :players="players"
-            :figure-amount="figureAmount"
-            :score="score"
-            :game-over="gameOver"
+            :difficult="difficult"
+            :paused="settingsShowed"
             class="game"
-            @add-score="add"
-            @reset="reset"
+            @add="add"
           />
         </template>
       </div>

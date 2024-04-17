@@ -56,7 +56,6 @@ export function useGame({
   function reset() {
     generateField()
     score.value = 0
-    difficult.value = 1
     gameOver.value = false
     figures.value.forEach((figure, index) => push(index))
     resume()
