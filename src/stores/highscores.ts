@@ -1,7 +1,7 @@
 import { ref, shallowReadonly } from 'vue'
-import { createGlobalState } from '@vueuse/core'
+import { defineStore } from 'pinia'
 
-export const useHighscores = createGlobalState(() => {
+export const useHighscoresStore = defineStore('highscores', () => {
   const highscores = ref<number []>([11, 9, 8, 7, 6])
   const currentScore = ref<number>()
 

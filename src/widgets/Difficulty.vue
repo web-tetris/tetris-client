@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import NumberInput from '@/ui/NumberInput.vue'
+import { useSettingsStore } from '@/stores/settings'
 
-const difficult = defineModel('difficult', { required: true })
+const { difficulty } = storeToRefs(useSettingsStore())
 
 const { t } = useI18n()
 </script>
 
 <template>
-  <div class="difficult">
-    <span>{{ t('menu.difficult') }}</span>
-    <NumberInput v-model:modelValue="difficult" class="value" />
+  <div class="difficulty">
+    <span>{{ t('menu.difficulty') }}</span>
+    <NumberInput v-model="difficulty" class="value" />
   </div>
 </template>
 
 <style scoped lang="scss">
-  .difficult {
+  .difficulty {
     display: flex;
     align-items: center;
     justify-content: space-between;

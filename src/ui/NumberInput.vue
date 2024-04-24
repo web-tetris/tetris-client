@@ -12,6 +12,13 @@ const emits = defineEmits<{
 }>()
 
 const { modelValue } = useVModels(props, emits)
+
+function increase(event: WheelEvent) {
+  if (event.deltaY > 0)
+    modelValue.value = +modelValue.value + 1
+  else
+    modelValue.value = +modelValue.value - 1
+}
 </script>
 
 <template>
@@ -22,7 +29,12 @@ const { modelValue } = useVModels(props, emits)
         class="btn" icon="arrow-down" flat
         @click="modelValue = +modelValue - 1"
       />
-      <input v-model="modelValue" class="value-input" @focus="$event.target.select()">
+      <input
+        v-model="modelValue"
+        class="value-input"
+        @wheel="increase"
+        @focus="$event.target.select()"
+      >
       <Button
         :no-stroke="true"
         class="btn" icon="arrow-up" flat

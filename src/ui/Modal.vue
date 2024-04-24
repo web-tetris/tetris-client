@@ -1,20 +1,14 @@
 <script setup lang="ts">
-import { useVModels } from '@vueuse/core'
 import { toRefs } from 'vue'
 import Button from '@/ui/Button.vue'
 
 const props = defineProps<{
-  showed: boolean
   title: string
   closable: boolean
   relative?: boolean
 }>()
 
-const emits = defineEmits<{
-  'update:showed': [boolean]
-}>()
-
-const { showed } = useVModels(props, emits)
+const showed = defineModel<boolean>('showed', { required: true })
 
 const { relative } = toRefs(props)
 </script>

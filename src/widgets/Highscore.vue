@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useHighscores } from '@/hooks/highscores'
+import { storeToRefs } from 'pinia'
+import { useHighscoresStore } from '@/stores/highscores'
 
-const { highscores, currentScore } = useHighscores()
+const { highscores, currentScore } = storeToRefs(useHighscoresStore())
 const { t } = useI18n()
 
 function getImageUrl(index: number) {

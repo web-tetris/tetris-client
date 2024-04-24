@@ -1,7 +1,9 @@
 {
   "game": {
     "menu": "Menu",
-    "reset": "Reset"
+    "reset": "Reset",
+    "pause": "Pause",
+    "resume": "Continue"
   },
   "controller-select": {
     "arrow": "Arrow",
@@ -22,7 +24,7 @@
   },
   "menu": {
     "title": "Menu",
-    "difficult": "Difficult"
+    "difficulty": "Difficult"
   },
   "players-select": {
     "title": "Number of players",

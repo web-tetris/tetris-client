@@ -14,15 +14,15 @@ import { MoveDirection } from '@/consts/move-direction'
 
 export function useFigure(field: Ref<BlockMatrix>) {
   const position = ref<Position>({ x: 0, y: 0 })
-  const currentFigure = shallowRef<BlockMatrix>([[]])
-  const nextFigure = shallowRef<BlockMatrix>(fillFigure(randomArrayValue(figures)))
+  const current = shallowRef<BlockMatrix>([[]])
+  const next = shallowRef<BlockMatrix>(fillFigure(randomArrayValue(figures)))
 
   function push(xRelative: number) {
-    currentFigure.value = nextFigure.value
-    nextFigure.value = fillFigure(randomArrayValue(figures))
+    current.value = next.value
+    next.value = fillFigure(randomArrayValue(figures))
     position.value = {
-      x: Math.round(field.value[0].length * xRelative - currentFigure.value[0].length / 2),
-      y: -currentFigure.value.length,
+      x: Math.round(field.value[0].length * xRelative - current.value[0].length / 2),
+      y: -current.value.length,
     }
   }
 
@@ -34,7 +34,7 @@ export function useFigure(field: Ref<BlockMatrix>) {
   function move(direction: MoveDirection) {
     const delta = moveMap[direction]
     const newPosition: Position = { x: position.value.x + delta.x, y: position.value.y + delta.y }
-    const available = canProjectFigure(field.value, currentFigure.value, newPosition)
+    const available = canProjectFigure(field.value, current.value, newPosition)
 
     if (available)
       position.value = newPosition
@@ -43,18 +43,18 @@ export function useFigure(field: Ref<BlockMatrix>) {
   }
 
   function rotate() {
-    const rotated = rotateFigure(currentFigure.value)
+    const rotated = rotateFigure(current.value)
     const newPosition = getSafePosition(field.value, rotated, position.value)
     if (newPosition) {
-      currentFigure.value = rotated
+      current.value = rotated
       position.value = newPosition
     }
   }
 
   return {
     position: shallowReadonly(position),
-    currentFigure: shallowReadonly(currentFigure),
-    nextFigure: shallowReadonly(nextFigure),
+    current: shallowReadonly(current),
+    next: shallowReadonly(next),
 
     push,
     move,

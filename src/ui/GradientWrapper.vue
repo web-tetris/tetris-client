@@ -25,6 +25,7 @@ const { flat, hovering, noStroke } = toRefs(props)
 
 <style scoped lang="scss">
 .wrapper {
+  display: flex;
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -57,10 +58,11 @@ const { flat, hovering, noStroke } = toRefs(props)
   }
 
   .inner {
-      position: relative;
-      margin: 2px;
-      background-color: white;
-      border-radius: 8px;
+    flex: 1;
+    position: relative;
+    margin: 2px;
+    background-color: white;
+    border-radius: 8px;
   }
 }
 </style>

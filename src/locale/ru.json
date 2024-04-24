@@ -1,7 +1,9 @@
 {
   "game": {
     "menu": "Меню",
-    "reset": "Сбросить"
+    "reset": "Сбросить",
+    "pause": "Пауза",
+    "resume": "Продолжить"
   },
   "controller-select": {
     "arrow": "Стрелки",
@@ -22,7 +24,7 @@
   },
   "menu": {
     "title": "Меню",
-    "difficult": "Сложность"
+    "difficulty": "Сложность"
   },
   "players-select": {
     "title": "Количество игроков",

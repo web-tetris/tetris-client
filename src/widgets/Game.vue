@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, toRefs, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import Matrix from '@/widgets/Matrix.vue'
 import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
@@ -8,31 +9,34 @@ import GameScore from '@/widgets/GameScore.vue'
 import Button from '@/ui/Button.vue'
 import GameOver from '@/widgets/GameOver.vue'
 import { useGame } from '@/hooks/game'
-import { useGameController } from '@/hooks/game-controller'
-
-const props = defineProps<{
-  multiplayerMode: MultiplayerMode
-  players: number
-  difficult: number
-}>()
+import { useSettingsStore } from '@/stores/settings'
 
 const emits = defineEmits<{
-  add: [number]
+  menu: []
 }>()
 
-const paused = defineModel('paused', { required: true })
-const currentStyle = defineModel('currentStyle', { required: true })
+const settingsStore = useSettingsStore()
+const { multiplayerMode, players } = storeToRefs(settingsStore)
 
 const { t } = useI18n()
 
-const { difficult } = toRefs(props)
-const figureAmount = computed(() => props.multiplayerMode === MultiplayerMode.CO_OP ? props.players : 1)
-const { matrix, nextFigures, score, gameOver, reset, pause, resume } = useGame({ difficult, figureAmount, add: score => emits('add', score) })
+const figureAmount = computed(() => multiplayerMode.value === MultiplayerMode.CO_OP ? players.value : 1)
+
+const { matrix, nextFigures, score, gameOver, reset, pause, resume, move, rotate } = useGame({ figureAmount })
+
+const paused = ref<boolean>(false)
 watch(paused, paused => paused ? pause() : resume())
+const pauseButton = computed(() => paused.value
+  ? {
+      icon: 'play',
+      label: t('game.resume'),
+    }
+  : {
+      icon: 'pause',
+      label: t('game.pause'),
+    })
 
-useGameController({
-
-})
+onMounted(() => console.log('sss'))
 </script>
 
 <template>
@@ -40,31 +44,38 @@ useGameController({
     <Matrix
       :matrix="matrix"
       class="matrix"
-      :style="currentStyle"
     />
 
     <div class="info">
       <GameScore
         :score="score"
         class="score"
-        :class="{ small: props.multiplayerMode === MultiplayerMode.CO_OP }"
+        :class="{ small: multiplayerMode === MultiplayerMode.CO_OP }"
       />
 
       <div class="co-op">
         <PlayingState
           v-for="(player, i) in figureAmount"
           :key="player"
-          :style="currentStyle"
-          :next-figure="nextFigures[i].value"
-          :multiplayer-mode="props.multiplayerMode"
+          :next-figure="nextFigures[i]"
           :player="i"
+          @move="move(i, $event)"
+          @rotate="rotate(i)"
+          @reset="reset"
+          @menu="() => emits('menu')"
         />
       </div>
 
-      <Button
-        icon="arrow-clockwise" :label="t('game.reset')"
-        @click="reset"
-      />
+      <div class="buttons">
+        <Button
+          :icon="pauseButton.icon" :label="pauseButton.label"
+          @click="() => paused = !paused"
+        />
+        <Button
+          icon="arrow-clockwise" :label="t('game.reset')"
+          @click="reset"
+        />
+      </div>
     </div>
 
     <GameOver
@@ -108,6 +119,12 @@ useGameController({
   .co-op {
     display: flex;
     gap: 20px;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 }
 </style>

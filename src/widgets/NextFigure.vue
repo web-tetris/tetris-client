@@ -2,11 +2,9 @@
 import { useI18n } from 'vue-i18n'
 import type { BlockMatrix } from '@/types/block-matrix'
 import Matrix from '@/widgets/Matrix.vue'
-import type { BlockStyle } from '@/consts/block-style'
 
 const props = defineProps<{
   next: BlockMatrix
-  style: BlockStyle
 }>()
 
 const { t } = useI18n()
@@ -16,7 +14,7 @@ const { t } = useI18n()
   <div class="next-panel">
     <span class="label">{{ t('score.next') }}</span>
     <div class="figure">
-      <Matrix :matrix="props.next" :style="props.style" small />
+      <Matrix :matrix="props.next" small />
     </div>
   </div>
 </template>

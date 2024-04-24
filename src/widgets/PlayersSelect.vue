@@ -24,11 +24,15 @@ const fieldOptions = computed <SelectOption <MultiplayerMode>[]>(() => [
 <template>
   <div class="selectors">
     <Select
-      v-model="players" class="players" :options="playersOptions"
+      v-model="players"
+      class="players"
+      :options="playersOptions"
       :label="t('players-select.title')"
     />
     <Select
-      v-if="players > 1" v-model="multiplayerMode" class="fields"
+      v-if="players > 1"
+      v-model="multiplayerMode"
+      class="fields"
       :options="fieldOptions"
       :label="t('players-select.field-title')"
     />

@@ -1,20 +1,40 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import type { BlockMatrix } from '@/types/block-matrix'
-import type { BlockStyle } from '@/consts/block-style'
 import NextFigure from '@/widgets/NextFigure.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
+import { useGameController } from '@/hooks/game-controller'
+import type { MoveDirection } from '@/consts/move-direction'
+import { useSettingsStore } from '@/stores/settings'
 
 const props = withDefaults(defineProps<{
   nextFigure: BlockMatrix
-  style: BlockStyle
-  multiplayerMode: MultiplayerMode
   player?: number
 }>(), {
   player: 0,
 })
 
+const emits = defineEmits<{
+  move: [MoveDirection]
+  rotate: []
+  reset: []
+  menu: []
+}>()
+
+const settingsStore = useSettingsStore()
+const { multiplayerMode, controlType, gamepadIndex } = storeToRefs(settingsStore)
+
 const { t } = useI18n()
+
+useGameController({
+  type: controlType,
+  index: gamepadIndex,
+  move: direction => emits('move', direction),
+  rotate: () => emits('rotate'),
+  reset: () => emits('reset'),
+  toggleMenu: () => emits('menu'),
+})
 </script>
 
 <template>
@@ -23,7 +43,7 @@ const { t } = useI18n()
       {{ `${t('playing-state.player')} ${player + 1}` }}
     </div>
 
-    <NextFigure class="next-figure" :style="props.style" :next="props.nextFigure" />
+    <NextFigure class="next-figure" :next="props.nextFigure" />
   </div>
 </template>
 

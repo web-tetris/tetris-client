@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="V extends number | string = number">
-import { computed, ref } from 'vue'
-import { useVModel } from '@vueuse/core'
+import { computed, ref, shallowRef } from 'vue'
+import { onClickOutside, useVModel } from '@vueuse/core'
 import type { SelectOption } from '@/types/select-option'
 import GradientWrapper from '@/ui/GradientWrapper.vue'
-import { useSoundEffects } from '@/hooks/sound-effects'
+import { useSoundStore } from '@/stores/sound'
 
 const props = withDefaults(defineProps<{
   label?: string
@@ -22,11 +22,13 @@ const emits = defineEmits<{
 const modelValue = useVModel(props, 'modelValue', emits)
 
 const optionShowed = ref<boolean>(false)
-const { buttonSound } = useSoundEffects()
+const { buttonSound } = useSoundStore()
 function toggle() {
   optionShowed.value = !optionShowed.value
   buttonSound()
 }
+const target = shallowRef()
+onClickOutside(target, () => optionShowed.value = false)
 
 const current = computed(() => props.options.find(option => option.value === modelValue.value))
 const toggleIcon = computed(() => optionShowed.value ? 'bi bi-chevron-up' : 'bi bi-chevron-down')
@@ -47,7 +49,7 @@ function getImageUrl(path: string) {
       </div>
     </div>
 
-    <div class="options" :class="{ optionShowed, top: props.direction === 'top' }" @click="toggle">
+    <div ref="target" class="options" :class="{ optionShowed, top: props.direction === 'top' }" @click="toggle">
       <GradientWrapper>
         <div class="current">
           <div v-if="current" class="option">
