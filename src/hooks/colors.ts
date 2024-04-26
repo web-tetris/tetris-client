@@ -11,6 +11,7 @@ const styleColorMapping: Record<BlockStyle, string[]> = {
   [BlockStyle.FOOD]: ['#FFDA00', '#FF9FC4', '#CCD830'],
   [BlockStyle.POKEMON]: ['#EA81BD', '#E86207', '#A962E8'],
   [BlockStyle.CAMPING]: ['#FFAB46', '#4B81F2', '#9DC600'],
+  [BlockStyle.CAT]: ['#F7B3A0', '#FDE37E', '#FE91C7'],
 }
 
 export const useColors = createGlobalState(() => {
