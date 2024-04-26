@@ -2,34 +2,33 @@ import type { Ref } from 'vue'
 import { computed, ref, shallowReadonly, watch } from 'vue'
 
 import { tryOnMounted, useInterval } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
 import { BlockColor } from '@/consts/block-color'
 import { projectFigure } from '@/utils/figure'
 import { MoveDirection } from '@/consts/move-direction'
-import { useSoundEffects } from '@/hooks/sound-effects'
+import { useSoundStore } from '@/stores/sound'
 import { useFiguresArray } from '@/hooks/figures-array'
 import { useGameField } from '@/hooks/game-field'
+import { useSettingsStore } from '@/stores/settings'
+import { useHighscoresStore } from '@/stores/highscores'
 
 export function useGame({
-  difficult,
   figureAmount,
-  add,
 }: {
-  difficult: Ref<number>
   figureAmount: Ref<number>
-  add: (score: number) => void
 }) {
   const { field, generateField, addFigure, stackLines } = useGameField({ figureAmount })
 
   const {
-    figures,
-    currentFigures,
-    nextFigures,
+    current,
+    next,
+    position,
     push,
     move,
     rotate,
   } = useFiguresArray({ field, figureAmount })
 
-  const soundEffects = useSoundEffects()
+  const { gameOverSound, figureDropSound } = useSoundStore()
 
   const score = ref<number>(0)
   const delta = 10
@@ -37,16 +36,18 @@ export function useGame({
   const min = 200
   const offset = 10
   const speed = 0.3
+  const { difficulty } = storeToRefs(useSettingsStore())
   function calculateInterval(): number {
-    return (initial / difficult.value - delta) / ((score.value + offset) ** speed) + min
+    return (initial / difficulty.value - delta) / ((score.value + offset) ** speed) + min
   }
   const { pause, resume, counter } = useInterval(calculateInterval, { controls: true })
 
+  const { add } = useHighscoresStore()
   const gameOver = ref<boolean>(false)
   function gameOverCheck() {
     const isGameOver = !field.value[0].includes(BlockColor.EMPTY)
     if (isGameOver) {
-      soundEffects.gameOverSound()
+      gameOverSound()
       gameOver.value = true
       add(score.value)
       pause()
@@ -56,21 +57,20 @@ export function useGame({
   function reset() {
     generateField()
     score.value = 0
-    difficult.value = 1
     gameOver.value = false
-    figures.value.forEach((figure, index) => push(index))
+    Array.from({ length: figureAmount.value }).forEach((_, i) => push(i))
     resume()
   }
   tryOnMounted(reset)
 
   function cycle() {
-    const available = figures.value.map(figure => figure.move(MoveDirection.DOWN))
+    const available = Array.from({ length: figureAmount.value }).map((_, i) => move(i, MoveDirection.DOWN))
     if (available.includes(false))
-      soundEffects.figureDropSound()
+      figureDropSound()
 
-    figures.value.forEach((figure, i) => {
+    available.forEach((_, i) => {
       if (!available[i]) {
-        addFigure(figure.currentFigure.value, figure.position.value)
+        addFigure(current.value[i], position.value[i])
         push(i)
       }
     })
@@ -82,15 +82,17 @@ export function useGame({
 
   const matrix = computed(() => {
     let projection = field.value
-    for (const { currentFigure, position } of figures.value)
-      projection = projectFigure(projection, currentFigure.value, position.value)
+
+    for (let i = 0; i < figureAmount.value; i++)
+      projection = projectFigure(projection, current.value[i], position.value[i])
+
     return projection
   })
 
   return {
     matrix,
-    currentFigures: shallowReadonly(currentFigures),
-    nextFigures: shallowReadonly(nextFigures),
+    currentFigures: shallowReadonly(current),
+    nextFigures: shallowReadonly(next),
     score: shallowReadonly(score),
     gameOver: shallowReadonly(gameOver),
 

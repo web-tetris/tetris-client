@@ -3,7 +3,7 @@ import { shallowReadonly, shallowRef, watch } from 'vue'
 import { createField } from '@/utils/field'
 import { FIELD_SIZE } from '@/consts/settings'
 import { BlockColor } from '@/consts/block-color'
-import { useSoundEffects } from '@/hooks/sound-effects'
+import { useSoundStore } from '@/stores/sound'
 import type { BlockMatrix } from '@/types/block-matrix'
 import { projectFigure } from '@/utils/figure'
 
@@ -22,12 +22,12 @@ export function useGameField({
     field.value = projectFigure(field.value, currentFigure, position)
   }
 
-  const soundEffects = useSoundEffects()
+  const { lineStackSound } = useSoundStore()
   function stackLines(): number {
     const filtered = field.value.filter(row => row.includes(BlockColor.EMPTY))
     const delta = field.value.length - filtered.length
     if (delta > 0) {
-      soundEffects.lineStackSound()
+      lineStackSound()
       field.value = [
         ...createField({ x: field.value[0].length, y: delta }),
         ...filtered,

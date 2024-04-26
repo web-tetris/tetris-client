@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import Select from '@/ui/Select.vue'
 import type { SelectOption } from '@/types/select-option'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
+import { useSettingsStore } from '@/stores/settings'
 
-const players = defineModel('players', { required: true })
-const multiplayerMode = defineModel('multiplayerMode', { required: true })
+const { multiplayerMode, players } = storeToRefs(useSettingsStore())
 
 const { t } = useI18n()
 
@@ -24,11 +25,15 @@ const fieldOptions = computed <SelectOption <MultiplayerMode>[]>(() => [
 <template>
   <div class="selectors">
     <Select
-      v-model="players" class="players" :options="playersOptions"
+      v-model="players"
+      class="players"
+      :options="playersOptions"
       :label="t('players-select.title')"
     />
     <Select
-      v-if="players > 1" v-model="multiplayerMode" class="fields"
+      v-if="players > 1"
+      v-model="multiplayerMode"
+      class="fields"
       :options="fieldOptions"
       :label="t('players-select.field-title')"
     />
@@ -38,7 +43,8 @@ const fieldOptions = computed <SelectOption <MultiplayerMode>[]>(() => [
 <style scoped lang="scss">
 .selectors{
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 50px;
 
   .players, .fields {
     width: 300px;

@@ -1,83 +1,72 @@
 <script setup lang="ts">
-import { computed, toRefs, watch } from 'vue'
-import { useToggle } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
+import { computed, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useToggle } from '@vueuse/core'
 import Matrix from '@/widgets/Matrix.vue'
-import { useGame } from '@/hooks/game'
-import { useSettingsService } from '@/hooks/settings'
-import Button from '@/ui/Button.vue'
-import Menu from '@/widgets/Menu.vue'
-import GameOver from '@/widgets/GameOver.vue'
-import StyleSelect from '@/widgets/StyleSelect.vue'
 import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
 import GameScore from '@/widgets/GameScore.vue'
-import { useHighscores } from '@/hooks/highscores'
-
-const props = defineProps<{
-  multiplayerMode: MultiplayerMode
-  players: number
-}>()
-
-const currentStyle = defineModel('currentStyle', { required: true })
-
-const { multiplayerMode, players } = toRefs(props)
-
-const { add } = useHighscores()
+import Button from '@/ui/Button.vue'
+import GameOver from '@/widgets/GameOver.vue'
+import { useGame } from '@/hooks/game'
+import { useSettingsStore } from '@/stores/settings'
 
 const { t } = useI18n()
 
-const { difficult } = useSettingsService()
-
+const { multiplayerMode, players } = storeToRefs(useSettingsStore())
 const figureAmount = computed(() => multiplayerMode.value === MultiplayerMode.CO_OP ? players.value : 1)
-const { matrix, nextFigures, score, gameOver, move, rotate, reset, pause, resume } = useGame({ difficult, figureAmount, add })
 
-const [menuShowed, toggleMenu] = useToggle(false)
-watch(menuShowed, showed => showed ? pause() : resume())
+const { matrix, nextFigures, score, gameOver, reset, pause, resume, move, rotate } = useGame({ figureAmount })
+
+const [paused, togglePaused] = useToggle(false)
+watch(paused, paused => paused ? pause() : resume())
 </script>
 
 <template>
   <div class="game">
-    <Matrix :matrix="matrix" class="matrix" :style="currentStyle" />
+    <Matrix
+      :matrix="matrix"
+      class="matrix"
+    />
 
     <div class="info">
-      <GameScore :score="score" class="score" :class="{ small: multiplayerMode === MultiplayerMode.CO_OP }" />
+      <GameScore
+        :score="score"
+        class="score"
+        :class="{ small: multiplayerMode === MultiplayerMode.CO_OP }"
+      />
 
       <div class="co-op">
         <PlayingState
           v-for="(player, i) in figureAmount"
           :key="player"
-          :style="currentStyle"
-          :next-figure="nextFigures[i].value"
-          :multiplayer-mode="multiplayerMode"
+          :next-figure="nextFigures[i]"
           :player="i"
           @move="move(i, $event)"
           @rotate="rotate(i)"
           @reset="reset"
-          @menu="toggleMenu"
         />
       </div>
 
-      <StyleSelect
-        v-model:style="currentStyle"
-        class="style"
-        :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }"
-      />
-
-      <div class="buttons-list" :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }">
+      <div class="buttons">
         <Button
-          icon="arrow-clockwise" :label="t('game.reset')"
-          @click="reset"
+          :icon="paused ? 'play' : 'pause'"
+          @click="() => togglePaused()"
         />
         <Button
-          icon="list" :label="t('game.menu')"
-          @click="() => toggleMenu()"
+          icon="arrow-clockwise"
+          :label="t('game.reset')"
+          @click="reset"
         />
       </div>
     </div>
 
-    <Menu v-model:showed="menuShowed" v-model:difficult="difficult" />
-    <GameOver :showed="gameOver" :score="score" @restart="reset" />
+    <GameOver
+      :showed="gameOver"
+      :score="score"
+      @restart="reset"
+    />
   </div>
 </template>
 
@@ -109,31 +98,12 @@ watch(menuShowed, showed => showed ? pause() : resume())
       width: 200px;
       margin: 0 auto;
     }
-
-    .style {
-      margin-top: auto;
-
-      &.co-op {
-        width: 200px;
-        margin-left: auto;
-      }
-    }
-
-    .buttons-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-
-      &.co-op {
-        width: 200px;
-        margin-left: auto;
-      }
-    }
   }
 
-  .co-op {
+  .buttons {
     display: flex;
-    gap: 20px;
+    gap: 10px;
+    margin: auto 0 0 auto;
   }
 }
 </style>

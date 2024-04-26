@@ -1,20 +1,14 @@
 <script setup lang="ts">
-import { useVModels } from '@vueuse/core'
 import { toRefs } from 'vue'
 import Button from '@/ui/Button.vue'
 
 const props = defineProps<{
-  showed: boolean
   title: string
   closable: boolean
   relative?: boolean
 }>()
 
-const emits = defineEmits<{
-  'update:showed': [boolean]
-}>()
-
-const { showed } = useVModels(props, emits)
+const showed = defineModel<boolean>('showed', { required: true })
 
 const { relative } = toRefs(props)
 </script>
@@ -41,10 +35,11 @@ const { relative } = toRefs(props)
   transform: translate(-50%, -20%);
   border-radius: 10px;
   box-shadow: 0 0 10px 0 var(--primary-2);
-  width: 400px;
+  width: 50%;
   background-color: white;
   display: flex;
   flex-direction: column;
+  gap: 30px;
 
   .header {
     display: flex;
@@ -67,7 +62,8 @@ const { relative } = toRefs(props)
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 30px;
   }
 
   &.relative {

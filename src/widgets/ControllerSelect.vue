@@ -1,39 +1,34 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useVModels } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import { ControlType } from '@/consts/control-type'
 import { useGamepad } from '@/hooks/gamepad'
 import type { SelectOption } from '@/types/select-option'
 import Select from '@/ui/Select.vue'
+import { useSettingsStore } from '@/stores/settings'
 
 const props = defineProps<{
-  control: ControlType
-  gamepad: number
+  player: number
 }>()
 
-const emits = defineEmits<{
-  'update:control': [ControlType]
-  'update:gamepad': [number]
-}>()
-
-const { control, gamepad } = useVModels(props, emits)
+const { controlType, gamepadIndex } = storeToRefs(useSettingsStore())
 
 const { t } = useI18n()
 
 const controlsOptions = computed <SelectOption <ControlType>[]>(() => [
   {
-    label: t('game.arrow'),
+    label: t('controller-select.arrow'),
     value: ControlType.ARROWS,
     icon: 'bi bi-arrows-move',
   },
   {
-    label: t('game.gamepad'),
+    label: t('controller-select.gamepad'),
     value: ControlType.GAMEPAD,
     icon: 'bi bi-controller',
   },
   {
-    label: t('game.wasd'),
+    label: t('controller-select.wasd'),
     value: ControlType.WASD,
     icon: 'bi bi-alphabet-uppercase',
   },
@@ -51,23 +46,24 @@ const gamepadOptions = computed<SelectOption[]>(() =>
 
 <template>
   <div class="controllers">
-    <template v-if="control === ControlType.GAMEPAD">
+    <Select
+      v-model="controlType"
+      :label="`${t('controller-select.game-controls')}`"
+      :second-label="`${t('controller-select.player')} ${player}`"
+      :options="controlsOptions"
+    />
+
+    <template v-if="controlType === ControlType.GAMEPAD">
       <Select
         v-if="gamepads.length"
-        v-model="gamepad"
+        v-model="gamepadIndex"
         label="Gamepads"
         :options="gamepadOptions"
       />
       <div v-else class="connection-message">
-        {{ t('game.connection') }}
+        {{ t('controller-select.connection') }}
       </div>
     </template>
-
-    <Select
-      v-model="control"
-      :label="t('game.game-controls')"
-      :options="controlsOptions"
-    />
   </div>
 </template>
 
@@ -75,7 +71,8 @@ const gamepadOptions = computed<SelectOption[]>(() =>
 .controllers {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  width: 300px;
+  gap: 10px;
 
   .connection-message {
     color: gray;

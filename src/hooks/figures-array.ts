@@ -18,15 +18,16 @@ export function useFiguresArray({
   }
   watch(figureAmount, generateFigures, { immediate: true })
 
-  const currentFigures = computed(() => figures.value.map(figure => figure.currentFigure))
-  const nextFigures = computed (() => figures.value.map(figure => figure.nextFigure))
+  const current = computed(() => figures.value.map(figure => figure.current.value))
+  const next = computed (() => figures.value.map(figure => figure.next.value))
+  const position = computed (() => figures.value.map(figure => figure.position.value))
 
   function rotate(index: number) {
     figures.value[index].rotate()
   }
 
-  function move(index: number, direction: MoveDirection) {
-    figures.value[index].move(direction)
+  function move(index: number, direction: MoveDirection): boolean {
+    return figures.value[index].move(direction)
   }
 
   function push(index: number) {
@@ -34,9 +35,9 @@ export function useFiguresArray({
   }
 
   return {
-    figures: shallowReadonly(figures),
-    currentFigures: shallowReadonly(currentFigures),
-    nextFigures: shallowReadonly(nextFigures),
+    current: shallowReadonly(current),
+    next: shallowReadonly(next),
+    position: shallowReadonly(position),
 
     rotate,
     move,

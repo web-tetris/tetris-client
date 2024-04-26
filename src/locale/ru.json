@@ -1,12 +1,18 @@
 {
   "game": {
-    "connection": "Подключите один или несколько геймпадов",
-    "game-controls": "Управление",
     "menu": "Меню",
     "reset": "Сбросить",
+    "pause": "Пауза",
+    "resume": "Продолжить",
+    "new": "Новая игра"
+  },
+  "controller-select": {
     "arrow": "Стрелки",
     "gamepad": "Геймпад",
-    "wasd": "WASD"
+    "wasd": "WASD",
+    "connection": "Подключите один или несколько геймпадов",
+    "game-controls": "Управление",
+    "player": "Игрок"
   },
   "game-over": {
     "title": "Конец игры",
@@ -19,7 +25,7 @@
   },
   "menu": {
     "title": "Меню",
-    "difficult": "Сложность"
+    "difficulty": "Сложность"
   },
   "players-select": {
     "title": "Количество игроков",
@@ -36,8 +42,11 @@
     "total": "Всего:",
     "next": "Следующая:"
   },
-  "settings": {
-    "title": "Настойки игры"
+  "settings-page": {
+    "common-label": "Основные настройки",
+    "play-label": "Настройки игры",
+    "controller-label": "Настройки управления",
+    "start": "Начать игру"
   },
   "highscore": {
     "title": "Рейтинг:"

@@ -1,8 +1,9 @@
 import { createGlobalState, useCssVar } from '@vueuse/core'
 import randomColor from 'randomcolor'
-import { computed, ref, watch } from 'vue'
+import { computed, toRefs, watch } from 'vue'
 
 import { BlockStyle } from '@/consts/block-style'
+import { useSettingsStore } from '@/stores/settings'
 
 const styleColorMapping: Record<BlockStyle, string[]> = {
   [BlockStyle.MAIN]: randomColor({ luminosity: 'light', count: 3 }),
@@ -13,23 +14,18 @@ const styleColorMapping: Record<BlockStyle, string[]> = {
 }
 
 export const useColors = createGlobalState(() => {
-  const style = ref(BlockStyle.MAIN)
+  const { blockStyle } = toRefs(useSettingsStore())
 
   const primary0 = useCssVar('--primary-0')
   const primary1 = useCssVar('--primary-1')
   const primary2 = useCssVar('--primary-2')
 
-  const colors = computed(() => styleColorMapping[style.value])
+  const colors = computed(() => styleColorMapping[blockStyle.value])
 
   function changeColors() {
     primary0.value = colors.value[0]
     primary1.value = colors.value[1]
     primary2.value = colors.value[2]
   }
-  watch(style, changeColors, { immediate: true })
-
-  return {
-    style,
-
-  }
+  watch(blockStyle, changeColors, { immediate: true })
 })
