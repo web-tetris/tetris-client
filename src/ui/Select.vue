@@ -80,7 +80,7 @@ function getImageUrl(path: string) {
 <style scoped lang="scss">
 .select {
   position: relative;
-  height: 32px;
+  height: 36px;
 
   .title {
     width: 100%;

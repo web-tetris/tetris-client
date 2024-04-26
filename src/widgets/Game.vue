@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useToggle } from '@vueuse/core'
 import Matrix from '@/widgets/Matrix.vue'
 import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
@@ -11,32 +12,15 @@ import GameOver from '@/widgets/GameOver.vue'
 import { useGame } from '@/hooks/game'
 import { useSettingsStore } from '@/stores/settings'
 
-const emits = defineEmits<{
-  menu: []
-}>()
-
-const settingsStore = useSettingsStore()
-const { multiplayerMode, players } = storeToRefs(settingsStore)
-
 const { t } = useI18n()
 
+const { multiplayerMode, players } = storeToRefs(useSettingsStore())
 const figureAmount = computed(() => multiplayerMode.value === MultiplayerMode.CO_OP ? players.value : 1)
 
 const { matrix, nextFigures, score, gameOver, reset, pause, resume, move, rotate } = useGame({ figureAmount })
 
-const paused = ref<boolean>(false)
+const [paused, togglePaused] = useToggle(false)
 watch(paused, paused => paused ? pause() : resume())
-const pauseButton = computed(() => paused.value
-  ? {
-      icon: 'play',
-      label: t('game.resume'),
-    }
-  : {
-      icon: 'pause',
-      label: t('game.pause'),
-    })
-
-onMounted(() => console.log('sss'))
 </script>
 
 <template>
@@ -62,17 +46,17 @@ onMounted(() => console.log('sss'))
           @move="move(i, $event)"
           @rotate="rotate(i)"
           @reset="reset"
-          @menu="() => emits('menu')"
         />
       </div>
 
       <div class="buttons">
         <Button
-          :icon="pauseButton.icon" :label="pauseButton.label"
-          @click="() => paused = !paused"
+          :icon="paused ? 'play' : 'pause'"
+          @click="() => togglePaused()"
         />
         <Button
-          icon="arrow-clockwise" :label="t('game.reset')"
+          icon="arrow-clockwise"
+          :label="t('game.reset')"
           @click="reset"
         />
       </div>
@@ -116,15 +100,10 @@ onMounted(() => console.log('sss'))
     }
   }
 
-  .co-op {
-    display: flex;
-    gap: 20px;
-  }
-
   .buttons {
     display: flex;
-    flex-direction: column;
     gap: 10px;
+    margin: auto 0 0 auto;
   }
 }
 </style>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
+import { storeToRefs } from 'pinia'
 import type { BlockMatrix } from '@/types/block-matrix'
 import { BlockStyle } from '@/consts/block-style'
 import { BlockColor } from '@/consts/block-color'
@@ -9,15 +10,13 @@ const props = defineProps<{
   matrix: BlockMatrix
   small?: boolean
 }>()
+const { matrix, small } = toRefs(props)
 
-const settingsStore = useSettingsStore()
-const { blockStyle } = toRefs(settingsStore)
+const { blockStyle } = storeToRefs(useSettingsStore())
 
-const xSize = computed(() => props.matrix[0].length)
-const ySize = computed(() => props.matrix.length)
-const matrixFlat = computed(() => props.matrix.flat())
-
-const { small } = toRefs(props)
+const xSize = computed(() => matrix.value[0].length)
+const ySize = computed(() => matrix.value.length)
+const matrixFlat = computed(() => matrix.value.flat())
 
 function getImageUrl(block: string, style: BlockStyle) {
   return new URL(`../assets/blocks/${style}/${block}.png?url`, import.meta.url).href

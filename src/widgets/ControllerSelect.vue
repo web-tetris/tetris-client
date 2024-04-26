@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import { ControlType } from '@/consts/control-type'
 import { useGamepad } from '@/hooks/gamepad'
 import type { SelectOption } from '@/types/select-option'
 import Select from '@/ui/Select.vue'
+import { useSettingsStore } from '@/stores/settings'
 
 const props = defineProps<{
   player: number
 }>()
 
-const control = defineModel('control', { required: true })
-const gamepad = defineModel('gamepad', { required: true })
+const { controlType, gamepadIndex } = storeToRefs(useSettingsStore())
 
 const { t } = useI18n()
 
@@ -46,16 +47,16 @@ const gamepadOptions = computed<SelectOption[]>(() =>
 <template>
   <div class="controllers">
     <Select
-      v-model="control"
+      v-model="controlType"
       :label="`${t('controller-select.game-controls')}`"
       :second-label="`${t('controller-select.player')} ${player}`"
       :options="controlsOptions"
     />
 
-    <template v-if="control === ControlType.GAMEPAD">
+    <template v-if="controlType === ControlType.GAMEPAD">
       <Select
         v-if="gamepads.length"
-        v-model="gamepad"
+        v-model="gamepadIndex"
         label="Gamepads"
         :options="gamepadOptions"
       />

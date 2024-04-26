@@ -22,8 +22,7 @@ const emits = defineEmits<{
   menu: []
 }>()
 
-const settingsStore = useSettingsStore()
-const { multiplayerMode, controlType, gamepadIndex } = storeToRefs(settingsStore)
+const { multiplayerMode, controlType, gamepadIndex } = storeToRefs(useSettingsStore())
 
 const { t } = useI18n()
 

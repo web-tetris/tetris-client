@@ -3,7 +3,8 @@
     "menu": "Меню",
     "reset": "Сбросить",
     "pause": "Пауза",
-    "resume": "Продолжить"
+    "resume": "Продолжить",
+    "new": "Новая игра"
   },
   "controller-select": {
     "arrow": "Стрелки",
@@ -41,8 +42,11 @@
     "total": "Всего:",
     "next": "Следующая:"
   },
-  "settings": {
-    "title": "Настойки игры"
+  "settings-page": {
+    "common-label": "Основные настройки",
+    "play-label": "Настройки игры",
+    "controller-label": "Настройки управления",
+    "start": "Начать игру"
   },
   "highscore": {
     "title": "Рейтинг:"

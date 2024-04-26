@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { MultiplayerMode } from '@/consts/multiplayer-mode'
+import { useI18n } from 'vue-i18n'
 import Difficulty from '@/widgets/Difficulty.vue'
 import StyleSelect from '@/widgets/StyleSelect.vue'
 import LanguageSelect from '@/widgets/LanguageSelect.vue'
@@ -9,8 +9,8 @@ import PlayersSelect from '@/widgets/PlayersSelect.vue'
 import { useSettingsStore } from '@/stores/settings'
 import Button from '@/ui/Button.vue'
 
-const settingsStore = useSettingsStore()
-const { blockStyle, multiplayerMode, controlType, players, gamepadIndex } = storeToRefs(settingsStore)
+const { players } = storeToRefs(useSettingsStore())
+const { t } = useI18n()
 </script>
 
 <template>
@@ -20,33 +20,44 @@ const { blockStyle, multiplayerMode, controlType, players, gamepadIndex } = stor
     </div>
 
     <div class="body">
-      <LanguageSelect class="language" />
+      <div class="common-settings">
+        <div class="label">
+          {{ t('settings-page.common-label') }}
+        </div>
 
-      <StyleSelect
-        v-model:style="blockStyle"
-        class="style"
-        :class="{ 'co-op': multiplayerMode === MultiplayerMode.CO_OP }"
-      />
+        <div class="select">
+          <LanguageSelect />
+          <StyleSelect />
+        </div>
+      </div>
 
-      <Difficulty class="difficulty" />
+      <div class="play-settings">
+        <div class="label">
+          {{ t('settings-page.play-label') }}
+        </div>
 
-      <PlayersSelect
-        v-model:players="players"
-        v-model:multiplayer-mode="multiplayerMode"
-        class="players"
-      />
+        <div class="select">
+          <Difficulty />
+          <PlayersSelect />
+        </div>
+      </div>
 
-      <ControllerSelect
-        v-for="player in players"
-        :key="player"
-        v-model:control="controlType"
-        v-model:gamepad="gamepadIndex"
-        :player="player"
-        class="controller"
-      />
+      <div class="controller-settings">
+        <div class="label">
+          {{ t('settings-page.controller-label') }}
+        </div>
 
-      <Button label="Start" link="/game" class="button" />
+        <div class="select">
+          <ControllerSelect
+            v-for="player in players"
+            :key="player"
+            :player="player"
+          />
+        </div>
+      </div>
     </div>
+
+    <Button large :label="t('settings-page.start')" link="/game" class="button" />
   </div>
 </template>
 
@@ -55,50 +66,55 @@ const { blockStyle, multiplayerMode, controlType, players, gamepadIndex } = stor
   display: flex;
   flex-direction: column;
   gap: 50px;
+  align-items: center;
 
   .logo {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 50px;
-    background-image: linear-gradient(90deg, var(--primary-0) 30%, var(--primary-1) 50%, var(--primary-2) 60%);
-    background-size: 100%;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .body {
-    flex: 1;
+    height: 400px;
     padding: 20px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
+    justify-content: center;
+    gap: 100px;
 
-    .language {
+    .common-settings, .play-settings, .controller-settings {
+      display: flex;
+      flex-direction: column;
+      gap: 100px;
       width: 300px;
+
+      .label {
+        align-self: center;
+        font-size: 20px;
+      }
+
+      .select {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+      }
     }
 
-    .style {
-      margin-top: 10px;
-      width: 300px;
+    .common-settings .label {
+      color: var(--primary-0);
     }
 
-    .difficulty {
-      width: 300px;
+    .play-settings .label {
+      color: var(--primary-1);
     }
 
-    .players {
-      margin: 20px 0;
+    .controller-settings .label {
+      color: var(--primary-2);
     }
+  }
 
-    .controller {
-      margin-bottom: 10px;
-    }
-
-    .button {
-      width: 300px;
-    }
+  .button {
+    width: 300px;
   }
 
 }

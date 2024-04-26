@@ -3,7 +3,8 @@
     "menu": "Menu",
     "reset": "Reset",
     "pause": "Pause",
-    "resume": "Continue"
+    "resume": "Continue",
+    "new": "New game"
   },
   "controller-select": {
     "arrow": "Arrow",
@@ -24,7 +25,7 @@
   },
   "menu": {
     "title": "Menu",
-    "difficulty": "Difficult"
+    "difficulty": "Difficulty"
   },
   "players-select": {
     "title": "Number of players",
@@ -41,8 +42,11 @@
     "total": "Total:",
     "next": "Next figure:"
   },
-  "settings": {
-    "title": "Game settings"
+  "settings-page": {
+    "common-label": "Common settings",
+    "play-label": "Play settings",
+    "controller-label": "Controllers settings",
+    "start": "Start Game"
   },
   "highscore": {
     "title": "Highscores:"

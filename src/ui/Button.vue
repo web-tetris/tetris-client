@@ -7,6 +7,7 @@ import { useSoundStore } from '@/stores/sound'
 
 const props = defineProps<{
   icon?: string
+  src?: string
   flat?: boolean
   label?: string
   large?: boolean
@@ -28,7 +29,8 @@ const { buttonSound } = useSoundStore()
       @click="buttonSound"
     >
       <i v-if="props.icon" :class="`bi bi-${props.icon}`" class="icon" />
-      <span v-if="props.label">{{ label }}</span>
+      <span v-if="props.label" class="label">{{ label }}</span>
+      <!--      <img v-if="props.src" alt="icon" :src="props.src" class="image"> -->
     </component>
   </GradientWrapper>
 </template>
@@ -40,17 +42,29 @@ const { buttonSound } = useSoundStore()
     padding: 3px 10px;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 10px;
     cursor: pointer;
     width: 100%;
 
+    .image {
+      width: 40px;
+      height: 40px;
+    }
+
     &.large {
-      border-radius: 20px;
-      padding: 10px 20px;
+      border-radius: 8px;
+      padding: 10px 10px;
+      gap: 20px;
 
       .icon {
         font-size: 1.5rem;
-        color: #757575;
+      }
+
+      .label {
+        font-size: 22px;
+        color: var(--primary-1);
+        font-weight: bold;
       }
     }
 

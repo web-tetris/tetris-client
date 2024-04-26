@@ -5,6 +5,7 @@ import GradientWrapper from '@/ui/GradientWrapper.vue'
 
 const props = defineProps<{
   modelValue: number
+  label?: string
 }>()
 
 const emits = defineEmits<{
@@ -22,50 +23,68 @@ function increase(event: WheelEvent) {
 </script>
 
 <template>
-  <GradientWrapper>
-    <div class="input">
-      <Button
-        :no-stroke="true"
-        class="btn" icon="arrow-down" flat
-        @click="modelValue = +modelValue - 1"
-      />
-      <input
-        v-model="modelValue"
-        class="value-input"
-        @wheel="increase"
-        @focus="$event.target.select()"
-      >
-      <Button
-        :no-stroke="true"
-        class="btn" icon="arrow-up" flat
-        @click="modelValue = +modelValue + 1"
-      />
+  <div class="input-wrapper">
+    <div class="label">
+      <div v-if="props.label">
+        {{ label }}
+      </div>
     </div>
-  </GradientWrapper>
+
+    <GradientWrapper>
+      <div class="input">
+        <Button
+          :no-stroke="true"
+          class="btn" icon="arrow-down" flat
+          @click="modelValue = +modelValue - 1"
+        />
+        <input
+          v-model="modelValue"
+          class="value-input"
+          @wheel="increase"
+          @focus="$event.target.select()"
+        >
+        <Button
+          :no-stroke="true"
+          class="btn" icon="arrow-up" flat
+          @click="modelValue = +modelValue + 1"
+        />
+      </div>
+    </GradientWrapper>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.input {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.input-wrapper {
+  position: relative;
 
-  .btn {
-    border: 0;
+  .label {
+    width: 100%;
+    position: absolute;
+    top: -25px;
   }
 
-  .value-input {
-    border: none;
-    border-radius: 8px;
-    text-align: center;
-    width: 30px;
+  .input {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
-    &:focus {
-      outline: none;
+    .btn {
+      border: 0;
     }
 
-    &::selection {
-      background: #e7e6e6;
+    .value-input {
+      border: none;
+      border-radius: 8px;
+      text-align: center;
+      width: 30px;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::selection {
+        background: #e7e6e6;
+      }
     }
   }
 }
