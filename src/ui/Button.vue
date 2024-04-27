@@ -36,6 +36,8 @@ const { buttonSound } = useSoundStore()
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .wrapper {
 
   .button {
@@ -59,7 +61,7 @@ const { buttonSound } = useSoundStore()
 
       .icon {
         font-size: 1.5rem;
-        color: var(--primary-1);
+        color: constants.$color-primary-1;
       }
 
       .label {

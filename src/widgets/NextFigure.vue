@@ -20,6 +20,8 @@ const { t } = useI18n()
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .next-panel {
   display: flex;
   flex-direction: column;
@@ -32,7 +34,7 @@ const { t } = useI18n()
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid var(--primary-0);
+    border: 2px solid constants.$color-primary-0;
     border-radius: 8px;
   }
 }

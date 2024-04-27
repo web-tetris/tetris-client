@@ -14,7 +14,7 @@
 .logo {
   font-family: 'Rubik Doodle Shadow', 'Ysabeau Infant', 'Dosis', sans-serif;
   font-size: 100px;
-  background-image: linear-gradient(90deg, var(--primary-2) 30%, var(--primary-1) 50%, var(--primary-0) 60%);
+  background-image: linear-gradient(90deg, constants.$color-primary-2 30%, constants.$color-primary-1 50%, constants.$color-primary-0 60%);
   background-size: 100%;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -23,7 +23,7 @@
 .logo-small {
   font-family: 'Rubik Doodle Shadow', 'Ysabeau Infant', 'Dosis', sans-serif;
   font-size: 70px;
-  color: var(--primary-2);
+  color: constants.$color-primary-2;
 }
 
 

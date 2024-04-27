@@ -10,6 +10,7 @@ useColors()
 
 <style lang="scss" scoped>
 @use 'styles/mixins';
+@use 'styles/constants';
 
 .app {
   @include mixins.size(fill);
@@ -24,7 +25,7 @@ useColors()
     width: 100%;
     height: 100%;
     opacity: 0.2;
-    background: linear-gradient(135deg, var(--primary-0), white 20% 80%, var(--primary-1));
+    background: linear-gradient(135deg, constants.$color-primary-0, white 20% 80%, constants.$color-primary-1);
   }
 }
 </style>

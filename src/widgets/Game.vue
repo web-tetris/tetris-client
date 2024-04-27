@@ -80,11 +80,11 @@ watch(paused, paused => paused ? pause() : resume())
   position: relative;
   background: white;
   border-radius: 10px;
-  border: 2px solid var(--primary-0);
+  border: 2px solid constants.$color-primary-0;
 
   .matrix {
     padding: 10px;
-    border: 2px solid var(--primary-0);
+    border: 2px solid constants.$color-primary-0;
     border-radius: 10px;
   }
 
