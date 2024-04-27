@@ -45,10 +45,5 @@ const fieldOptions = computed <SelectOption <MultiplayerMode>[]>(() => [
   display: flex;
   flex-direction: column;
   gap: 50px;
-
-  .players, .fields {
-    width: 300px;
-  }
-
 }
 </style>

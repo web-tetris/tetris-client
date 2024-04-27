@@ -24,6 +24,8 @@ const { flat, hovering, noStroke } = toRefs(props)
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .wrapper {
   display: flex;
   position: relative;
@@ -37,7 +39,7 @@ const { flat, hovering, noStroke } = toRefs(props)
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, var(--primary-0), var(--primary-1) 51%, var(--primary-2)) var(--x, 0)/ 200%;
+      background: linear-gradient(90deg, constants.$color-primary-0, constants.$color-primary-1 51%, constants.$color-primary-2) var(--x, 0)/ 200%;
       transition: 1.8s;
   }
 

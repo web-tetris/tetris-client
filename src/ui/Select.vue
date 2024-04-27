@@ -81,6 +81,7 @@ function getImageUrl(path: string) {
 .select {
   position: relative;
   height: 36px;
+  width: 100%;
 
   .title {
     width: 100%;

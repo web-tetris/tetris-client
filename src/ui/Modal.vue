@@ -28,13 +28,15 @@ const { relative } = toRefs(props)
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .modal {
   position: fixed;
   left: 50%;
   top: 25%;
   transform: translate(-50%, -20%);
   border-radius: 10px;
-  box-shadow: 0 0 10px 0 var(--primary-2);
+  box-shadow: 0 0 10px 0 constants.$color-primary-2;
   width: 50%;
   background-color: white;
   display: flex;

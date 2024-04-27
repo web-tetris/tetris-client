@@ -57,11 +57,13 @@ const { t } = useI18n()
       </div>
     </div>
 
-    <Button large :label="t('settings-page.start')" link="/game" class="button" />
+    <Button large :label="t('settings-page.start')" link="/game" class="button" icon="joystick" reverse />
   </div>
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .settings-page {
   display: flex;
   flex-direction: column;
@@ -76,7 +78,6 @@ const { t } = useI18n()
   }
 
   .body {
-    height: 400px;
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -86,11 +87,20 @@ const { t } = useI18n()
       display: flex;
       flex-direction: column;
       gap: 100px;
-      width: 300px;
+      width: 400px;
+      padding: 50px 30px;
+      border: 1px solid constants.$color-gray;
+      border-radius: 8px;
+      position: relative;
 
       .label {
         align-self: center;
+        text-align: center;
         font-size: 20px;
+        position: absolute;
+        top: -20px;
+        background-color: white;
+        width: 200px;
       }
 
       .select {
@@ -98,18 +108,6 @@ const { t } = useI18n()
         flex-direction: column;
         gap: 50px;
       }
-    }
-
-    .common-settings .label {
-      color: var(--primary-0);
-    }
-
-    .play-settings .label {
-      color: var(--primary-1);
-    }
-
-    .controller-settings .label {
-      color: var(--primary-2);
     }
   }
 

@@ -7,12 +7,12 @@ import { useSoundStore } from '@/stores/sound'
 
 const props = defineProps<{
   icon?: string
-  src?: string
   flat?: boolean
   label?: string
   large?: boolean
   noStroke?: boolean
   link?: RouteLocationRaw
+  reverse?: boolean
 }>()
 
 const { flat, large, link } = toRefs(props)
@@ -28,14 +28,16 @@ const { buttonSound } = useSoundStore()
       :class="{ flat, large }"
       @click="buttonSound"
     >
-      <i v-if="props.icon" :class="`bi bi-${props.icon}`" class="icon" />
+      <i v-if="props.icon && !reverse" :class="`bi bi-${props.icon}`" class="icon" />
       <span v-if="props.label" class="label">{{ label }}</span>
-      <!--      <img v-if="props.src" alt="icon" :src="props.src" class="image"> -->
+      <i v-if="props.icon && reverse" :class="`bi bi-${props.icon}`" class="icon" />
     </component>
   </GradientWrapper>
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .wrapper {
 
   .button {
@@ -59,12 +61,11 @@ const { buttonSound } = useSoundStore()
 
       .icon {
         font-size: 1.5rem;
+        color: constants.$color-primary-1;
       }
 
       .label {
         font-size: 22px;
-        color: var(--primary-1);
-        font-weight: bold;
       }
     }
 

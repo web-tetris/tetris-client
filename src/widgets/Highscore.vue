@@ -47,14 +47,17 @@ const place = {
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .high-score {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
-  border: 1px solid var(--primary-2);
+  border: 1px solid constants.$color-primary-2;
   border-radius: 8px;
   padding-top: 10px;
+  min-height: 80px;
 
   .title {
     font-size: 20px;
@@ -70,7 +73,7 @@ const place = {
       align-items: center;
       justify-content: space-around;
       padding: 5px 0;
-      border-bottom: 1px dotted var(--primary-2);
+      border-bottom: 1px dotted constants.$color-primary-2;
 
       &:last-child {
         border-bottom: none;
@@ -108,7 +111,7 @@ const place = {
         }
 
         &.other {
-          --color: var(--primary-2);
+          --color: constants.$color-primary-2;
         }
       }
 
