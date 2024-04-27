@@ -31,6 +31,7 @@ useColors()
 
 <style lang="scss">
 @use 'styles/mixins';
+@use 'styles/constants';
 
 @import 'styles/globals';
 @import 'styles/typography';
@@ -41,5 +42,6 @@ useColors()
   @include mixins.size(fill);
   position: absolute;
   display: flex;
+  color: constants.$color-gray
 }
 </style>

@@ -67,6 +67,7 @@ function increase(event: WheelEvent) {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    width: 100%;
 
     .btn {
       border: 0;

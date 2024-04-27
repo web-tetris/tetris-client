@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="V extends number | string = number">
-import { computed, ref, shallowRef } from 'vue'
+import { computed, ref, shallowRef, toRefs } from 'vue'
 import { onClickOutside, useVModel } from '@vueuse/core'
 import type { SelectOption } from '@/types/select-option'
 import GradientWrapper from '@/ui/GradientWrapper.vue'
@@ -8,6 +8,7 @@ import { useSoundStore } from '@/stores/sound'
 const props = withDefaults(defineProps<{
   label?: string
   secondLabel?: string
+  small?: boolean
   options: SelectOption<V>[]
   modelValue: V
   direction?: 'bottom' | 'top'
@@ -20,6 +21,7 @@ const emits = defineEmits<{
 }>()
 
 const modelValue = useVModel(props, 'modelValue', emits)
+const { small } = toRefs(props)
 
 const optionShowed = ref<boolean>(false)
 const { buttonSound } = useSoundStore()
@@ -39,7 +41,7 @@ function getImageUrl(path: string) {
 </script>
 
 <template>
-  <div class="select">
+  <div class="select" :class="{ small }">
     <div class="title">
       <div v-if="props.label">
         {{ label }}
@@ -81,6 +83,11 @@ function getImageUrl(path: string) {
 .select {
   position: relative;
   height: 36px;
+  width: 100%;
+
+  &.small {
+    width: 50%;
+  }
 
   .title {
     width: 100%;

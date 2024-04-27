@@ -30,8 +30,16 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
 
 <template>
   <div class="page">
-    <div class="logo-small">
-      Tetris
+    <div class="header">
+      <div class="logo-small">
+        Tetris
+      </div>
+      <Button
+        reverse
+        icon="box-arrow-right"
+        link="/" large class="settings-button" :label="t('game.new')"
+        :src="gameIcon"
+      />
     </div>
 
     <div class="game-page">
@@ -40,19 +48,15 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
         :current-score="currentScore"
       />
 
-      <div class="body">
-        <div class="game-list">
-          <div class="fields">
-            <template v-if="multiplayerMode === MultiplayerMode.VERSUS">
-              <Game v-for="i in players" :key="i" class="game" />
-            </template>
+      <div class="game-list">
+        <div class="fields">
+          <template v-if="multiplayerMode === MultiplayerMode.VERSUS">
+            <Game v-for="i in players" :key="i" class="game" />
+          </template>
 
-            <template v-else>
-              <Game class="game" />
-            </template>
-          </div>
-
-          <Button link="/" large class="settings-button" :label="t('game.new')" :src="gameIcon" />
+          <template v-else>
+            <Game class="game" />
+          </template>
         </div>
       </div>
     </div>
@@ -66,6 +70,17 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
   gap: 10px;
   padding: 20px;
 
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+
+    .settings-button {
+      width: 150px;
+      align-self: center;
+    }
+  }
+
   .game-page {
     display: flex;
     align-items: center;
@@ -74,31 +89,19 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
       display: flex;
       flex-direction: column;
       gap: 50px;
-      align-self: start;
       width: 150px;
-      margin-top: 100px;
     }
 
-    .body {
+    .game-list {
       flex: 1;
       display: flex;
       flex-direction: column;
-
-      .game-list {
-        display: flex;
-        flex-direction: column;
-        gap: 50px;
+      gap: 50px;
 
         .fields {
           display: flex;
           justify-content: space-around;
         }
-
-        .settings-button {
-          width: 200px;
-          align-self: center;
-        }
-      }
     }
   }
 

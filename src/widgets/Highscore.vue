@@ -55,6 +55,7 @@ const place = {
   border: 1px solid var(--primary-2);
   border-radius: 8px;
   padding-top: 10px;
+  min-height: 80px;
 
   .title {
     font-size: 20px;

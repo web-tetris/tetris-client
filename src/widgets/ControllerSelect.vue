@@ -48,9 +48,9 @@ const gamepadOptions = computed<SelectOption[]>(() =>
   <div class="controllers">
     <Select
       v-model="controlType"
-      :label="`${t('controller-select.game-controls')}`"
-      :second-label="`${t('controller-select.player')} ${player}`"
+      :label="`${t('controller-select.player')} ${player}`"
       :options="controlsOptions"
+      :small="controlType === ControlType.GAMEPAD"
     />
 
     <template v-if="controlType === ControlType.GAMEPAD">
@@ -59,6 +59,8 @@ const gamepadOptions = computed<SelectOption[]>(() =>
         v-model="gamepadIndex"
         label="Gamepads"
         :options="gamepadOptions"
+        class="select-gamepad"
+        small
       />
       <div v-else class="connection-message">
         {{ t('controller-select.connection') }}
@@ -70,13 +72,14 @@ const gamepadOptions = computed<SelectOption[]>(() =>
 <style scoped lang="scss">
 .controllers {
   display: flex;
-  flex-direction: column;
-  width: 300px;
+  justify-content: space-between;
+  align-items: center;
   gap: 10px;
 
   .connection-message {
     color: gray;
     text-align: center;
+    width: 150px;
   }
 }
 </style>
