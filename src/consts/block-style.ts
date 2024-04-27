@@ -4,4 +4,5 @@ export enum BlockStyle {
   FOOD = 'food',
   POKEMON = 'pokemon',
   CAMPING = 'camping',
+  CAT = 'cat',
 }
