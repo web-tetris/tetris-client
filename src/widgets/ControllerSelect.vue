@@ -53,13 +53,12 @@ const gamepadOptions = computed<SelectOption[]>(() =>
       class="select"
     />
 
-    <div v-if="controlType === ControlType.GAMEPAD" class="gamepad-select">
+    <div v-if="controlType === ControlType.GAMEPAD" class="select">
       <Select
         v-if="gamepads.length"
         v-model="gamepadIndex"
         label="Gamepads"
         :options="gamepadOptions"
-        small
       />
       <div v-else class="connection-message">
         {{ t('controller-select.connection') }}
@@ -78,7 +77,7 @@ const gamepadOptions = computed<SelectOption[]>(() =>
   &.small {
     display: flex;
 
-    .select, .gamepad-select {
+    .select {
       flex: 1;
     }
   }
