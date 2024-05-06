@@ -31,6 +31,14 @@ export function projectFigure(
   )
 }
 
+export function projectFiguresArray(
+  field: BlockMatrix,
+  figures: BlockMatrix[],
+  positions: Position[],
+): BlockMatrix {
+  return figures.reduce((projection, figure, i) => projectFigure(projection, figure, positions[i]), field)
+}
+
 export function canProjectFigure(
   field: BlockMatrix,
   figure: BlockMatrix,
