@@ -9,6 +9,7 @@ import Button from '@/ui/Button.vue'
 import { useSettingsStore } from '@/stores/settings'
 import { useSoundStore } from '@/stores/sound'
 import { useHighscoresStore } from '@/stores/highscores'
+import GradientBackground from '@/ui/GradientBackground.vue'
 
 const settingsStore = useSettingsStore()
 const { players, multiplayerMode } = storeToRefs(settingsStore)
@@ -29,38 +30,40 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
 </script>
 
 <template>
-  <div class="page">
-    <div class="header">
-      <div class="logo-small">
-        Tetris
+  <GradientBackground clear>
+    <div class="page">
+      <div class="header">
+        <div class="logo-small">
+          Tetris
+        </div>
+        <Button
+          reverse
+          icon="box-arrow-right"
+          link="/" large class="settings-button" :label="t('game.new')"
+          :src="gameIcon"
+        />
       </div>
-      <Button
-        reverse
-        icon="box-arrow-right"
-        link="/" large class="settings-button" :label="t('game.new')"
-        :src="gameIcon"
-      />
-    </div>
 
-    <div class="game-page">
-      <Highscore
-        class="highscore" :highscores="highscores"
-        :current-score="currentScore"
-      />
+      <div class="game-page">
+        <Highscore
+          class="highscore" :highscores="highscores"
+          :current-score="currentScore"
+        />
 
-      <div class="game-list">
-        <div class="fields">
-          <template v-if="multiplayerMode === MultiplayerMode.VERSUS">
-            <Game v-for="i in players" :key="i" class="game" />
-          </template>
+        <div class="game-list">
+          <div class="fields">
+            <template v-if="multiplayerMode === MultiplayerMode.VERSUS">
+              <Game v-for="i in players" :key="i" class="game" />
+            </template>
 
-          <template v-else>
-            <Game class="game" />
-          </template>
+            <template v-else>
+              <Game class="game" />
+            </template>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </GradientBackground>
 </template>
 
 <style scoped lang="scss">

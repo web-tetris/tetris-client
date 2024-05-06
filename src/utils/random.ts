@@ -1,4 +1,4 @@
-function randomInt(value: number): number {
+export function randomInt(value: number): number {
   return Math.floor(Math.random() * value)
 }
 

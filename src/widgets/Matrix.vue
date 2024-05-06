@@ -5,6 +5,7 @@ import type { BlockMatrix } from '@/types/block-matrix'
 import { BlockStyle } from '@/consts/block-style'
 import { BlockColor } from '@/consts/block-color'
 import { useSettingsStore } from '@/stores/settings'
+import MainBlocks from '@/ui/MainBlocks.vue'
 
 const props = defineProps<{
   matrix: BlockMatrix
@@ -29,7 +30,7 @@ function getImageUrl(block: string, style: BlockStyle) {
       v-for="(block, i) in matrixFlat"
       :key="i"
     >
-      <div v-if="block === BlockColor.EMPTY || blockStyle === BlockStyle.MAIN" class="cell" :class="[`color-${block}`, { small }]" />
+      <MainBlocks v-if="block === BlockColor.EMPTY || blockStyle === BlockStyle.MAIN" :block="block" class="cell" :class="{ small }" />
       <img v-else alt="cell" class="cell image" :class="{ small }" :src="getImageUrl(block, blockStyle)">
     </template>
   </div>
@@ -45,11 +46,7 @@ function getImageUrl(block: string, style: BlockStyle) {
     grid-gap: 2px;
 
     .cell {
-      --color: white;
       @include mixins.size(30px);
-      border-radius: 2px;
-      background: var(--color);
-      border: 3px solid rgba(black, 0.1);
 
       &.small {
         @include mixins.size(15px);
@@ -58,42 +55,6 @@ function getImageUrl(block: string, style: BlockStyle) {
         &.color-empty {
           background: none;
           border: none;
-        }
-      }
-
-      &.color {
-
-        &-empty {
-          --color: #F2F1F5FF;
-          border: none;
-        }
-
-        &-block-1 {
-          --color: #fd8484;
-        }
-
-        &-block-2 {
-          --color: #fac17d;
-        }
-
-        &-block-3 {
-          --color: #f8fc8c;
-        }
-
-        &-block-4 {
-          --color: #9ffc8c;
-        }
-
-        &-block-5 {
-          --color: #71f2ff;
-        }
-
-        &-block-6 {
-          --color: #9d8dfc;
-        }
-
-        &-block-7 {
-          --color: #fd96fd;
         }
       }
 
