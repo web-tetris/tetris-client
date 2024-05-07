@@ -38,15 +38,19 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
         </div>
         <Button
           reverse
+          large
           icon="box-arrow-right"
-          link="/" large class="settings-button" :label="t('game.new')"
+          link="/"
+          class="settings-button"
+          :label="t('game.new')"
           :src="gameIcon"
         />
       </div>
 
       <div class="game-page">
         <Highscore
-          class="highscore" :highscores="highscores"
+          class="highscore"
+          :highscores="highscores"
           :current-score="currentScore"
         />
 
