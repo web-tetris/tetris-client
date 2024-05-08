@@ -48,11 +48,7 @@ const { buttonSound } = useSoundStore()
     gap: 10px;
     cursor: pointer;
     width: 100%;
-
-    .image {
-      width: 40px;
-      height: 40px;
-    }
+    color: constants.$color-gray;
 
     &.large {
       border-radius: 8px;

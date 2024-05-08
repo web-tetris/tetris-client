@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 import { computed } from 'vue'
 
 import { MoveDirection } from '@/consts/move-direction'
@@ -8,9 +8,11 @@ import type { ButtonMap } from '@/hooks/gamepad'
 import { useGamepad } from '@/hooks/gamepad'
 import { schemes } from '@/consts/control-schemes'
 import { useKeyboard } from '@/hooks/keyboard'
+import { useGestures } from '@/hooks/gestures'
 
 export function useGameController({
   type,
+  matrix,
   move,
   rotate,
   index,
@@ -18,6 +20,7 @@ export function useGameController({
   reset,
 }: {
   type: Ref<ControlType>
+  matrix: MaybeRefOrGetter<HTMLElement>
   rotate: () => void
   move: (direction: MoveDirection) => void
   toggleMenu: () => unknown
@@ -35,6 +38,7 @@ export function useGameController({
 
   const gamepad = useGamepad()
   const keyboard = useKeyboard()
+  const gesture = useGestures(matrix)
 
   for (const key of Object.keys(actions) as (keyof ControlScheme)[]) {
     keyboard.onKeyStroke(
@@ -46,6 +50,11 @@ export function useGameController({
       () => scheme.value[key] as keyof ButtonMap,
       index,
       () => (type.value === ControlType.GAMEPAD) && actions[key](),
+    )
+
+    gesture.onKeyStroke(
+      () => scheme.value[key] as keyof ButtonMap,
+      () => (type.value === ControlType.GESTURES) && actions[key](),
     )
   }
 

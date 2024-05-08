@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useEventListener, whenever } from '@vueuse/core'
+import {
+  breakpointsTailwind, onClickOutside,
+  useBreakpoints,
+  useEventListener, useToggle,
+  whenever,
+} from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
+import { shallowRef } from 'vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
 import Highscore from '@/widgets/Highscore.vue'
 import Game from '@/widgets/Game.vue'
@@ -27,6 +33,13 @@ whenever(() => players.value === 1, () => multiplayerMode.value = MultiplayerMod
 const { highscores, currentScore } = storeToRefs(useHighscoresStore())
 
 const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
+
+const { isGreater, isSmaller } = useBreakpoints(breakpointsTailwind)
+
+const [showed, toggleShowed] = useToggle(false)
+
+const target = shallowRef()
+onClickOutside(target, () => showed.value = false)
 </script>
 
 <template>
@@ -36,19 +49,30 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
         <div class="logo-small">
           Tetris
         </div>
-        <Button
-          reverse
-          large
-          icon="box-arrow-right"
-          link="/"
-          class="settings-button"
-          :label="t('game.new')"
-          :src="gameIcon"
-        />
+
+        <div class="buttons">
+          <Button
+            v-if="isSmaller('sm')"
+            class="settings-button"
+            icon="star"
+            @click="() => toggleShowed()"
+          />
+
+          <Button
+            reverse
+            :large="isGreater('sm') && 'large'"
+            :label="isGreater('sm') ? t('game.new') : ''"
+            :src="gameIcon"
+            icon="box-arrow-right"
+            link="/"
+            class="settings-button"
+          />
+        </div>
       </div>
 
-      <div class="game-page">
+      <div ref="target" class="game-page">
         <Highscore
+          v-if="isGreater('sm') || showed"
           class="highscore"
           :highscores="highscores"
           :current-score="currentScore"
@@ -71,6 +95,8 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .page {
   display: flex;
   flex-direction: column;
@@ -112,5 +138,39 @@ const gameIcon = new URL('../assets/new-game.png?url', import.meta.url).href
     }
   }
 
+  @media (max-width: constants.$breakpoint-sm) {
+    padding: 5px;
+
+    .header {
+      padding: 0 10px;
+
+      .logo-small {
+        font-size: 40px;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 10px;
+
+        .settings-button {
+          width: 40px;
+        }
+      }
+    }
+
+    .game-page {
+      position: relative;
+
+      .highscore {
+        position: absolute;
+        top: 15%;
+        left: 13%;
+        z-index: 2;
+        width: 300px;
+        background: white;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+      }
+    }
+  }
 }
 </style>

@@ -20,6 +20,16 @@ function increase(event: WheelEvent) {
   else
     modelValue.value = +modelValue.value - 1
 }
+
+function changing(add?: boolean, sub?: boolean) {
+  if (add)
+    modelValue.value = +modelValue.value + 1
+  if (sub) {
+    modelValue.value <= 1
+      ? modelValue.value = 1
+      : modelValue.value = +modelValue.value - 1
+  }
+}
 </script>
 
 <template>
@@ -34,8 +44,10 @@ function increase(event: WheelEvent) {
       <div class="input">
         <Button
           :no-stroke="true"
-          class="btn" icon="arrow-down" flat
-          @click="modelValue = +modelValue - 1"
+          class="btn"
+          icon="arrow-down"
+          flat
+          @click="changing(false, true)"
         />
         <input
           v-model="modelValue"
@@ -46,7 +58,7 @@ function increase(event: WheelEvent) {
         <Button
           :no-stroke="true"
           class="btn" icon="arrow-up" flat
-          @click="modelValue = +modelValue + 1"
+          @click="changing(true, false)"
         />
       </div>
     </GradientWrapper>
@@ -54,6 +66,8 @@ function increase(event: WheelEvent) {
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .input-wrapper {
   position: relative;
 
@@ -78,6 +92,7 @@ function increase(event: WheelEvent) {
       border-radius: 8px;
       text-align: center;
       width: 30px;
+      color: constants.$color-gray;
 
       &:focus {
         outline: none;

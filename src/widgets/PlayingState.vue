@@ -10,6 +10,7 @@ import { useSettingsStore } from '@/stores/settings'
 
 const props = withDefaults(defineProps<{
   nextFigure: BlockMatrix
+  matrix: HTMLElement
   player?: number
 }>(), {
   player: 0,
@@ -29,6 +30,7 @@ const { t } = useI18n()
 useGameController({
   type: controlType,
   index: gamepadIndex,
+  matrix: () => props.matrix,
   move: direction => emits('move', direction),
   rotate: () => emits('rotate'),
   reset: () => emits('reset'),

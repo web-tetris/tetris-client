@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import {
+  breakpointsTailwind,
+  useBreakpoints,
+  usePointer,
+  whenever,
+} from '@vueuse/core'
 import { ControlType } from '@/consts/control-type'
 import { useGamepad } from '@/hooks/gamepad'
 import type { SelectOption } from '@/types/select-option'
@@ -12,25 +18,48 @@ const props = defineProps<{
   player: number
 }>()
 
+const { player } = toRefs(props)
+
 const { controlType, gamepadIndex } = storeToRefs(useSettingsStore())
 
 const { t } = useI18n()
 
+const { isGreater } = useBreakpoints(breakpointsTailwind)
+const { pointerType } = usePointer()
+
+whenever(
+  () => pointerType.value === 'touch',
+  () => controlType.value = ControlType.GESTURES,
+  { once: true },
+)
+
 const controlsOptions = computed <SelectOption <ControlType>[]>(() => [
-  {
-    label: t('controller-select.arrow'),
-    value: ControlType.ARROWS,
-    icon: 'bi bi-arrows-move',
-  },
+  ...(pointerType.value === 'touch'
+    ? [
+        {
+          label: t('controller-select.gestures'),
+          value: ControlType.GESTURES,
+          icon: 'bi bi-hand-index-thumb',
+        }]
+    : []),
+  ...(isGreater('sm')
+    ? [
+        {
+          label: t('controller-select.arrow'),
+          value: ControlType.ARROWS,
+          icon: 'bi bi-arrows-move',
+        },
+        {
+          label: t('controller-select.wasd'),
+          value: ControlType.WASD,
+          icon: 'bi bi-alphabet-uppercase',
+        },
+      ]
+    : []),
   {
     label: t('controller-select.gamepad'),
     value: ControlType.GAMEPAD,
     icon: 'bi bi-controller',
-  },
-  {
-    label: t('controller-select.wasd'),
-    value: ControlType.WASD,
-    icon: 'bi bi-alphabet-uppercase',
   },
 ])
 
@@ -48,7 +77,7 @@ const gamepadOptions = computed<SelectOption[]>(() =>
   <div class="controllers" :class="{ small: controlType === ControlType.GAMEPAD }">
     <Select
       v-model="controlType"
-      :label="`${t('controller-select.player')} ${player}`"
+      :label="isGreater('sm') ? `${t('controller-select.player')} ${player}` : ''"
       :options="controlsOptions"
       class="select"
     />
@@ -68,6 +97,8 @@ const gamepadOptions = computed<SelectOption[]>(() =>
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .controllers {
   display: flex;
   justify-content: space-between;
@@ -86,6 +117,18 @@ const gamepadOptions = computed<SelectOption[]>(() =>
     color: gray;
     text-align: center;
     width: 150px;
+  }
+
+  @media (max-width: constants.$breakpoint-sm) {
+
+    &.small {
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    .connection-message {
+      width: 300px;
+    }
   }
 }
 </style>
