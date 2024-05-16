@@ -14,21 +14,20 @@ const emits = defineEmits<{
 
 const { modelValue } = useVModels(props, emits)
 
-function increase(event: WheelEvent) {
+function mouseIncrease(event: WheelEvent) {
   if (event.deltaY > 0)
     modelValue.value = +modelValue.value + 1
   else
     modelValue.value = +modelValue.value - 1
 }
 
-function changing(add?: boolean, sub?: boolean) {
-  if (add)
-    modelValue.value = +modelValue.value + 1
-  if (sub) {
-    modelValue.value <= 1
-      ? modelValue.value = 1
-      : modelValue.value = +modelValue.value - 1
-  }
+function increase() {
+  modelValue.value++
+}
+
+function decrease() {
+  if (modelValue.value > 1)
+    modelValue.value--
 }
 </script>
 
@@ -47,18 +46,18 @@ function changing(add?: boolean, sub?: boolean) {
           class="btn"
           icon="arrow-down"
           flat
-          @click="changing(false, true)"
+          @click="decrease"
         />
         <input
           v-model="modelValue"
           class="value-input"
-          @wheel="increase"
+          @wheel="mouseIncrease"
           @focus="$event.target.select()"
         >
         <Button
           :no-stroke="true"
           class="btn" icon="arrow-up" flat
-          @click="changing(true, false)"
+          @click="increase"
         />
       </div>
     </GradientWrapper>

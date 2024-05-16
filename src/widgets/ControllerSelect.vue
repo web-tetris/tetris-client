@@ -42,24 +42,20 @@ const controlsOptions = computed <SelectOption <ControlType>[]>(() => [
           icon: 'bi bi-hand-index-thumb',
         }]
     : []),
-  ...(isGreater('sm')
-    ? [
-        {
-          label: t('controller-select.arrow'),
-          value: ControlType.ARROWS,
-          icon: 'bi bi-arrows-move',
-        },
-        {
-          label: t('controller-select.wasd'),
-          value: ControlType.WASD,
-          icon: 'bi bi-alphabet-uppercase',
-        },
-      ]
-    : []),
   {
     label: t('controller-select.gamepad'),
     value: ControlType.GAMEPAD,
     icon: 'bi bi-controller',
+  },
+  {
+    label: t('controller-select.arrow'),
+    value: ControlType.ARROWS,
+    icon: 'bi bi-arrows-move',
+  },
+  {
+    label: t('controller-select.wasd'),
+    value: ControlType.WASD,
+    icon: 'bi bi-alphabet-uppercase',
   },
 ])
 
