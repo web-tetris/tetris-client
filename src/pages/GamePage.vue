@@ -167,8 +167,9 @@ onClickOutside(target, () => showed.value = false)
 
       .highscore {
         position: absolute;
-        top: 15%;
-        left: 13%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         z-index: 2;
         width: 300px;
         background: white;
