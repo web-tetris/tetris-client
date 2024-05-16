@@ -38,6 +38,7 @@ function getPositionStyle() {
         :block="`block-${randomInt(7) + 1}`"
         class="block"
         :style="getPositionStyle()"
+        block-size="30px"
       />
     </template>
     <div class="inner">
@@ -52,6 +53,7 @@ function getPositionStyle() {
 
 .background {
   position: relative;
+  display: flex;
 
   &::before {
     z-index: -1;
@@ -81,6 +83,11 @@ function getPositionStyle() {
     animation: pulse 4s infinite;
     opacity: 0.2;
     z-index: -2;
+  }
+
+  .inner {
+    flex: 1;
+    display: flex;
   }
 }
 </style>

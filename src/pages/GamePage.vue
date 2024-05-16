@@ -98,6 +98,7 @@ onClickOutside(target, () => showed.value = false)
 @use '../styles/constants';
 
 .page {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -115,6 +116,7 @@ onClickOutside(target, () => showed.value = false)
   }
 
   .game-page {
+    flex: 1;
     display: flex;
     align-items: center;
 
@@ -130,8 +132,10 @@ onClickOutside(target, () => showed.value = false)
       display: flex;
       flex-direction: column;
       gap: 50px;
+      height: 80%;
 
         .fields {
+          flex: 1;
           display: flex;
           justify-content: space-around;
         }
@@ -169,6 +173,17 @@ onClickOutside(target, () => showed.value = false)
         width: 300px;
         background: white;
         box-shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+      }
+
+      .game-list {
+        height: 100%;
+
+        .fields {
+
+          .game {
+            flex: 1;
+          }
+        }
       }
     }
   }

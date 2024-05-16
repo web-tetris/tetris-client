@@ -14,6 +14,7 @@ useColors()
 .app {
   @include mixins.size(fill);
   position: relative;
+  flex: 1;
 }
 </style>
 
@@ -25,6 +26,11 @@ useColors()
 @import 'styles/typography';
 @import 'styles/libraries';
 @import 'styles/animation';
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
 
 #app {
   @include mixins.size(fill);

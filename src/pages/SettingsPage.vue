@@ -81,6 +81,7 @@ const { isGreater } = useBreakpoints(breakpointsTailwind)
 
   .settings-page {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 50px;
     align-items: center;
@@ -96,8 +97,8 @@ const { isGreater } = useBreakpoints(breakpointsTailwind)
     .body {
       padding: 20px;
       display: flex;
-      justify-content: center;
-      gap: 100px;
+      justify-content: space-around;
+      width: 100%;
 
       .common-settings, .play-settings, .controller-settings {
         display: flex;
@@ -147,10 +148,12 @@ const { isGreater } = useBreakpoints(breakpointsTailwind)
 
       .body {
         flex-direction: column;
+        align-items: center;
         gap: 30px;
+        width: 100%;
 
         .common-settings, .play-settings, .controller-settings {
-          width: 350px;
+          width: 90%;
           padding: 30px 10px;
 
           .select {
@@ -159,7 +162,6 @@ const { isGreater } = useBreakpoints(breakpointsTailwind)
         }
       }
     }
-
   }
 }
 </style>

@@ -2,7 +2,11 @@
 import { useI18n } from 'vue-i18n'
 import { computed, shallowRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { breakpointsTailwind, useBreakpoints, useToggle } from '@vueuse/core'
+import {
+  breakpointsTailwind,
+  useBreakpoints,
+  useToggle,
+} from '@vueuse/core'
 import Matrix from '@/widgets/Matrix.vue'
 import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
@@ -88,18 +92,20 @@ const matrixRef = shallowRef<HTMLElement>()
   background: white;
   border-radius: 10px;
   border: 2px solid constants.$color-primary-0;
+  height: 100%;
 
   .matrix {
+    flex: 2;
     padding: 10px;
     border: 2px solid constants.$color-primary-0;
     border-radius: 10px;
   }
 
   .info {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 30px;
-    min-width: 150px;
 
     .score.small {
       width: 200px;
@@ -120,11 +126,18 @@ const matrixRef = shallowRef<HTMLElement>()
     .info {
       flex-direction: row;
       gap: 20px;
+      flex: none;
 
       .score {
         flex: 1;
         height: 100%;
       }
+    }
+
+    .matrix {
+      flex: 1;
+      align-self: center;
+      margin: 0 auto;
     }
 
     .next-figure {

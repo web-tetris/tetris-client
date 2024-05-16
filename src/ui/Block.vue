@@ -8,6 +8,7 @@ import { BlockColor } from '@/consts/block-color'
 const props = withDefaults(defineProps<{
   block: BlockColor
   small?: boolean
+  blockSize: string
 }>(), {
   small: false,
 })
@@ -22,7 +23,7 @@ function getBlockUrl() {
 </script>
 
 <template>
-  <div ref="root" class="block">
+  <div ref="blockRef" class="block">
     <template v-if="block === BlockColor.EMPTY || blockStyle === BlockStyle.MAIN">
       <div
         class="cell"
@@ -43,6 +44,7 @@ function getBlockUrl() {
 
 <style scoped lang="scss">
 @use '@/styles/mixins';
+@use '@/styles/constants';
 
 .block {
   display: flex;
@@ -50,8 +52,9 @@ function getBlockUrl() {
   align-items: center;
 
   .cell  {
+    height: v-bind(blockSize);
+    width: v-bind(blockSize);
     --color: white;
-    @include mixins.size(30px);
     border-radius: 2px;
     background: var(--color);
     border: 3px solid rgba(black, 0.1);
