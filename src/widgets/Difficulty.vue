@@ -11,7 +11,7 @@ const { t } = useI18n()
 
 <template>
   <div class="difficulty">
-    <NumberInput v-model="difficulty" class="value" :label="t('menu.difficulty')" />
+    <NumberInput v-model="difficulty" :min="0" :max="100" class="value" :label="t('menu.difficulty')" />
   </div>
 </template>
 
