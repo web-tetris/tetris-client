@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { useVModels } from '@vueuse/core'
+import { syncRef, useVModels, whenever } from '@vueuse/core'
+import { computed, ref } from 'vue'
 import Button from '@/ui/Button.vue'
 import GradientWrapper from '@/ui/GradientWrapper.vue'
 
 const props = defineProps<{
   modelValue: number
   label?: string
+  min?: number
+  max?: number
 }>()
 
 const emits = defineEmits<{
@@ -14,11 +17,25 @@ const emits = defineEmits<{
 
 const { modelValue } = useVModels(props, emits)
 
-function increase(event: WheelEvent) {
-  if (event.deltaY > 0)
-    modelValue.value = +modelValue.value + 1
-  else
-    modelValue.value = +modelValue.value - 1
+const value = ref<string>(String(modelValue.value))
+syncRef(modelValue, computed({
+  get: () => parseInt(value.value),
+  set: v => value.value = String(v),
+}))
+whenever(() => isNaN(+value.value), () => value.value = value.value.replaceAll(/\D/g, ''))
+
+function increase() {
+  if (props.max != null && modelValue.value < props.max)
+    modelValue.value++
+}
+
+function decrease() {
+  if (props.min != null && modelValue.value > props.min)
+    modelValue.value--
+}
+
+function onMouseWheel(event: WheelEvent) {
+  event.deltaY > 0 ? increase() : decrease()
 }
 </script>
 
@@ -34,19 +51,20 @@ function increase(event: WheelEvent) {
       <div class="input">
         <Button
           :no-stroke="true"
-          class="btn" icon="arrow-down" flat
-          @click="modelValue = +modelValue - 1"
+          class="btn"
+          icon="arrow-down"
+          flat
+          @click="decrease"
         />
         <input
-          v-model="modelValue"
+          v-model="value"
           class="value-input"
-          @wheel="increase"
-          @focus="$event.target.select()"
+          @wheel="onMouseWheel"
         >
         <Button
           :no-stroke="true"
           class="btn" icon="arrow-up" flat
-          @click="modelValue = +modelValue + 1"
+          @click="increase"
         />
       </div>
     </GradientWrapper>
@@ -54,6 +72,8 @@ function increase(event: WheelEvent) {
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .input-wrapper {
   position: relative;
 
@@ -77,7 +97,8 @@ function increase(event: WheelEvent) {
       border: none;
       border-radius: 8px;
       text-align: center;
-      width: 30px;
+      width: 100px;
+      color: constants.$color-gray;
 
       &:focus {
         outline: none;

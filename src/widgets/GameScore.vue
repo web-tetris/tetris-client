@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRefs, watch } from 'vue'
-import { useTimeout } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints, useTimeout } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import GradientWrapper from '@/ui/GradientWrapper.vue'
 
@@ -14,11 +14,13 @@ const { score } = toRefs(props)
 
 const { isPending, start } = useTimeout(500, { immediate: false, controls: true })
 watch(score, start)
+
+const { isGreater } = useBreakpoints(breakpointsTailwind)
 </script>
 
 <template>
   <div class="score">
-    <div class="title">
+    <div v-if="isGreater('sm')" class="title">
       {{ t('score.title') }}
     </div>
 
@@ -35,6 +37,8 @@ watch(score, start)
 </template>
 
 <style scoped lang="scss">
+@use '../styles/constants';
+
 .score {
     display: flex;
     flex-direction: column;
@@ -70,5 +74,14 @@ watch(score, start)
     .menu {
       margin-top: auto;
     }
+
+  @media (max-width: constants.$breakpoint-sm) {
+    .total {
+
+      .value {
+        height: 70px;
+      }
+    }
+  }
 }
 </style>

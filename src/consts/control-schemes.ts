@@ -20,4 +20,10 @@ export const schemes: Record<ControlType, ControlScheme> = {
     left: 'Left',
     right: 'Right',
   },
+  [ControlType.GESTURES]: {
+    up: 'up',
+    down: 'down',
+    left: 'left',
+    right: 'right',
+  },
 }

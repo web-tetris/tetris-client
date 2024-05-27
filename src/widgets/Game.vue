@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useToggle } from '@vueuse/core'
+import {
+  breakpointsTailwind,
+  useBreakpoints,
+  useToggle,
+} from '@vueuse/core'
 import Matrix from '@/widgets/Matrix.vue'
 import PlayingState from '@/widgets/PlayingState.vue'
 import { MultiplayerMode } from '@/consts/multiplayer-mode'
@@ -21,13 +25,19 @@ const { matrix, nextFigures, score, gameOver, reset, pause, resume, move, rotate
 
 const [paused, togglePaused] = useToggle(false)
 watch(paused, paused => paused ? pause() : resume())
+
+const { isGreater } = useBreakpoints(breakpointsTailwind)
+
+const matrixRef = shallowRef<HTMLElement>()
 </script>
 
 <template>
   <div class="game">
     <Matrix
+      ref="matrixRef"
       :matrix="matrix"
       class="matrix"
+      @touchstart.prevent.stop
     />
 
     <div class="info">
@@ -37,12 +47,13 @@ watch(paused, paused => paused ? pause() : resume())
         :class="{ small: multiplayerMode === MultiplayerMode.CO_OP }"
       />
 
-      <div class="co-op">
+      <div class="next-figure">
         <PlayingState
           v-for="(player, i) in figureAmount"
           :key="player"
           :next-figure="nextFigures[i]"
           :player="i"
+          :matrix="matrixRef"
           @move="move(i, $event)"
           @rotate="rotate(i)"
           @reset="reset"
@@ -56,7 +67,7 @@ watch(paused, paused => paused ? pause() : resume())
         />
         <Button
           icon="arrow-clockwise"
-          :label="t('game.reset')"
+          :label="isGreater('sm') ? t('game.reset') : ''"
           @click="reset"
         />
       </div>
@@ -81,18 +92,20 @@ watch(paused, paused => paused ? pause() : resume())
   background: white;
   border-radius: 10px;
   border: 2px solid constants.$color-primary-0;
+  height: 100%;
 
   .matrix {
+    flex: 2;
     padding: 10px;
     border: 2px solid constants.$color-primary-0;
     border-radius: 10px;
   }
 
   .info {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 30px;
-    min-width: 150px;
 
     .score.small {
       width: 200px;
@@ -104,6 +117,36 @@ watch(paused, paused => paused ? pause() : resume())
     display: flex;
     gap: 10px;
     margin: auto 0 0 auto;
+  }
+
+  @media (max-width: constants.$breakpoint-sm) {
+    flex-direction: column;
+    gap: 10px;
+
+    .info {
+      flex-direction: row;
+      gap: 20px;
+      flex: none;
+
+      .score {
+        flex: 1;
+        height: 100%;
+      }
+    }
+
+    .matrix {
+      flex: 1;
+      align-self: center;
+      margin: 0 auto;
+    }
+
+    .next-figure {
+      flex: 1;
+    }
+
+    .buttons {
+      flex-direction: column;
+    }
   }
 }
 </style>

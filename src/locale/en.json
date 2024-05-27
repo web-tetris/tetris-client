@@ -10,6 +10,7 @@
     "arrow": "Arrow",
     "gamepad": "Gamepad",
     "wasd": "WASD",
+    "gestures": "Gestures",
     "player": "Player",
     "connection": "Connect one or more gamepads",
     "game-controls": "Game controls"

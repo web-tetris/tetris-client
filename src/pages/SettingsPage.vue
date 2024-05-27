@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Difficulty from '@/widgets/Difficulty.vue'
 import StyleSelect from '@/widgets/StyleSelect.vue'
 import LanguageSelect from '@/widgets/LanguageSelect.vue'
@@ -12,6 +13,8 @@ import GradientBackground from '@/ui/GradientBackground.vue'
 
 const { players } = storeToRefs(useSettingsStore())
 const { t } = useI18n()
+
+const { isGreater } = useBreakpoints(breakpointsTailwind)
 </script>
 
 <template>
@@ -40,7 +43,7 @@ const { t } = useI18n()
 
           <div class="select">
             <Difficulty />
-            <PlayersSelect />
+            <PlayersSelect v-if="isGreater('sm')" />
           </div>
         </div>
 
@@ -60,8 +63,12 @@ const { t } = useI18n()
       </div>
 
       <Button
-        large :label="t('settings-page.start')" link="/game"
-        class="button" icon="joystick" reverse
+        large
+        :label="t('settings-page.start')"
+        link="/game"
+        class="button"
+        icon="joystick"
+        reverse
       />
     </div>
   </GradientBackground>
@@ -74,6 +81,7 @@ const { t } = useI18n()
 
   .settings-page {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 50px;
     align-items: center;
@@ -89,8 +97,8 @@ const { t } = useI18n()
     .body {
       padding: 20px;
       display: flex;
-      justify-content: center;
-      gap: 100px;
+      justify-content: space-around;
+      width: 100%;
 
       .common-settings, .play-settings, .controller-settings {
         display: flex;
@@ -126,8 +134,34 @@ const { t } = useI18n()
     .button {
       width: 300px;
     }
-
   }
 
+  @media (max-width: constants.$breakpoint-sm) {
+    .settings-page {
+      gap: 10px;
+      padding-bottom: 30px;
+
+      .logo {
+        font-size: 50px;
+        margin-top: 10px;
+      }
+
+      .body {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        width: 100%;
+
+        .common-settings, .play-settings, .controller-settings {
+          width: 90%;
+          padding: 30px 10px;
+
+          .select {
+            gap: 30px;
+          }
+        }
+      }
+    }
+  }
 }
 </style>
