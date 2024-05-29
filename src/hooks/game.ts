@@ -45,7 +45,7 @@ export function useGame({
   const { add } = useHighscoresStore()
   const gameOver = ref<boolean>(false)
   function gameOverCheck() {
-    const isGameOver = !field.value[0].includes(BlockColor.EMPTY)
+    const isGameOver = field.value[0].some(block => block !== BlockColor.EMPTY)
     if (isGameOver) {
       gameOverSound()
       gameOver.value = true

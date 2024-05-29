@@ -31,22 +31,23 @@ const { relative } = toRefs(props)
 @use '../styles/constants';
 
 .modal {
+  padding: 20px;
   position: fixed;
   left: 50%;
   top: 25%;
   transform: translate(-50%, -20%);
   border-radius: 10px;
   box-shadow: 0 0 10px 0 constants.$color-primary-2;
-  width: 50%;
+  width: 60%;
   background-color: white;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 
   .header {
     display: flex;
     align-items: center;
-    padding: 10px;
+    font-weight: bold;
 
     .title {
       flex: 1;
@@ -61,15 +62,20 @@ const { relative } = toRefs(props)
 
   .body {
     flex: 1;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
+    text-align: center;
   }
 
   &.relative {
     position: absolute;
+  }
+
+  @media (max-width: constants.$breakpoint-sm) {
+    padding: 15px;
+    width: 80%;
   }
 }
 </style>

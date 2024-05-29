@@ -10,6 +10,12 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+@media (max-height: 400px) {
+  body {
+    font-size: 8px;
+  }
+}
+
 body {
   margin: 0;
 }
