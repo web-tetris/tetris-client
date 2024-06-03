@@ -4,7 +4,7 @@ import { computed, ref, shallowReadonly, watch } from 'vue'
 import { tryOnMounted, useInterval } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { BlockColor } from '@/consts/block-color'
-import { projectFigure } from '@/utils/figure'
+import { projectFiguresArray } from '@/utils/figure'
 import { MoveDirection } from '@/consts/move-direction'
 import { useSoundStore } from '@/stores/sound'
 import { useFiguresArray } from '@/hooks/figures-array'
@@ -80,14 +80,7 @@ export function useGame({
   }
   watch(counter, cycle)
 
-  const matrix = computed(() => {
-    let projection = field.value
-
-    for (let i = 0; i < figureAmount.value; i++)
-      projection = projectFigure(projection, current.value[i], position.value[i])
-
-    return projection
-  })
+  const matrix = computed(() => projectFiguresArray(field.value, current.value, position.value))
 
   return {
     matrix,

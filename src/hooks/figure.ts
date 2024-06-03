@@ -31,24 +31,42 @@ export function useFigure(field: Ref<BlockMatrix>) {
     [MoveDirection.RIGHT]: { x: 1, y: 0 },
     [MoveDirection.DOWN]: { x: 0, y: 1 },
   }
-  function move(direction: MoveDirection) {
+
+  function getMovedPosition(direction: MoveDirection): Position | undefined {
     const delta = moveMap[direction]
-    const newPosition: Position = { x: position.value.x + delta.x, y: position.value.y + delta.y }
+    const newPosition = { x: position.value.x + delta.x, y: position.value.y + delta.y }
     const available = canProjectFigure(field.value, current.value, newPosition)
 
-    if (available)
-      position.value = newPosition
-
-    return available
+    return available ? newPosition : undefined
   }
 
-  function rotate() {
-    const rotated = rotateFigure(current.value)
-    const newPosition = getSafePosition(field.value, rotated, position.value)
+  function move(direction: MoveDirection): boolean {
+    const newPosition = getMovedPosition(direction)
+
+    if (newPosition)
+      position.value = newPosition
+
+    return Boolean(newPosition)
+  }
+
+  function getRotatedFigure(): BlockMatrix {
+    return rotateFigure(current.value)
+  }
+
+  function getRotatedPosition(rotated: BlockMatrix): Position | undefined {
+    return getSafePosition(field.value, rotated, position.value)
+  }
+
+  function rotate(): boolean {
+    const rotated = getRotatedFigure()
+    const newPosition = getRotatedPosition(rotated)
+
     if (newPosition) {
       current.value = rotated
       position.value = newPosition
     }
+
+    return Boolean(newPosition)
   }
 
   return {
@@ -59,5 +77,8 @@ export function useFigure(field: Ref<BlockMatrix>) {
     push,
     move,
     rotate,
+    getMovedPosition,
+    getRotatedFigure,
+    getRotatedPosition,
   }
 }
